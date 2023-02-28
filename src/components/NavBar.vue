@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <img class="logo" src="../../src/assets/nusxchange.png" />
     <h1 style="margin-left: 2%">NUSXchange</h1>
     <div class="link">
       <router-link class="links" to="/">Home</router-link>
@@ -24,15 +25,24 @@ export default {};
   font-family: "Raleway", sans-serif;
   font-size: 20px;
   background-color: #194569;
+  font: bold;
+
   width: 100%;
-  height: 10%;
+  height: 80px;
   display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-items: center;
 }
 
+.main .logo {
+  width: 50px;
+  height: 50px;
+  margin-left: 2%;
+}
 .link {
   display: flex;
-  flex-flow: row wrap;
-  align-self: center;
+  flex-flow: row nowrap;
   justify-content: flex-start;
   width: 40%;
   padding-left: 5%;
@@ -43,7 +53,7 @@ export default {};
   font-family: "Raleway", sans-serif;
   font-size: 20px;
   text-decoration: none;
-  padding: 20px 50px;
+  padding: 5% 5%;
 }
 .links:hover {
   background-color: rgba(255, 255, 255, 0.1);
@@ -53,8 +63,7 @@ export default {};
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
-  align-self: center;
-  width: 20%;
+  width: 25%;
   margin-left: auto;
 }
 </style>
