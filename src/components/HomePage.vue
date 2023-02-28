@@ -63,7 +63,6 @@ export default {
   align-items: center;
   margin-top: 10%;
   margin-bottom: 10%;
-  color: #194569;
 }
 .home .error-handling {
   justify-content: center;
@@ -71,7 +70,7 @@ export default {
   width: 60%;
 }
 .home .error-handling .links {
-  color: #5f84a2;
+  color: var(--secondary);
   align-self: center;
   font-weight: bold;
 }

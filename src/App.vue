@@ -16,6 +16,5 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;800&display=swap");
-/* @import "../../styles.css"; */
 @import url("../../styles.css");
 </style>

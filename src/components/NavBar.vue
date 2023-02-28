@@ -21,7 +21,7 @@ export default {};
 <style scoped>
 .main {
   color: rgba(255, 255, 255, 0.85);
-  background-color: #194569;
+  background-color: var(--primary);
   font: bold;
 
   width: 100%;
