@@ -12,7 +12,6 @@
       <router-link class="links" to="/signin">Sign In</router-link>
     </div>
   </div>
-  <router-view></router-view>
 </template>
 
 <script>
@@ -22,8 +21,6 @@ export default {};
 <style scoped>
 .main {
   color: rgba(255, 255, 255, 0.85);
-  font-family: "Raleway", sans-serif;
-  font-size: 20px;
   background-color: #194569;
   font: bold;
 
@@ -50,8 +47,6 @@ export default {};
 
 .links {
   color: rgba(255, 255, 255, 0.85);
-  font-family: "Raleway", sans-serif;
-  font-size: 20px;
   text-decoration: none;
   padding: 5% 5%;
 }
