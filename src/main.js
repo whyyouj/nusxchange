@@ -5,7 +5,7 @@ import MappingPage from "./components/MappingPage.vue"
 import UniversityPage from "./components/UniversityPage.vue"
 import RegisterPage from "./components/RegisterPage.vue"
 import SignInPage from "./components/SignInPage.vue"
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   { path: '/', component: HomePage },
@@ -16,7 +16,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes, 
 })
 
