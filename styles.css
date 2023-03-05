@@ -1,0 +1,10 @@
+:root {
+	--primary: #194569;
+	--secondary: #5F84A2;
+}
+
+.nusxchange-font {
+	font-family: "Raleway", sans-serif;
+	font-weight: bold;
+	color: var(--primary);
+}
