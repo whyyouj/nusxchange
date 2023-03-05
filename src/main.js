@@ -5,6 +5,7 @@ import MappingPage from "./components/MappingPage.vue"
 import UniversityPage from "./components/UniversityPage.vue"
 import RegisterPage from "./components/RegisterPage.vue"
 import SignInPage from "./components/SignInPage.vue"
+import GeneralHelpPage from "./components/GeneralHelp.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 
 // Vuetify
@@ -24,6 +25,7 @@ const routes = [
   { path: '/university', component: UniversityPage },
   { path: '/register', component: RegisterPage },
   { path: '/signin', component: SignInPage },
+  { path: '/generalhelp', component: GeneralHelpPage },
 ]
 
 const router = createRouter({

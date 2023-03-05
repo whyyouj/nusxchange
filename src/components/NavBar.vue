@@ -6,6 +6,7 @@
       <router-link class="links" to="/">Home</router-link>
       <router-link class="links" to="/university">Universities</router-link>
       <router-link class="links" to="/mapping">Module Mapping</router-link>
+      <router-link class="links" to="/generalhelp">General Help</router-link>
     </div>
     <div class="navbar-buttons">
       <router-link class="links" to="/register">Register</router-link>
