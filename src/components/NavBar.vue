@@ -49,7 +49,7 @@ export default {};
 .links {
   color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
-  padding: 5% 5%;
+  padding: 3% 3%;
 }
 .links:hover {
   background-color: rgba(255, 255, 255, 0.1);
