@@ -8,6 +8,7 @@ import RegisterPage from "./components/RegisterPage.vue"
 import SignInPage from "./components/SignInPage.vue"
 import GeneralHelpPage from "./components/GeneralHelp.vue"
 import { createRouter, createWebHistory } from 'vue-router'
+import VueDisqus from "vue-disqus"
 
 // Vuetify
 import 'vuetify/styles'
@@ -36,6 +37,6 @@ const router = createRouter({
 })
 
 
-createApp(App).use(router).use(vuetify).mount('#app')
+createApp(App).use(VueDisqus,{shortname:"nusxchange"}).use(router).use(vuetify).mount('#app')
   
 
