@@ -4,7 +4,12 @@
     <h1 style="margin-left: 2%">NUSXchange</h1>
     <div class="link">
       <router-link class="links" to="/">Home</router-link>
-      <router-link class="links" to="/university">Universities</router-link>
+      <router-link class="links" to="/all-universities"
+        >Universities</router-link
+      >
+      <router-link class="links" to="/individual-university"
+        >Individual University</router-link
+      >
       <router-link class="links" to="/mapping">Module Mapping</router-link>
       <router-link class="links" to="/generalhelp">General Help</router-link>
     </div>
@@ -42,7 +47,7 @@ export default {};
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
-  width: 40%;
+  width: 90%;
   padding-left: 5%;
 }
 

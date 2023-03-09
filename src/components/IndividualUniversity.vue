@@ -1,5 +1,5 @@
 <template>
-  <div>university page</div>
+  <div>individual uni page, should contain all the info for ONE uni</div>
 </template>
 
 <script>
