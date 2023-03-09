@@ -52,6 +52,33 @@
       <div class="forum">
         <Disqus shortname="nusxchange" />
       </div>
+      <v-divider></v-divider>
+      <div class="country-information">
+        <h1>Country Information</h1>
+        <v-table>
+          <tbody>
+            <tr v-for="row in countryLinks" :key="row.name">
+              <td>{{ row.name }}</td>
+              <td>
+                <a :href="row.link">{{ row.link }}</a>
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
+      </div>
+      <div class="other-information">
+        <h1>Other Information</h1>
+        <v-table>
+          <tbody>
+            <tr v-for="row in otherLinks" :key="row.name">
+              <td>{{ row.name }}</td>
+              <td>
+                <a :href="row.link">{{ row.link }}</a>
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
+      </div>
     </div>
   </div>
 </template>
@@ -61,6 +88,34 @@ export default {
   data() {
     return {
       isPressed: false,
+      countryLinks: [
+        {
+          name: "Emergency Contact:",
+          link: "+44 161 306 9966 (Campus), 999 (England Emergency Services)",
+        },
+        {
+          name: "Necessary VISA:",
+          link: "https://www.manchester.ac.uk/study/international/admissions/visa-guidance/",
+        },
+        {
+          name: "Cost of Living:",
+          link: "https://www.manchester.ac.uk/study/international/finance-and-scholarships/living-costs/",
+        },
+      ],
+      otherLinks: [
+        {
+          name: "Website:",
+          link: "https://www.manchester.ac.uk/study/international/study-abroad-programmes/exchange/",
+        },
+        {
+          name: "Accommodation:",
+          link: "https://www.manchester.ac.uk/study/international/accommodation/",
+        },
+        {
+          name: "Scholarship for Exchange:",
+          link: "https://www.manchester.ac.uk/study/international/finance-and-scholarships/",
+        },
+      ],
     };
   },
 };
@@ -111,5 +166,9 @@ strong {
   background-color: green;
   width: 50%;
   height: 500px;
+}
+.country-information,
+.other-information {
+  margin: 5% 0%;
 }
 </style>
