@@ -47,7 +47,16 @@
       <v-divider></v-divider>
       <div style="display: flex; justify-content: space-around">
         <div class="attractions">attractions!</div>
-        <div class="google-maps">google maps!</div>
+        <div class="google-maps">
+          <GoogleMap
+            api-key="AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8"
+            style="width: 100%; height: 500px"
+            :center="center"
+            :zoom="15"
+          >
+            <Marker :options="{ position: center }" />
+          </GoogleMap>
+        </div>
       </div>
       <div class="forum">
         <Disqus shortname="nusxchange" />
@@ -84,7 +93,12 @@
 </template>
 
 <script>
+import { GoogleMap, Marker } from "vue3-google-map";
 export default {
+  components: {
+    GoogleMap,
+    Marker,
+  },
   data() {
     return {
       isPressed: false,
@@ -116,6 +130,12 @@ export default {
           link: "https://www.manchester.ac.uk/study/international/finance-and-scholarships/",
         },
       ],
+      center: { lat: 53.46699022421609, lng: -2.2338408013104565 },
+      markerOptions: {
+        position: this.center,
+        label: "L",
+        title: "LADY LIBERTY",
+      },
     };
   },
 };
@@ -163,7 +183,6 @@ strong {
   height: 500px;
 }
 .google-maps {
-  background-color: green;
   width: 50%;
   height: 500px;
 }
