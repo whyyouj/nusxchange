@@ -70,18 +70,32 @@
                       <th>Total Ratings</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <!-- <tbody>
                     <tr
                       v-for="(item, index) in this.items"
                       :key="index"
                       :value="index"
                     >
-                      <!-- {{
-                        item.content
-                      }} -->
-                      <td>{{ item.content.name }}</td>
-                      <td>{{ item.content.rating }}</td>
-                      <td>{{ item.content.user_ratings_total }}</td>
+      
+                      <td v-for="c in item.content" :key="c">{{ c.name }}</td>
+                      <td v-for="c in item.content" :key="c">{{ c.rating }}</td>
+                      <td v-for="c in item.content" :key="c">
+                        {{ c.user_ratings_total }}
+                      </td>
+
+                    </tr>
+                  </tbody> -->
+                  <tbody
+                    v-for="(item, index) in [this.items[selectedTab]]"
+                    :key="index"
+                  >
+                    <tr
+                      v-for="(data, dataIndex) in item.content"
+                      :key="dataIndex"
+                    >
+                      <td>{{ data.name }}</td>
+                      <td>{{ data.rating }}</td>
+                      <td>{{ data.user_ratings_total }}</td>
                     </tr>
                   </tbody>
                 </v-table>
@@ -148,8 +162,9 @@ export default {
       this.nearbyRestaurantsData = await this.fetchData("restaurant");
       this.nearbyAttractionsData = await this.fetchData("tourist_attraction");
       this.nearbyHotelsData = await this.fetchData("lodging");
-      this.isDataLoaded = true;
       console.log(this.items);
+      console.log(this.nearbyHotelsData);
+      this.isDataLoaded = true;
     },
     async fetchData(placeType) {
       // const placeTypes = ["restaurants","attractions","hotels"]
@@ -196,13 +211,13 @@ export default {
       console.log("Selected tab:", index);
     },
   },
-  watch: {
-    items() {
-      console.log("RECOMPUTE?");
-      console.log(this.items);
-      // set the isDataComputed flag to true when the items computed property changes
-    },
-  },
+  // watch: {
+  //   items() {
+  //     console.log("RECOMPUTE?");
+  //     console.log(this.items);
+  //     // set the isDataComputed flag to true when the items computed property changes
+  //   },
+  // },
   computed: {
     items() {
       return [
