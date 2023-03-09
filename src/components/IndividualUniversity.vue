@@ -70,21 +70,6 @@
                       <th>Total Ratings</th>
                     </tr>
                   </thead>
-                  <!-- <tbody>
-                    <tr
-                      v-for="(item, index) in this.items"
-                      :key="index"
-                      :value="index"
-                    >
-      
-                      <td v-for="c in item.content" :key="c">{{ c.name }}</td>
-                      <td v-for="c in item.content" :key="c">{{ c.rating }}</td>
-                      <td v-for="c in item.content" :key="c">
-                        {{ c.user_ratings_total }}
-                      </td>
-
-                    </tr>
-                  </tbody> -->
                   <tbody
                     v-for="(item, index) in [this.items[selectedTab]]"
                     :key="index"
@@ -104,18 +89,18 @@
           </v-container>
         </div>
         <div class="google-maps">
-          <!-- <GoogleMap
+          <GoogleMap
             api-key="AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8"
             style="width: 100%; height: 500px"
             :center="center"
             :zoom="15"
           >
             <Marker :options="{ position: center }" />
-          </GoogleMap> -->
+          </GoogleMap>
         </div>
       </div>
       <div class="forum">
-        <!-- <Disqus shortname="nusxchange" /> -->
+        <Disqus shortname="nusxchange" />
       </div>
       <v-divider></v-divider>
       <div class="country-information">
@@ -149,33 +134,26 @@
 </template>
 
 <script>
-// import { GoogleMap, Marker } from "vue3-google-map";
-// import { VDataTable } from "vuetify/labs/VDataTable";
+import { GoogleMap, Marker } from "vue3-google-map";
 export default {
   components: {
-    // GoogleMap,
-    // Marker,
-    // VDataTable,
+    GoogleMap,
+    Marker,
   },
   methods: {
     async fetchAllData() {
       this.nearbyRestaurantsData = await this.fetchData("restaurant");
       this.nearbyAttractionsData = await this.fetchData("tourist_attraction");
       this.nearbyHotelsData = await this.fetchData("lodging");
-      console.log(this.items);
-      console.log(this.nearbyHotelsData);
       this.isDataLoaded = true;
     },
     async fetchData(placeType) {
-      // const placeTypes = ["restaurants","attractions","hotels"]
-      // const finalData = [this.nearbyRestaurantsData, this.nearbyAttractionsData, this.nearbyHotelsData]
-
       const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Replace with your own proxy server
-      // const placeType = "restaurant";
       const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=53.46699022421609,-2.2338408013104565&radius=1000&type=${placeType}&key=AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8`;
       const response = await fetch(proxyUrl + apiUrl, {
         headers: {
           Origin: "http://localhost:8081",
+          // change to your localhost
           "X-Requested-With": "XMLHttpRequest",
         },
       });
@@ -184,13 +162,10 @@ export default {
       let processed_results = [];
       for (let i = 1; i < result.length; i++) {
         try {
-          let name = result[i].name;
-          let rating = result[i].rating;
-          let user_ratings_total = result[i].user_ratings_total;
           let row = {
-            name: name,
-            rating: rating,
-            user_ratings_total: user_ratings_total,
+            name: result[i].name,
+            rating: result[i].rating,
+            user_ratings_total: result[i].user_ratings_total,
           };
           processed_results.push(row);
         } catch (err) {
@@ -198,26 +173,13 @@ export default {
         }
       }
       processed_results = processed_results.slice(0, 5);
+      // Limit to top 5 results
       return processed_results;
-      // if (placeType == "restaurant") {
-      //   this.nearbyRestaurantsData = processed_results;
-      // } else if (placeType == "tourist_attraction") {
-      //   this.nearbyAttractionsData = processed_results;
-      // } else if (placeType == "lodging") {
-      //   this.nearbyHotelsData = processed_results;
-      // }
     },
     onTabSelected(index) {
       console.log("Selected tab:", index);
     },
   },
-  // watch: {
-  //   items() {
-  //     console.log("RECOMPUTE?");
-  //     console.log(this.items);
-  //     // set the isDataComputed flag to true when the items computed property changes
-  //   },
-  // },
   computed: {
     items() {
       return [
@@ -247,11 +209,6 @@ export default {
       nearbyRestaurantsData: null,
       nearbyAttractionsData: null,
       nearbyHotelsData: null,
-      selectedData: [
-        this.nearbyRestaurantsData,
-        this.nearbyAttractionsData,
-        this.nearbyHotelsData,
-      ],
       countryLinks: [
         {
           name: "Emergency Contact:",
@@ -284,7 +241,7 @@ export default {
       markerOptions: {
         position: this.center,
         label: "L",
-        title: "LADY LIBERTY",
+        title: "University of Manchester",
       },
     };
   },
@@ -327,14 +284,11 @@ strong {
   flex-direction: column;
   width: 50%;
 }
-.attractions {
-  width: 50%;
-  height: 500px;
-  margin-top: 5%;
-}
+.attractions,
 .google-maps {
   width: 50%;
   height: 500px;
+  margin: 5% 0%;
 }
 .country-information,
 .other-information {
