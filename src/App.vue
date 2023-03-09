@@ -17,4 +17,5 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;800&display=swap");
 @import url("../styles.css");
+@import "~@mdi/font/css/materialdesignicons.css";
 </style>
