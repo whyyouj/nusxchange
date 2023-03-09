@@ -47,19 +47,44 @@
       <v-divider></v-divider>
       <div style="display: flex; justify-content: space-around">
         <div class="attractions">
-          <v-card>
-            <v-tabs v-model="tab" bg-color="primary">
-              <v-tab v-for="item in items" :key="item">{{ item.tab }}</v-tab>
+          <v-container>
+            <v-tabs v-model="selectedTab">
+              <v-tab v-for="(item, index) in items" :key="index">{{
+                item.tabName
+              }}</v-tab>
             </v-tabs>
-
-            <v-card-text>
-              <v-window v-model="tab">
-                <v-window-item v-for="item in items" :key="item"
-                  >{{ item.content }}
-                </v-window-item>
-              </v-window>
-            </v-card-text>
-          </v-card>
+            <v-window v-model="selectedTab">
+              <!-- <v-window-item
+                v-for="(item, index) in nearbyRestaurantsData"
+                :key="index"
+              >
+                <v-card>
+                  <v-card-title>{{ item.name }}</v-card-title>
+                  <v-card-text>{{ item.rating }}</v-card-text>
+                </v-card>-->
+              <v-window-item>
+                <v-table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Rating</th>
+                      <th>Total Ratings</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="(item, index) in nearbyRestaurantsData"
+                      :key="index"
+                    >
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.rating }}</td>
+                      <td>{{ item.user_ratings_total }}</td>
+                    </tr>
+                  </tbody>
+                </v-table>
+              </v-window-item>
+            </v-window>
+          </v-container>
         </div>
         <div class="google-maps">
           <!-- <GoogleMap
@@ -108,10 +133,12 @@
 
 <script>
 // import { GoogleMap, Marker } from "vue3-google-map";
+// import { VDataTable } from "vuetify/labs/VDataTable";
 export default {
   components: {
     // GoogleMap,
     // Marker,
+    // VDataTable,
   },
   methods: {
     async fetchNearbyRestaurants() {
@@ -124,18 +151,28 @@ export default {
         },
       });
       const data = await response.json();
-      this.nearbyRestaurantsData = data.results;
-      // for (let i = 1; i < this.nearbyRestaurantsData.length; i++) {
-      //   console.log(i);
-      //   console.log(typeof this.nearbyRestaurantsData);
-      //   console.log(this.nearbyRestaurantData[i]);
-      // }
-      // for (let i = 0; i < this.nearbyRestaurantsData.length; i++) {
-      // let name = this.nearbyRestaurantsData[i].name;
-      // let rating = this.nearbyRestaurantsData[i].rating;
-      // console.log(name);
-      // console.log(rating);
-      // }
+      const result = data.results;
+      let processed_results = [];
+      for (let i = 1; i < result.length; i++) {
+        try {
+          let name = result[i].name;
+          let rating = result[i].rating;
+          let user_ratings_total = result[i].user_ratings_total;
+          // console.log(name);
+          // console.log(rating);
+          // console.log(user_ratings_total);
+          let row = {
+            name: name,
+            rating: rating,
+            user_ratings_total: user_ratings_total,
+          };
+          processed_results.push(row);
+        } catch (err) {
+          console.log("SKIP");
+        }
+      }
+      this.nearbyRestaurantsData = processed_results.slice(0, 5);
+      console.log(this.nearbyRestaurantsData);
     },
   },
   computed: {
@@ -148,12 +185,25 @@ export default {
   },
   data() {
     return {
-      tab: null,
+      selectedTab: 0,
       items: [
-        { tab: "Restaurants", content: "Tab 1 Content" },
-        { tab: "Activities", content: "Tab 2 Content" },
-        { tab: "Hotels", content: "Tab 3 Content" },
+        {
+          tabName: "Tab 1",
+          title: "Title for Tab 1",
+          content: "Content for Tab 1",
+        },
+        {
+          tabName: "Tab 2",
+          title: "Title for Tab 2",
+          content: "Content for Tab 2",
+        },
+        {
+          tabName: "Tab 3",
+          title: "Title for Tab 3",
+          content: "Content for Tab 3",
+        },
       ],
+
       isPressed: false,
       nearbyRestaurantsData: null,
       countryLinks: [
