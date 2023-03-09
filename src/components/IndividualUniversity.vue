@@ -49,20 +49,19 @@
         <div class="attractions">
           <v-container>
             <v-tabs v-model="selectedTab">
-              <v-tab v-for="(item, index) in items" :key="index">{{
-                item.tabName
-              }}</v-tab>
-            </v-tabs>
-            <v-window v-model="selectedTab">
-              <!-- <v-window-item
-                v-for="(item, index) in nearbyRestaurantsData"
+              <v-tab
+                v-for="(item, index) in items"
                 :key="index"
+                @click="onTabSelected(index)"
+                >{{ item.tabName }}</v-tab
               >
-                <v-card>
-                  <v-card-title>{{ item.name }}</v-card-title>
-                  <v-card-text>{{ item.rating }}</v-card-text>
-                </v-card>-->
-              <v-window-item>
+            </v-tabs>
+            <v-window v-model="selectedTab" v-if="isDataLoaded">
+              <v-window-item
+                v-for="(item, index) in this.items"
+                :key="index"
+                :value="index"
+              >
                 <v-table>
                   <thead>
                     <tr>
@@ -73,12 +72,16 @@
                   </thead>
                   <tbody>
                     <tr
-                      v-for="(item, index) in nearbyRestaurantsData"
+                      v-for="(item, index) in this.items"
                       :key="index"
+                      :value="index"
                     >
-                      <td>{{ item.name }}</td>
-                      <td>{{ item.rating }}</td>
-                      <td>{{ item.user_ratings_total }}</td>
+                      <!-- {{
+                        item.content
+                      }} -->
+                      <td>{{ item.content.name }}</td>
+                      <td>{{ item.content.rating }}</td>
+                      <td>{{ item.content.user_ratings_total }}</td>
                     </tr>
                   </tbody>
                 </v-table>
@@ -141,9 +144,20 @@ export default {
     // VDataTable,
   },
   methods: {
-    async fetchNearbyRestaurants() {
+    async fetchAllData() {
+      this.nearbyRestaurantsData = await this.fetchData("restaurant");
+      this.nearbyAttractionsData = await this.fetchData("tourist_attraction");
+      this.nearbyHotelsData = await this.fetchData("lodging");
+      this.isDataLoaded = true;
+      console.log(this.items);
+    },
+    async fetchData(placeType) {
+      // const placeTypes = ["restaurants","attractions","hotels"]
+      // const finalData = [this.nearbyRestaurantsData, this.nearbyAttractionsData, this.nearbyHotelsData]
+
       const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Replace with your own proxy server
-      const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=53.46699022421609,-2.2338408013104565&radius=1000&type=restaurant&key=AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8`;
+      // const placeType = "restaurant";
+      const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=53.46699022421609,-2.2338408013104565&radius=1000&type=${placeType}&key=AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8`;
       const response = await fetch(proxyUrl + apiUrl, {
         headers: {
           Origin: "http://localhost:8081",
@@ -158,9 +172,6 @@ export default {
           let name = result[i].name;
           let rating = result[i].rating;
           let user_ratings_total = result[i].user_ratings_total;
-          // console.log(name);
-          // console.log(rating);
-          // console.log(user_ratings_total);
           let row = {
             name: name,
             rating: rating,
@@ -171,41 +182,61 @@ export default {
           console.log("SKIP");
         }
       }
-      this.nearbyRestaurantsData = processed_results.slice(0, 5);
-      console.log(this.nearbyRestaurantsData);
+      processed_results = processed_results.slice(0, 5);
+      return processed_results;
+      // if (placeType == "restaurant") {
+      //   this.nearbyRestaurantsData = processed_results;
+      // } else if (placeType == "tourist_attraction") {
+      //   this.nearbyAttractionsData = processed_results;
+      // } else if (placeType == "lodging") {
+      //   this.nearbyHotelsData = processed_results;
+      // }
+    },
+    onTabSelected(index) {
+      console.log("Selected tab:", index);
+    },
+  },
+  watch: {
+    items() {
+      console.log("RECOMPUTE?");
+      console.log(this.items);
+      // set the isDataComputed flag to true when the items computed property changes
     },
   },
   computed: {
-    nearbyRestaurants() {
-      return this.nearbyRestaurantsData;
+    items() {
+      return [
+        {
+          tabName: "Hotels",
+          content: this.nearbyHotelsData,
+        },
+        {
+          tabName: "Attractions",
+          content: this.nearbyAttractionsData,
+        },
+        {
+          tabName: "Restaurants",
+          content: this.nearbyRestaurantsData,
+        },
+      ];
     },
   },
-  mounted() {
-    this.fetchNearbyRestaurants();
+  created() {
+    this.fetchAllData();
   },
   data() {
     return {
       selectedTab: 0,
-      items: [
-        {
-          tabName: "Tab 1",
-          title: "Title for Tab 1",
-          content: "Content for Tab 1",
-        },
-        {
-          tabName: "Tab 2",
-          title: "Title for Tab 2",
-          content: "Content for Tab 2",
-        },
-        {
-          tabName: "Tab 3",
-          title: "Title for Tab 3",
-          content: "Content for Tab 3",
-        },
-      ],
-
+      isDataLoaded: false,
       isPressed: false,
       nearbyRestaurantsData: null,
+      nearbyAttractionsData: null,
+      nearbyHotelsData: null,
+      selectedData: [
+        this.nearbyRestaurantsData,
+        this.nearbyAttractionsData,
+        this.nearbyHotelsData,
+      ],
       countryLinks: [
         {
           name: "Emergency Contact:",
