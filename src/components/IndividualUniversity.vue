@@ -46,20 +46,34 @@
       </div>
       <v-divider></v-divider>
       <div style="display: flex; justify-content: space-around">
-        <div class="attractions">attractions!</div>
+        <div class="attractions">
+          <v-card>
+            <v-tabs v-model="tab" bg-color="primary">
+              <v-tab v-for="item in items" :key="item">{{ item.tab }}</v-tab>
+            </v-tabs>
+
+            <v-card-text>
+              <v-window v-model="tab">
+                <v-window-item v-for="item in items" :key="item"
+                  >{{ item.content }}
+                </v-window-item>
+              </v-window>
+            </v-card-text>
+          </v-card>
+        </div>
         <div class="google-maps">
-          <GoogleMap
+          <!-- <GoogleMap
             api-key="AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8"
             style="width: 100%; height: 500px"
             :center="center"
             :zoom="15"
           >
             <Marker :options="{ position: center }" />
-          </GoogleMap>
+          </GoogleMap> -->
         </div>
       </div>
       <div class="forum">
-        <Disqus shortname="nusxchange" />
+        <!-- <Disqus shortname="nusxchange" /> -->
       </div>
       <v-divider></v-divider>
       <div class="country-information">
@@ -93,15 +107,55 @@
 </template>
 
 <script>
-import { GoogleMap, Marker } from "vue3-google-map";
+// import { GoogleMap, Marker } from "vue3-google-map";
 export default {
   components: {
-    GoogleMap,
-    Marker,
+    // GoogleMap,
+    // Marker,
+  },
+  methods: {
+    async fetchNearbyRestaurants() {
+      const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Replace with your own proxy server
+      const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=53.46699022421609,-2.2338408013104565&radius=1000&type=restaurant&key=AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8`;
+      const response = await fetch(proxyUrl + apiUrl, {
+        headers: {
+          Origin: "http://localhost:8081",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      });
+      const data = await response.json();
+      this.nearbyRestaurantsData = data.results;
+      // for (let i = 1; i < this.nearbyRestaurantsData.length; i++) {
+      //   console.log(i);
+      //   console.log(typeof this.nearbyRestaurantsData);
+      //   console.log(this.nearbyRestaurantData[i]);
+      // }
+      // for (let i = 0; i < this.nearbyRestaurantsData.length; i++) {
+      // let name = this.nearbyRestaurantsData[i].name;
+      // let rating = this.nearbyRestaurantsData[i].rating;
+      // console.log(name);
+      // console.log(rating);
+      // }
+    },
+  },
+  computed: {
+    nearbyRestaurants() {
+      return this.nearbyRestaurantsData;
+    },
+  },
+  mounted() {
+    this.fetchNearbyRestaurants();
   },
   data() {
     return {
+      tab: null,
+      items: [
+        { tab: "Restaurants", content: "Tab 1 Content" },
+        { tab: "Activities", content: "Tab 2 Content" },
+        { tab: "Hotels", content: "Tab 3 Content" },
+      ],
       isPressed: false,
+      nearbyRestaurantsData: null,
       countryLinks: [
         {
           name: "Emergency Contact:",
@@ -178,9 +232,9 @@ strong {
   width: 50%;
 }
 .attractions {
-  background-color: #5f84a1;
   width: 50%;
   height: 500px;
+  margin-top: 5%;
 }
 .google-maps {
   width: 50%;
