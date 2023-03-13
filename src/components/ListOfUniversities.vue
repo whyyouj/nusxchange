@@ -56,11 +56,77 @@ export default {
       console.log(this.universities);
     });
   },
+  
   data() {
     return {
-    }
+      universities: [],
+      continents: [
+        {
+          id: 1,
+          name: "All",
+          active: true,
+        },
+        {
+          id: 2,
+          name: "Asia",
+          active: false,
+        },
+        {
+          id: 3,
+          name: "Africa",
+          active: false,
+        },
+        {
+          id: 4,
+          name: "Europe",
+          active: false,
+        },
+        {
+          id: 5,
+          name: "North America",
+          active: false,
+        },
+        {
+          id: 6,
+          name: "South America",
+          active: false,
+        },
+        {
+          id: 7,
+          name: "Oceania",
+          active: false,
+        },
+      ],
+    };
   },
-}
+  computed: {
+    filteredUniversities() {
+      if (this.continents[0].active) {
+        return this.universities;
+      } else {
+        return this.universities.filter((university) => {
+          return university.continent === this.getActiveContinent();
+        });
+      }
+    },
+  },
+  methods: {
+    toggleContinent(continent) {
+      console.log(this.filteredUniversities);
+      if (continent.active) {
+        continent.active = false;
+      } else {
+        this.continents.forEach((item) => {
+          item.active = false;
+        });
+        continent.active = true;
+      }
+    },
+    getActiveContinent() {
+      return this.continents.find((continent) => continent.active).name;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped></style>
