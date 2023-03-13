@@ -128,5 +128,69 @@ export default {
   },
 };
 </script>
+<style scoped>
+  .tile-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
-<style lang="scss" scoped></style>
+  .tile-list UniTile {
+    margin-right: 20px;
+    flex-basis: calc(25% - 5px);
+  }
+
+  .tile-list UniTile:nth-child(4n) {
+    margin-right: 0;
+  }
+
+  .filter-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .filter-bar ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .filter-bar li {
+    margin: 0 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.3s ease-out;
+    position: relative;
+  }
+
+  .filter-bar li::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 0.2rem;
+    background-color: transparent;
+    bottom: -0.2rem;
+    left: 0;
+    transform: translateX(-100%);
+    transition: background-color 0.2s ease-out, transform 0.3s ease-out;
+  }
+
+  .filter-bar li:hover::before {
+    background-color: #ff5a5f;
+    transform: translateX(0%);
+  }
+
+  .filter-bar li.active::before {
+    background-color: #ff5a5f;
+    transform: translateX(0%);
+  }
+</style>
+
