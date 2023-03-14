@@ -1,138 +1,141 @@
 <template>
   <div class="main">
-    <div style="display: flex; justify-content: space-between">
-      <div class="uni-name">
-        <h1>{{ this.universityData.name }}</h1>
-      </div>
-      <div class="favourite" style="align-self: center; padding-right: 2%">
-        <v-icon
-          :class="isPressed ? 'red--text' : ''"
-          @click="isPressed = !isPressed"
-        >
-          {{ isPressed ? "mdi-cards-heart" : "mdi-heart-outline" }}
-        </v-icon>
-      </div>
-    </div>
-    <img class="image" :src="this.universityData.imageURL" />
-    <div class="subtitle">
-      <span
-        >Location:
-        <strong
-          >{{ this.universityData.country }},
-          {{ this.universityData.continent }}</strong
-        ></span
-      >
-      <span
-        >Minimum GPA: <strong>{{ this.universityData.minGPA }}</strong></span
-      >
-    </div>
-    <v-divider></v-divider>
-    <div class="details">
-      <div class="description">
-        {{ this.universityData.uniDescription }}
-      </div>
-      <div style="display: flex; width: 100%">
-        <div class="academic-window">
-          <h3>Academic Window:</h3>
-          <p>Semester 1: {{ this.universityData.semOneWindow }}</p>
-          <p>Semester 2: {{ this.universityData.semTwoWindow }}</p>
+    <div v-if="this.firebaseError">Error</div>
+    <div v-else>
+      <div style="display: flex; justify-content: space-between">
+        <div class="uni-name">
+          <h1>{{ this.universityData.name }}</h1>
         </div>
-        <div class="vacancies">
-          <div v-if="this.universityData.anyVacancies">
-            <h3>Vacancies:</h3>
-            <p>Any Semester: {{ this.universityData.anyVacancies }}</p>
-          </div>
-          <div v-else>
-            <h3>Vacancies:</h3>
-            <p>Semester 1: {{ this.universityData.semOneVacancies }}</p>
-            <p>Semester 2: {{ this.universityData.semTwoVacancies }}</p>
-          </div>
-        </div>
-      </div>
-      <v-divider></v-divider>
-      <div style="display: flex; justify-content: space-around">
-        <div class="attractions">
-          <v-container>
-            <v-tabs v-model="selectedTab">
-              <v-tab
-                v-for="(item, index) in items"
-                :key="index"
-                @click="onTabSelected(index)"
-                >{{ item.tabName }}</v-tab
-              >
-            </v-tabs>
-            <v-window v-model="selectedTab" v-if="isDataLoaded">
-              <v-window-item
-                v-for="(item, index) in this.items"
-                :key="index"
-                :value="index"
-              >
-                <v-table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Rating</th>
-                      <th>Total Ratings</th>
-                    </tr>
-                  </thead>
-                  <tbody
-                    v-for="(item, index) in [this.items[selectedTab]]"
-                    :key="index"
-                  >
-                    <tr
-                      v-for="(data, dataIndex) in item.content"
-                      :key="dataIndex"
-                    >
-                      <td>{{ data.name }}</td>
-                      <td>{{ data.rating }}</td>
-                      <td>{{ data.user_ratings_total }}</td>
-                    </tr>
-                  </tbody>
-                </v-table>
-              </v-window-item>
-            </v-window>
-          </v-container>
-        </div>
-        <div class="google-maps">
-          <GoogleMap
-            api-key="AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8"
-            style="width: 100%; height: 500px"
-            :center="center"
-            :zoom="15"
+        <div class="favourite" style="align-self: center; padding-right: 2%">
+          <v-icon
+            :class="isPressed ? 'red--text' : ''"
+            @click="isPressed = !isPressed"
           >
-            <Marker :options="{ position: center }" />
-          </GoogleMap>
+            {{ isPressed ? "mdi-cards-heart" : "mdi-heart-outline" }}
+          </v-icon>
         </div>
       </div>
-      <div class="forum">
-        <Disqus shortname="nusxchange" />
+      <img class="image" :src="this.universityData.imageURL" />
+      <div class="subtitle">
+        <span
+          >Location:
+          <strong
+            >{{ this.universityData.country }},
+            {{ this.universityData.continent }}</strong
+          ></span
+        >
+        <span
+          >Minimum GPA: <strong>{{ this.universityData.minGPA }}</strong></span
+        >
       </div>
       <v-divider></v-divider>
-      <div class="country-information">
-        <h1>Country Information</h1>
-        <v-table>
-          <tbody>
-            <tr v-for="row in countryLinks" :key="row.name">
-              <td style="padding-right: 80px">{{ row.name }}</td>
-              <td>
-                <a :href="row.link">{{ row.link }}</a>
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
-      </div>
-      <div class="other-information">
-        <h1>Other Information</h1>
-        <v-table>
-          <tbody>
-            <tr v-for="row in otherLinks" :key="row.name">
-              <td>{{ row.name }}</td>
-              <td>
-                <a :href="row.link">{{ row.link }}</a>
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
+      <div class="details">
+        <div class="description">
+          {{ this.universityData.uniDescription }}
+        </div>
+        <div style="display: flex; width: 100%">
+          <div class="academic-window">
+            <h3>Academic Window:</h3>
+            <p>Semester 1: {{ this.universityData.semOneWindow }}</p>
+            <p>Semester 2: {{ this.universityData.semTwoWindow }}</p>
+          </div>
+          <div class="vacancies">
+            <div v-if="this.universityData.anyVacancies">
+              <h3>Vacancies:</h3>
+              <p>Any Semester: {{ this.universityData.anyVacancies }}</p>
+            </div>
+            <div v-else>
+              <h3>Vacancies:</h3>
+              <p>Semester 1: {{ this.universityData.semOneVacancies }}</p>
+              <p>Semester 2: {{ this.universityData.semTwoVacancies }}</p>
+            </div>
+          </div>
+        </div>
+        <v-divider></v-divider>
+        <div style="display: flex; justify-content: space-around">
+          <div class="attractions">
+            <v-container>
+              <v-tabs v-model="selectedTab">
+                <v-tab
+                  v-for="(item, index) in items"
+                  :key="index"
+                  @click="onTabSelected(index)"
+                  >{{ item.tabName }}</v-tab
+                >
+              </v-tabs>
+              <v-window v-model="selectedTab" v-if="isDataLoaded">
+                <v-window-item
+                  v-for="(item, index) in this.items"
+                  :key="index"
+                  :value="index"
+                >
+                  <v-table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Rating</th>
+                        <th>Total Ratings</th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      v-for="(item, index) in [this.items[selectedTab]]"
+                      :key="index"
+                    >
+                      <tr
+                        v-for="(data, dataIndex) in item.content"
+                        :key="dataIndex"
+                      >
+                        <td>{{ data.name }}</td>
+                        <td>{{ data.rating }}</td>
+                        <td>{{ data.user_ratings_total }}</td>
+                      </tr>
+                    </tbody>
+                  </v-table>
+                </v-window-item>
+              </v-window>
+            </v-container>
+          </div>
+          <div class="google-maps">
+            <GoogleMap
+              api-key="AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8"
+              style="width: 100%; height: 500px"
+              :center="center"
+              :zoom="15"
+            >
+              <Marker :options="{ position: center }" />
+            </GoogleMap>
+          </div>
+        </div>
+        <div class="forum">
+          <Disqus shortname="nusxchange" />
+        </div>
+        <v-divider></v-divider>
+        <div class="country-information">
+          <h1>Country Information</h1>
+          <v-table>
+            <tbody>
+              <tr v-for="row in countryLinks" :key="row.name">
+                <td style="padding-right: 80px">{{ row.name }}</td>
+                <td>
+                  <a :href="row.link">{{ row.link }}</a>
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+        </div>
+        <div class="other-information">
+          <h1>Other Information</h1>
+          <v-table>
+            <tbody>
+              <tr v-for="row in otherLinks" :key="row.name">
+                <td>{{ row.name }}</td>
+                <td>
+                  <a :href="row.link">{{ row.link }}</a>
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+        </div>
       </div>
     </div>
   </div>
@@ -251,10 +254,8 @@ export default {
   },
   async beforeCreate() {
     try {
-      const docRef = doc(db, "ListOfUniversities", "1");
+      const docRef = doc(db, "ListOfUniversities", this.universityName);
       const firebaseData = await getDoc(docRef);
-      // console.log(firebaseData.data());
-      // console.log(doc);
       if (firebaseData.exists) {
         const {
           AnyVacancies,
@@ -298,15 +299,21 @@ export default {
           websiteURL: WebsiteURL || null,
         };
       } else {
-        this.errorMessage = "Document does not exist";
+        this.firebaseError = true;
       }
     } catch (error) {
-      console.error(error);
-      this.errorMessage = "Error retrieving document: " + error.message;
+      this.firebaseError = true;
     }
+    console.log(this.universityData);
   },
   created() {
     // this.fetchAllData();
+  },
+  props: {
+    universityName: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
@@ -317,7 +324,7 @@ export default {
       nearbyAttractionsData: null,
       nearbyHotelsData: null,
       universityData: null,
-      errorMessage: "",
+      firebaseError: false,
       center: { lat: 53.46699022421609, lng: -2.2338408013104565 },
       markerOptions: {
         position: this.center,

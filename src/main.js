@@ -3,7 +3,7 @@ import { createApp } from 'vue'
 import HomePage from "./components/HomePage.vue"
 import MappingPage from "./components/MappingPage.vue"
 import ListOfUniversities from "./components/ListOfUniversities.vue"
-import IndividualUniverity from "./components/IndividualUniversity.vue"
+import IndividualUniversity from "./components/IndividualUniversity.vue"
 import RegisterPage from "./components/RegisterPage.vue"
 import SignInPage from "./components/SignInPage.vue"
 import GeneralHelpPage from "./components/GeneralHelp.vue"
@@ -25,7 +25,7 @@ const routes = [
   { path: '/', component: HomePage },
   { path: '/mapping', component: MappingPage },
   { path: '/all-universities', component: ListOfUniversities },
-  { path: '/individual-university', component: IndividualUniverity },
+  { path: '/individual-university', component: IndividualUniversity , props: {universityName: "1"}},
   { path: '/register', component: RegisterPage },
   { path: '/signin', component: SignInPage },
   { path: '/generalhelp', component: GeneralHelpPage },
