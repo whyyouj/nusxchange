@@ -1,6 +1,20 @@
 <template>
   <div class="main">
-    <div v-if="this.firebaseError">Error</div>
+    <div v-if="this.firebaseError" style="text-align: center; padding-top: 20%">
+      <h1>
+        Error with getting information from Cloud Firebase. Please try again
+        later or contact us at nusxhange@gmail.com.
+      </h1>
+    </div>
+    <div
+      v-else-if="!this.isDataLoaded"
+      style="text-align: center; padding-top: 20%"
+    >
+      <h1>
+        Error with loading Google Maps attractions. Please try again later or
+        contact us at nusxhange@gmail.com.
+      </h1>
+    </div>
     <div v-else>
       <div style="display: flex; justify-content: space-between">
         <div class="uni-name">
@@ -157,7 +171,6 @@ export default {
       this.nearbyRestaurantsData = await this.fetchData("restaurant");
       this.nearbyAttractionsData = await this.fetchData("tourist_attraction");
       this.nearbyHotelsData = await this.fetchData("lodging");
-      this.isDataLoaded = true;
     },
     async fetchData(placeType) {
       const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Replace with your own proxy server
@@ -209,7 +222,6 @@ export default {
         },
       ];
     },
-    //
     countryLinks() {
       return [
         {
@@ -250,12 +262,9 @@ export default {
         },
       ];
     },
-    //
-  },
-  created() {
-    this.fetchAllData();
   },
   async beforeMount() {
+    this.fetchAllData();
     try {
       const docRef = doc(db, "ListOfUniversities", this.universityName);
       const firebaseData = await getDoc(docRef);
@@ -307,6 +316,9 @@ export default {
     } catch (error) {
       this.firebaseError = true;
     }
+    // Once Firebase data & Google Maps data have loaded, then we can return isDataLoaded = true
+    // isDataLoaded is for Google Maps, firebaseError is for Firebase
+    this.isDataLoaded = true;
   },
   props: {
     universityName: {
@@ -325,9 +337,11 @@ export default {
       universityData: null,
       firebaseError: false,
       center: { lat: 53.46699022421609, lng: -2.2338408013104565 },
+      longitude: null,
+      latitude: null,
       markerOptions: {
         position: this.center,
-        label: "L",
+        label: "ABCDEF",
         title: "University of Manchester",
       },
     };
