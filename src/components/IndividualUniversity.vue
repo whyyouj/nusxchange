@@ -252,7 +252,10 @@ export default {
     },
     //
   },
-  async beforeCreate() {
+  created() {
+    this.fetchAllData();
+  },
+  async beforeMount() {
     try {
       const docRef = doc(db, "ListOfUniversities", this.universityName);
       const firebaseData = await getDoc(docRef);
@@ -304,10 +307,6 @@ export default {
     } catch (error) {
       this.firebaseError = true;
     }
-    console.log(this.universityData);
-  },
-  created() {
-    // this.fetchAllData();
   },
   props: {
     universityName: {
