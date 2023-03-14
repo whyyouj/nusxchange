@@ -2,7 +2,7 @@
   <div class="main">
     <div style="display: flex; justify-content: space-between">
       <div class="uni-name">
-        <h1>University of Manchester</h1>
+        <h1>{{ this.universityData.name }}</h1>
       </div>
       <div class="favourite" style="align-self: center; padding-right: 2%">
         <v-icon
@@ -13,35 +13,40 @@
         </v-icon>
       </div>
     </div>
-    <img
-      class="image"
-      src="https://www.wur.nl/upload/6f37ab47-390e-4a11-8677-7728208787e3_291033426_6067606606599046_5002841370475822249_n.jpg"
-    />
+    <img class="image" :src="this.universityData.imageURL" />
     <div class="subtitle">
-      <span>Location: <strong>England, Manchester</strong></span>
-      <span>Minimum GPA: <strong>4.0/5.0</strong></span>
-      <span>Reviews: <strong> 2</strong></span>
-      <span>Language Proficiency Requirements: <strong>English</strong></span>
+      <span
+        >Location:
+        <strong
+          >{{ this.universityData.country }},
+          {{ this.universityData.continent }}</strong
+        ></span
+      >
+      <span
+        >Minimum GPA: <strong>{{ this.universityData.minGPA }}</strong></span
+      >
     </div>
     <v-divider></v-divider>
     <div class="details">
       <div class="description">
-        The University of Manchester is based in the north of England and is
-        among the largest universities in the UK, with around 38,000 students
-        (almost 9,000 international) currently enrolled alongside 10,000 staff.
-        The University is famous for its academic and research excellence, and
-        is also a member of the Russell Group.
+        {{ this.universityData.uniDescription }}
       </div>
       <div style="display: flex; width: 100%">
         <div class="academic-window">
           <h3>Academic Window:</h3>
-          <p>Semester 1: Mid-September to late January</p>
-          <p>Semester 2: Late January to early June</p>
+          <p>Semester 1: {{ this.universityData.semOneWindow }}</p>
+          <p>Semester 2: {{ this.universityData.semTwoWindow }}</p>
         </div>
         <div class="vacancies">
-          <h3>Vacancies:</h3>
-          <p>Semester 1: 6</p>
-          <p>Semester 2: 6</p>
+          <div v-if="this.universityData.anyVacancies">
+            <h3>Vacancies:</h3>
+            <p>Any Semester: {{ this.universityData.anyVacancies }}</p>
+          </div>
+          <div v-else>
+            <h3>Vacancies:</h3>
+            <p>Semester 1: {{ this.universityData.semOneVacancies }}</p>
+            <p>Semester 2: {{ this.universityData.semTwoVacancies }}</p>
+          </div>
         </div>
       </div>
       <v-divider></v-divider>
@@ -108,7 +113,7 @@
         <v-table>
           <tbody>
             <tr v-for="row in countryLinks" :key="row.name">
-              <td>{{ row.name }}</td>
+              <td style="padding-right: 80px">{{ row.name }}</td>
               <td>
                 <a :href="row.link">{{ row.link }}</a>
               </td>
@@ -135,6 +140,10 @@
 
 <script>
 import { GoogleMap, Marker } from "vue3-google-map";
+import firebaseApp from "../firebase.js";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+const db = getFirestore(firebaseApp);
+
 export default {
   components: {
     GoogleMap,
@@ -152,7 +161,7 @@ export default {
       const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=53.46699022421609,-2.2338408013104565&radius=1000&type=${placeType}&key=AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8`;
       const response = await fetch(proxyUrl + apiUrl, {
         headers: {
-          Origin: "http://localhost:8081",
+          Origin: "http://localhost:8080",
           // change to your localhost
           "X-Requested-With": "XMLHttpRequest",
         },
@@ -197,9 +206,107 @@ export default {
         },
       ];
     },
+    //
+    countryLinks() {
+      return [
+        {
+          name: "Course Catalogue",
+          link: this.universityData.courseCatalogueURL,
+        },
+        {
+          name: "Necessary VISA:",
+          link: this.universityData.visaURL,
+        },
+        {
+          name: "Cost of Living:",
+          link: this.universityData.livingCostURL,
+        },
+        {
+          name: "Housing:",
+          link: this.universityData.housingURL,
+        },
+      ];
+    },
+    otherLinks() {
+      return [
+        {
+          name: "Website:",
+          link: this.universityData.websiteURL,
+        },
+        {
+          name: "Accommodation:",
+          link: this.universityData.housingURL,
+        },
+        {
+          name: "Scholarship for Exchange:",
+          link: this.universityData.financialAidURL,
+        },
+        {
+          name: "Insurance Policies:",
+          link: this.universityData.insuranceURL,
+        },
+      ];
+    },
+    //
+  },
+  async beforeCreate() {
+    try {
+      const docRef = doc(db, "ListOfUniversities", "1");
+      const firebaseData = await getDoc(docRef);
+      // console.log(firebaseData.data());
+      // console.log(doc);
+      if (firebaseData.exists) {
+        const {
+          AnyVacancies,
+          Continent,
+          Country,
+          CourseCatalogueURL,
+          FinancialAidURL,
+          HousingURL,
+          ImageURL,
+          InsuranceURL,
+          LivingCostURL,
+          MinGPA,
+          Name,
+          SemOneVacancies,
+          SemOneWindow,
+          SemTwoVacancies,
+          SemTwoWindow,
+          UniDescription,
+          VisaURL,
+          WebsiteURL,
+        } = firebaseData.data();
+
+        this.universityData = {
+          anyVacancies: AnyVacancies || null,
+          continent: Continent || null,
+          country: Country || null,
+          courseCatalogueURL: CourseCatalogueURL || null,
+          financialAidURL: FinancialAidURL || null,
+          housingURL: HousingURL || null,
+          imageURL: ImageURL || null,
+          insuranceURL: InsuranceURL || null,
+          livingCostURL: LivingCostURL || null,
+          minGPA: MinGPA || null,
+          name: Name || null,
+          semOneVacancies: SemOneVacancies || null,
+          semOneWindow: SemOneWindow || null,
+          semTwoVacancies: SemTwoVacancies || null,
+          semTwoWindow: SemTwoWindow || null,
+          uniDescription: UniDescription || null,
+          visaURL: VisaURL || null,
+          websiteURL: WebsiteURL || null,
+        };
+      } else {
+        this.errorMessage = "Document does not exist";
+      }
+    } catch (error) {
+      console.error(error);
+      this.errorMessage = "Error retrieving document: " + error.message;
+    }
   },
   created() {
-    this.fetchAllData();
+    // this.fetchAllData();
   },
   data() {
     return {
@@ -209,34 +316,8 @@ export default {
       nearbyRestaurantsData: null,
       nearbyAttractionsData: null,
       nearbyHotelsData: null,
-      countryLinks: [
-        {
-          name: "Emergency Contact:",
-          link: "+44 161 306 9966 (Campus), 999 (England Emergency Services)",
-        },
-        {
-          name: "Necessary VISA:",
-          link: "https://www.manchester.ac.uk/study/international/admissions/visa-guidance/",
-        },
-        {
-          name: "Cost of Living:",
-          link: "https://www.manchester.ac.uk/study/international/finance-and-scholarships/living-costs/",
-        },
-      ],
-      otherLinks: [
-        {
-          name: "Website:",
-          link: "https://www.manchester.ac.uk/study/international/study-abroad-programmes/exchange/",
-        },
-        {
-          name: "Accommodation:",
-          link: "https://www.manchester.ac.uk/study/international/accommodation/",
-        },
-        {
-          name: "Scholarship for Exchange:",
-          link: "https://www.manchester.ac.uk/study/international/finance-and-scholarships/",
-        },
-      ],
+      universityData: null,
+      errorMessage: "",
       center: { lat: 53.46699022421609, lng: -2.2338408013104565 },
       markerOptions: {
         position: this.center,
@@ -271,6 +352,7 @@ strong {
   color: #5f84a1;
   display: flex;
   justify-content: space-between;
+  width: 40%;
 }
 .description {
   font-weight: 500;
@@ -293,5 +375,6 @@ strong {
 .country-information,
 .other-information {
   margin: 5% 0%;
+  text-align: left;
 }
 </style>
