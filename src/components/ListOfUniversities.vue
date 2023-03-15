@@ -184,12 +184,12 @@ export default {
   }
 
   .filter-bar li:hover::before {
-    background-color: #ff5a5f;
+    background-color: #194569;
     transform: translateX(0%);
   }
 
   .filter-bar li.active::before {
-    background-color: #ff5a5f;
+    background-color: #194569;
     transform: translateX(0%);
   }
 </style>
