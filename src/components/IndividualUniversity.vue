@@ -109,7 +109,7 @@
               </v-window>
             </v-container>
           </div>
-          <div class="google-maps">
+          <div class="google-maps" v-if="this.universityData.name">
             <GoogleMap
               api-key="AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8"
               style="width: 100%; height: 500px"
@@ -204,6 +204,24 @@ export default {
     onTabSelected(index) {
       console.log("Selected tab:", index);
     },
+    async getCoordinates() {
+      // this.universityName does not use the document name as national university of isngapore
+      // once this is fixed, we can use below line as our properr line
+      // const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${this.universityData.name}&key=${this.api_key}`;
+      const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=national+university+of+singapore&key=${this.api_key}`;
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      if (data.results.length > 0) {
+        this.latitude = data.results[0].geometry.location.lat;
+        this.longitude = data.results[0].geometry.location.lng;
+        this.center = { lat: this.latitude, lng: this.longitude };
+      } else {
+        this.latitude = null;
+        this.longitude = null;
+        console.log("Unable to get coordinates.");
+      }
+      console.log(this.center);
+    },
   },
   computed: {
     items() {
@@ -264,7 +282,11 @@ export default {
     },
   },
   async beforeMount() {
+    // Get Attractions Data
     this.fetchAllData();
+    // Get latitude/longitude
+    this.getCoordinates();
+    // Get Firebase Data
     try {
       const docRef = doc(db, "ListOfUniversities", this.universityName);
       const firebaseData = await getDoc(docRef);
@@ -328,6 +350,7 @@ export default {
   },
   data() {
     return {
+      api_key: "AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8",
       selectedTab: 0,
       isDataLoaded: false,
       isPressed: false,
@@ -336,13 +359,13 @@ export default {
       nearbyHotelsData: null,
       universityData: null,
       firebaseError: false,
-      center: { lat: 53.46699022421609, lng: -2.2338408013104565 },
+      center: null,
       longitude: null,
       latitude: null,
       markerOptions: {
         position: this.center,
-        label: "ABCDEF",
-        title: "University of Manchester",
+        label: this.universityName,
+        title: this.universityName,
       },
     };
   },
