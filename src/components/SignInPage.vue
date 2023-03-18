@@ -10,7 +10,7 @@
       <div style="width: 70%">
         <v-text-field v-model="email" label="Email" type="email" />
         <v-text-field v-model="password" label="Password" type="password" />
-        <v-btn class="button" block @click="testLogin">Login</v-btn>
+        <v-btn class="button" block @click="Login">Login</v-btn>
       </div>
       <div class="error-handling">
         <router-link class="links" to="/register"
@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase";
 export default {
   data() {
     return {
@@ -40,9 +42,20 @@ export default {
     };
   },
   methods: {
-    testLogin() {
-      console.log(this.email);
-      console.log(this.password);
+    async Login() {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        this.email,
+        this.password
+      );
+      const user = userCredential.user;
+      console.log("User logged in:", user);
+      this.$router.push("/signin/account-management-page"); // Redirect to the desired page after login
+    } catch (error) {
+      console.error("Login error:", error);
+      // Handle errors here, such as displaying an error message to the user
+    }
     },
   },
 };
