@@ -46,7 +46,7 @@ export default {
       let documentData = docs.data();
 
       let toAdd = {
-        name: documentData.Name,
+        name: docs.id,
         country: documentData.Country,
         continent: documentData.Continent,
         gpa: documentData.MinGPA,
