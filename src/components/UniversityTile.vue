@@ -1,4 +1,5 @@
 <template>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <div class="tile" @click="navigateToUniversityPage">
     <div class="tile-image">
       <img :src="imageUrl" :alt="name">
@@ -6,13 +7,12 @@
     <div class="tile-content">
       <h3 class="tile-title">{{ name }}</h3>
       <div class="tile-location">
-        <i class="material-icons tile-icon" src="../icons/location.svg" alt = "Location Icon"></i>
-        <p>{{ country }}</p>
-        <i class="material-icons tile-icon" src="../icons/location.svg" alt = "Location Icon"></i>
-        <p>{{ continent }}</p>
+        <p>
+          <i class="fa fa-location-arrow"></i>{{ country }}&nbsp;
+          <i class="fa fa-globe"></i>{{ continent }}
+        </p>
       </div>
       <div class="tile-gpa">
-        <i class="material-icons tile-icon" src="../icons/location.svg" alt = "Location Icon"></i>
         <p>Minimum GPA: {{ gpa }}</p>
       </div>
     </div>
@@ -77,7 +77,7 @@ export default {
 }
 
 .tile:hover {
-  transform: translateY(-5px);
+  transform: translateY(-2.5%);
 }
 
 .tile-image {
