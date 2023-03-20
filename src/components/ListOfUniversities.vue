@@ -1,4 +1,6 @@
 <template>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Outfit:b">
+
   <div>
     <h2>List of Exchange Universities</h2>
     <div class="filter-bar">
@@ -151,6 +153,7 @@ export default {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    font-family: "Outfit";
   }
 
   .filter-bar ul {

@@ -1,5 +1,7 @@
 <template>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Outfit:b">
+
   <div class="tile" @click="navigateToUniversityPage">
     <div class="tile-image">
       <img :src="imageUrl" :alt="name">
@@ -70,6 +72,7 @@ export default {
   margin-right: 20px;
   margin-bottom: 30px;
   cursor: pointer;
+  font-family: "Outfit";
 }
 
 .tile:last-child {
@@ -84,11 +87,13 @@ export default {
   width: 100%;
   height: 200px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tile-image img {
-  width: 100%;
-  height: 100%;
+  max-height: 100%;
   object-fit: cover;
 }
 
@@ -120,14 +125,14 @@ export default {
   display: flex;
   align-items: center;
   font-size: 14px;
-  margin: 0 0 15px 0;
+  margin: 0 0 5px 0;
 }
 
 .tile-gpa i {
   margin-right: 5px;
 }
 
-.tile-button {
+/* .tile-button {
   padding: 8px 16px;
   border: none;
   border-radius: 20px;
@@ -145,5 +150,5 @@ export default {
 
 .tile-icon {
   margin-right: 5px;
-}
+} */
 </style>
