@@ -51,7 +51,7 @@ export default {
         continent: documentData.Continent,
         gpa: documentData.MinGPA,
         imageUrl: documentData.ImageURL,
-        url: documentData.UniversityURL,
+        url: documentData.WebsiteURL,
       };
 
       this.universities.push(toAdd);
