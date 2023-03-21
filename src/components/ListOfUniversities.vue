@@ -134,10 +134,9 @@ export default {
   .tile-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    max-width: 1200px;
-    margin: 0 auto;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 0 5% 0 5%;
   }
 
   .tile-list UniTile {
