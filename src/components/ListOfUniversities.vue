@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Outfit:b">
 
   <div>
-    <h2>List of Exchange Universities</h2>
+    <h2 class = "header">List of Exchange Universities</h2>
     <div class="filter-bar">
       <ul>
         <li v-for="continent in continents"
@@ -131,6 +131,14 @@ export default {
 };
 </script>
 <style scoped>
+.header {
+  width: 88%;
+  margin-top: 1%;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: 'Outfit';
+  font-size: x-large;
+}
   .tile-list {
     display: flex;
     flex-wrap: wrap;
