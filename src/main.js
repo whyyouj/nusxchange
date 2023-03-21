@@ -25,7 +25,7 @@ const routes = [
   { path: '/', component: HomePage },
   { path: '/mapping', component: MappingPage },
   { path: '/all-universities', component: ListOfUniversities },
-  { path: '/individual-university', component: IndividualUniversity , props: {universityName: "1"}},
+  { path: '/individual-university', component: IndividualUniversity , props: {universityName: "Concordia University"}},
   { path: '/register', component: RegisterPage },
   { path: '/signin', component: SignInPage },
   { path: '/generalhelp', component: GeneralHelpPage },

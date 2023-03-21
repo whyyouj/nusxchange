@@ -18,7 +18,7 @@
     <div v-else>
       <div style="display: flex; justify-content: space-between">
         <div class="uni-name">
-          <h1>{{ this.universityData.name }}</h1>
+          <h1>{{ this.universityName }}</h1>
         </div>
         <div class="favourite" style="align-self: center; padding-right: 2%">
           <v-icon
@@ -40,6 +40,10 @@
         >
         <span
           >Minimum GPA: <strong>{{ this.universityData.minGPA }}</strong></span
+        >
+        <span
+          >Language Proficiency Requirements:
+          <strong>{{ this.universityData.languageProficiency }}</strong></span
         >
       </div>
       <v-divider></v-divider>
@@ -109,9 +113,9 @@
               </v-window>
             </v-container>
           </div>
-          <div class="google-maps" v-if="this.universityData.name">
+          <div class="google-maps">
             <GoogleMap
-              api-key="AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8"
+              :api-key="api_key"
               style="width: 100%; height: 500px"
               :center="center"
               :zoom="15"
@@ -129,10 +133,11 @@
           <v-table>
             <tbody>
               <tr v-for="row in countryLinks" :key="row.name">
-                <td style="padding-right: 80px">{{ row.name }}</td>
-                <td>
+                <td>{{ row.name }}</td>
+                <td v-if="row.link" style="padding-left: 110px">
                   <a :href="row.link">{{ row.link }}</a>
                 </td>
+                <td v-else>No link available.</td>
               </tr>
             </tbody>
           </v-table>
@@ -143,9 +148,10 @@
             <tbody>
               <tr v-for="row in otherLinks" :key="row.name">
                 <td>{{ row.name }}</td>
-                <td>
+                <td v-if="row.link">
                   <a :href="row.link">{{ row.link }}</a>
                 </td>
+                <td v-else>No link available.</td>
               </tr>
             </tbody>
           </v-table>
@@ -174,7 +180,7 @@ export default {
     },
     async fetchData(placeType) {
       const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Replace with your own proxy server
-      const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=53.46699022421609,-2.2338408013104565&radius=1000&type=${placeType}&key=AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8`;
+      const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=53.46699022421609,-2.2338408013104565&radius=1000&type=${placeType}&key=${this.api_key}`;
       const response = await fetch(proxyUrl + apiUrl, {
         headers: {
           Origin: "http://localhost:8080",
@@ -205,10 +211,7 @@ export default {
       console.log("Selected tab:", index);
     },
     async getCoordinates() {
-      // this.universityName does not use the document name as national university of isngapore
-      // once this is fixed, we can use below line as our properr line
-      // const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${this.universityData.name}&key=${this.api_key}`;
-      const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=national+university+of+singapore&key=${this.api_key}`;
+      const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${this.universityName}&key=${this.api_key}`;
       const response = await fetch(apiUrl);
       const data = await response.json();
       if (data.results.length > 0) {
@@ -254,10 +257,6 @@ export default {
           name: "Cost of Living:",
           link: this.universityData.livingCostURL,
         },
-        {
-          name: "Housing:",
-          link: this.universityData.housingURL,
-        },
       ];
     },
     otherLinks() {
@@ -267,16 +266,12 @@ export default {
           link: this.universityData.websiteURL,
         },
         {
-          name: "Accommodation:",
+          name: "Scholarships:",
+          link: this.universityData.scholarshipsURL,
+        },
+        {
+          name: "Housing:",
           link: this.universityData.housingURL,
-        },
-        {
-          name: "Scholarship for Exchange:",
-          link: this.universityData.financialAidURL,
-        },
-        {
-          name: "Insurance Policies:",
-          link: this.universityData.insuranceURL,
         },
       ];
     },
@@ -296,13 +291,12 @@ export default {
           Continent,
           Country,
           CourseCatalogueURL,
-          FinancialAidURL,
+          ScholarshipsURL,
           HousingURL,
           ImageURL,
-          InsuranceURL,
           LivingCostURL,
+          LanguageProficiency,
           MinGPA,
-          Name,
           SemOneVacancies,
           SemOneWindow,
           SemTwoVacancies,
@@ -317,13 +311,12 @@ export default {
           continent: Continent || null,
           country: Country || null,
           courseCatalogueURL: CourseCatalogueURL || null,
-          financialAidURL: FinancialAidURL || null,
+          scholarshipsURL: ScholarshipsURL || null,
           housingURL: HousingURL || null,
           imageURL: ImageURL || null,
-          insuranceURL: InsuranceURL || null,
           livingCostURL: LivingCostURL || null,
+          languageProficiency: LanguageProficiency || null,
           minGPA: MinGPA || null,
-          name: Name || null,
           semOneVacancies: SemOneVacancies || null,
           semOneWindow: SemOneWindow || null,
           semTwoVacancies: SemTwoVacancies || null,
@@ -379,7 +372,7 @@ export default {
   margin-right: auto;
 }
 .main > * {
-  margin: 1% 0%;
+  margin: 2% 0%;
 }
 strong {
   font-weight: bold;
@@ -395,7 +388,6 @@ strong {
   color: #5f84a1;
   display: flex;
   justify-content: space-between;
-  width: 40%;
 }
 .description {
   font-weight: 500;
@@ -415,9 +407,9 @@ strong {
   height: 500px;
   margin: 5% 0%;
 }
+
 .country-information,
 .other-information {
   margin: 5% 0%;
-  text-align: left;
 }
 </style>
