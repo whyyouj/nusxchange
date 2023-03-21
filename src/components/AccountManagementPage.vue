@@ -11,6 +11,19 @@
     </v-card-actions>
   </v-card>
 </v-dialog>
+<v-dialog v-model="showDeleteModal" max-width="700" style= "  margin: auto; display: flex; flex-direction: column;justify-content: center;height: 100%;">
+  <v-card>
+    <v-card-title>Delete Confirmation</v-card-title>
+    <v-card-text>
+      Are you sure you want to Delete your Account
+    </v-card-text> 
+    <v-card-actions >
+      <v-btn color="primary" @click="deleteAccount">Yes</v-btn>
+      <v-btn color='primary' @click="showDeleteModal=false">No</v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
+
   <div class="photo">
     <!---<div id="photoname">{{ personname }}</div>--->
     <img id="photo" :src="source" alt="hello" /> <br/>
@@ -216,7 +229,7 @@
       </div>
     </div>
     <hr />
-    <button id="deleteaccount">Delete Account</button>
+    <button id="deleteaccount" @click="showDeleteModal = true">Delete Account</button>
   </div>
 </template>
 
@@ -239,8 +252,8 @@ import PasswordModal from "./PasswordModal.vue";
 import {auth,firebaseApp, storage} from '../firebase.js';
 import { ref, deleteObject, uploadBytes, getDownloadURL } from "firebase/storage";
 import {getFirestore} from 'firebase/firestore';
-import {collection, doc, getDoc, updateDoc, getDocs} from 'firebase/firestore';
-import { onAuthStateChanged, updatePassword, EmailAuthProvider, reauthenticateWithCredential} from 'firebase/auth';
+import {collection, doc, getDoc, updateDoc, getDocs, deleteDoc} from 'firebase/firestore';
+import { onAuthStateChanged, updatePassword, EmailAuthProvider, reauthenticateWithCredential, deleteUser} from 'firebase/auth';
 
 library.add(faPen, faCheck, faEye, faEyeSlash, faTrashAlt, faTimes,faLock, faUnlock);
 const db = getFirestore(firebaseApp);
@@ -439,7 +452,18 @@ export default {
         console.error("error in image: ",error)
       }
     },
- 
+    async deleteAccount() {
+      
+      try {
+        await this.deleteImage()
+        await deleteDoc(doc(db, "Account",this.email))
+        await deleteUser(this.user)
+        this.$router.push('/signin')
+        console.log("Delete successfully!")
+      } catch(error) {
+        console.error("Error deleting user account:", error)
+      }
+    },
   },
   data() {
     return {
@@ -469,6 +493,7 @@ export default {
       semList: ["2023 summer", "2022 winter"],
       showModal: false,
       showErrorModal: false,
+      showDeleteModal: false,
       newPassword: "",
       passwordError: false,
       showPassword: false,
@@ -477,6 +502,7 @@ export default {
       deleteIdx: null,
       teleList: [],
       theleListAll:[],
+
     };
   },
 };
