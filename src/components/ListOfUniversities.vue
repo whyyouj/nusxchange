@@ -1,37 +1,43 @@
 <template>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Outfit:b">
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Outfit:b"
+  />
 
   <div>
-    <h2 class = "header">List of Exchange Universities</h2>
+    <h2 class="header">List of Exchange Universities</h2>
     <div class="filter-bar">
       <ul>
-        <li v-for="continent in continents"
-            :key="continent.id"
-            :class="{ active: continent.active }"
-            @click="toggleContinent(continent)">
+        <li
+          v-for="continent in continents"
+          :key="continent.id"
+          :class="{ active: continent.active }"
+          @click="toggleContinent(continent)"
+        >
           {{ continent.name }}
         </li>
       </ul>
     </div>
-    <div class="tile-list">
-      <UniTile v-for="university in filteredUniversities"
-               :key="university.id"
-               :name="university.name"
-               :country="university.country"
-               :continent="university.continent"
-               :gpa="university.gpa"
-               :imageUrl="university.imageUrl"
-               :universityUrl="university.url"
-               class="tile" />
+    <div class="tile tile-list">
+      <UniTile
+        v-for="university in filteredUniversities"
+        :key="university.id"
+        :name="university.name"
+        :country="university.country"
+        :continent="university.continent"
+        :gpa="university.gpa"
+        :imageUrl="university.imageUrl"
+        :universityUrl="university.url"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import UniTile from '@/components/UniversityTile.vue'
-import firebaseApp from '../firebase.js';
-import {getFirestore} from 'firebase/firestore'
-import {collection, getDocs} from 'firebase/firestore';
+import UniTile from "@/components/UniversityTile.vue";
+import firebaseApp from "../firebase.js";
+import { getFirestore } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 const db = getFirestore(firebaseApp);
 
@@ -58,7 +64,7 @@ export default {
       console.log(this.universities);
     });
   },
-  
+
   data() {
     return {
       universities: [],
@@ -136,71 +142,70 @@ export default {
   margin-top: 1%;
   margin-left: auto;
   margin-right: auto;
-  font-family: 'Outfit';
+  font-family: "Outfit";
   font-size: x-large;
 }
-  .tile-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: center;
-    margin: 0 5% 0 5%;
-  }
+.tile-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 0 5% 0 5%;
+}
 
-  .tile-list UniTile {
-    margin-right: 20px;
-    flex-basis: calc(25% - 5px);
-  }
+.tile-list UniTile {
+  margin-right: 20px;
+  flex-basis: calc(25% - 5px);
+}
 
-  .tile-list UniTile:nth-child(4n) {
-    margin-right: 0;
-  }
+.tile-list UniTile:nth-child(4n) {
+  margin-right: 0;
+}
 
-  .filter-bar {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-    font-family: "Outfit";
-  }
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-family: "Outfit";
+}
 
-  .filter-bar ul {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
+.filter-bar ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 
-  .filter-bar li {
-    margin: 0 10px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: color 0.2s ease, transform 0.3s ease-out;
-    position: relative;
-  }
+.filter-bar li {
+  margin: 0 10px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.3s ease-out;
+  position: relative;
+}
 
-  .filter-bar li::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 0.2rem;
-    background-color: transparent;
-    bottom: -0.2rem;
-    left: 0;
-    transform: translateX(-100%);
-    transition: background-color 0.2s ease-out, transform 0.3s ease-out;
-  }
+.filter-bar li::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 0.2rem;
+  background-color: transparent;
+  bottom: -0.2rem;
+  left: 0;
+  transform: translateX(-100%);
+  transition: background-color 0.2s ease-out, transform 0.3s ease-out;
+}
 
-  .filter-bar li:hover::before {
-    background-color: #cadeed;
-    transform: translateX(0%);
-  }
+.filter-bar li:hover::before {
+  background-color: #cadeed;
+  transform: translateX(0%);
+}
 
-  .filter-bar li.active::before {
-    background-color: #5f84a2;
-    transform: translateX(0%);
-  }
+.filter-bar li.active::before {
+  background-color: #5f84a2;
+  transform: translateX(0%);
+}
 </style>
-

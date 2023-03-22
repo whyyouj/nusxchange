@@ -339,14 +339,9 @@ export default {
     // isDataLoaded is for Google Maps, firebaseError is for Firebase
     this.isDataLoaded = true;
   },
-  props: {
-    universityName: {
-      type: String,
-      required: true,
-    },
-  },
   data() {
     return {
+      universityName: this.$route.params.universityName,
       api_key: "AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8",
       selectedTab: 0,
       isDataLoaded: false,
