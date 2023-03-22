@@ -1,9 +1,19 @@
 <template>
-  <div>this is the mapping page</div>
+  <div class="main">
+    <h2> Module Mapping Page </h2>
+    <img src="https://wallpapercave.com/wp/wp1954746.jpg" alt="" style="width: 100%; border-radius: 15px;">
+  </div>
 </template>
 
 <script>
-export default {};
+export default {
+
+};
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.main {
+  margin: auto;
+  max-width: 80%;
+}
+</style>
