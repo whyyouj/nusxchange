@@ -55,6 +55,7 @@ export default {
       password: "",
       invalidSignin: false,
       emailNotVerify: false,
+      page: '',
     };
   },
    mounted() {
@@ -62,42 +63,48 @@ export default {
         if (!ui) {
             ui = new firebaseui.auth.AuthUI(firebase.auth())
         }
-        var uiConfig = {
-            signInSuccessUrl : this.googleSignin() ? "/signin/account-management-page" : "/register-google",
-            signInOptions: [
-                firebase.auth.GoogleAuthProvider.PROVIDER_ID
-            ]
-        }; 
-        ui.start("#firebaseui-auth-container", uiConfig)
-        const style = document.createElement('style');
-      document.head.appendChild(style);
+   this.googleSignin().then(page => {
+    var uiConfig = {
+      signInSuccessUrl: page,
+      signInOptions: [
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID
+      ]
+    };
+    ui.start("#firebaseui-auth-container", uiConfig)
+  }).catch(error => {
+    console.log("Error checking user: ", error);
+  });
+  const style = document.createElement('style');
+  document.head.appendChild(style);
 
 
     },
   methods: {
-    async googleSignin() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        // Check if certain condition is met
-        const usersRef = doc(db, "Account",user.uid);
-
-        getDoc(usersRef).then((querySnapshot) => {
-          if (querySnapshot.exists()) {
-            const userDoc = querySnapshot.data();
-            console.log("User exists: ", userDoc);
-            return true
-          } else {
-            console.log("User does not exist");
-            return false
-          }
-        }).catch((error) => {
-          console.log("Error getting documents: ", error);
-          return false
-        });
-      }
-      return false
+  googleSignin() {
+    return new Promise((resolve, reject) => {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          const usersRef = doc(db, "Account", user.uid);
+          getDoc(usersRef).then(querySnapshot => {
+            if (querySnapshot.exists()) {
+              const userDoc = querySnapshot.data();
+              console.log("User exists: ", userDoc);
+              resolve("/signin/account-management-page");
+            } else {
+              console.log("User does not exist");
+              resolve("/register-google");
+            }
+          }).catch(error => {
+            console.log("Error getting documents: ", error);
+            reject(error);
+          });
+        } else {
+          resolve("/signin");
+        }
+      });
     });
-    },
+  },
+  
     async Login() {
     try {
       const userCredential = await signInWithEmailAndPassword(
