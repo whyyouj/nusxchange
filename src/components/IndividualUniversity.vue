@@ -58,14 +58,18 @@
             <p>Semester 2: {{ this.universityData.semTwoWindow }}</p>
           </div>
           <div class="vacancies">
-            <div v-if="this.universityData.anyVacancies">
-              <h3>Vacancies:</h3>
-              <p>Any Semester: {{ this.universityData.anyVacancies }}</p>
-            </div>
-            <div v-else>
-              <h3>Vacancies:</h3>
+            <h3>Vacancies:</h3>
+            <div
+              v-if="
+                this.universityData.semOneVacancies ||
+                this.universityData.semTwoVacancies
+              "
+            >
               <p>Semester 1: {{ this.universityData.semOneVacancies }}</p>
               <p>Semester 2: {{ this.universityData.semTwoVacancies }}</p>
+            </div>
+            <div v-else>
+              <p>Any Semester: {{ this.universityData.anyVacancies }}</p>
             </div>
           </div>
         </div>
