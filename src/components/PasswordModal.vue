@@ -4,18 +4,23 @@
     <div class="modal-header">
       <h3>Change Password</h3>
     </div>
-    <div class="modal-body">
-    <div class="password-input" style="width: 80%">
-      <input class="passwordInput" :type="showPassword ? 'text' : 'password'" v-model="newPassword" placeholder="Enter new password" />
+    <div class="modal-body" >
+    <div class="password-input" style="display: flex; flex-direction: column; align-items: flex-start">
+      <div><input class="passwordInput" style="margin-bottom: 5%; width: 85%;" :type="showPassword ? 'text' : 'password'" v-model="newPassword" placeholder="Enter new password" />
       <button id="showPassword" @click="showPassword = !showPassword">
+     
         <font-awesome-icon :icon="showPassword ? 'eye-slash' : 'eye'" />
       </button>
+      </div>
+      <div>
+      <input class="passwordInput" :type="showPassword ? 'text' : 'password'"  v-model="newPassword2" placeholder="Confirm new password" style="width: 98%"/>
+      </div>
     </div>
-    <h4 v-if="passwordError" id="errorMsg">INVALID PASSWORD</h4>
+    <h4 v-if="passwordError" id="errorMsg">INVALID <p style="font-size= 2%; font-weight:1">Please ensure both password are the same / at least 6 characters long</p></h4>
     </div>
     <div class="modal-footer">
       <button class="modalSaveButton" @click="changePassword">Save</button>
-      <button class="modalCancelButton" @click="showModal = false, passwordError = false, newPassword =''">Cancel</button>
+      <button class="modalCancelButton" @click="showModal = false, passwordError = false, newPassword ='', newPassword2= ''">Cancel</button>
     </div> 
     </div>
 </template>
@@ -33,6 +38,7 @@ export default {
     data() {
         return {showModal: false,
            newPassword: "",
+           newPassword2: "",
           passwordError: false,
           showPassword: false,}
     },
@@ -43,16 +49,18 @@ export default {
             console.log(`New password: ${this.newPassword}`);
             // close modal
             // clear new password field
-            if (this.newPassword.length > 5) {
+            if (this.newPassword.length > 5 && this.newPassword === this.newPassword2) {
                 this.$emit("passwordData",this.newPassword)
                 this.passwordError = false
                 this.showModal = false;
                 this.refreshComp += 1;
                 this.newPassword = '';
+                this.newPassword2='';
                 return
             }
             this.passwordError = true
             this.newPassword = '';
+            this.newPassword2= '';
             },
   },
 }

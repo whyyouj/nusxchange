@@ -11,9 +11,14 @@
         <v-text-field v-model="email" label="Email" type="email" />
         <v-text-field v-model="password" label="Password" type="password" />
         <v-btn class="button" block @click="Login">Login</v-btn>
+        <p v-if="invalidSignin" style="color: red; text-align:center">Invalid Email/Password</p>
+        <p v-if='emailNotVerify' style="color: red; text-align:center">Please verify your email</p>
       </div>
+      <p style="margin-top:5% ; text-align:center">or</p>
+      <div style="width: 100%;" id="firebaseui-auth-container"/>
+      
       <div class="error-handling">
-        <router-link class="links" to="/register"
+        <router-link class="links" to="/password-reset"
           >Forgot your password?</router-link
         >
         <div
@@ -34,14 +39,65 @@
 <script>
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase";
+
+import firebase from '@/uifire.js'
+import 'firebase/compat/auth'
+import * as firebaseui from 'firebaseui'
+import 'firebaseui/dist/firebaseui.css'
+import {getFirestore} from 'firebase/firestore';
+import {firebaseApp} from '../firebase.js';
+import { doc, getDoc} from 'firebase/firestore';
+const db = getFirestore(firebaseApp);
 export default {
   data() {
     return {
       email: "",
       password: "",
+      invalidSignin: false,
+      emailNotVerify: false,
     };
   },
+   mounted() {
+        var ui = firebaseui.auth.AuthUI.getInstance()
+        if (!ui) {
+            ui = new firebaseui.auth.AuthUI(firebase.auth())
+        }
+        var uiConfig = {
+            signInSuccessUrl : this.googleSignin() ? "/signin/account-management-page" : "/register-google",
+            signInOptions: [
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID
+            ]
+        }; 
+        ui.start("#firebaseui-auth-container", uiConfig)
+        const style = document.createElement('style');
+      document.head.appendChild(style);
+
+
+    },
   methods: {
+    async googleSignin() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        // Check if certain condition is met
+        const usersRef = doc(db, "Account",user.uid);
+
+        getDoc(usersRef).then((querySnapshot) => {
+          if (querySnapshot.exists()) {
+            const userDoc = querySnapshot.data();
+            console.log("User exists: ", userDoc);
+            return true
+          } else {
+            console.log("User does not exist");
+            return false
+          }
+        }).catch((error) => {
+          console.log("Error getting documents: ", error);
+          return false
+        });
+      }
+      return false
+    });
+    },
     async Login() {
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -50,13 +106,24 @@ export default {
         this.password
       );
       const user = userCredential.user;
-      console.log("User logged in:", user);
-      this.$router.push("/signin/account-management-page"); // Redirect to the desired page after login
+      if (user.emailVerified) {
+        console.log("User logged in:", user);
+      this.$router.push("/signin/account-management-page");
+      } else {
+        console.error("User email not verified")
+        this.emailNotVerify = true
+        this.invalidSignin = false 
+      }
+       // Redirect to the desired page after login
     } catch (error) {
       console.error("Login error:", error);
+     this.emailNotVerify = false  
+      this.invalidSignin = true
+
       // Handle errors here, such as displaying an error message to the user
     }
-    },
+
+    }
   },
 };
 </script>
@@ -77,7 +144,7 @@ export default {
   flex-flow: column nowrap;
   justify-content: space-around;
   align-items: center;
-  margin-top: 10%;
+  margin-top: 3%;
   margin-bottom: 10%;
 }
 .home .login .button {

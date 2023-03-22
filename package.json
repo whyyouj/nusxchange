@@ -15,8 +15,10 @@
     "bootstrap": "^5.2.3",
     "core-js": "^3.8.3",
     "firebase": "^9.17.2",
+    "firebaseui": "^0.600.0",
     "font-awesome": "^4.7.0",
     "vue": "^3.2.13",
+    "vue-google-signin-button": "^1.0.4",
     "vue-router": "^4.1.6",
     "vuetify": "^3.0.0-beta.0"
   },

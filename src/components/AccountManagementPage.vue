@@ -1,5 +1,5 @@
 <template>
-<v-dialog v-model="showErrorModal" max-width="700" style= "  margin: auto; display: flex; flex-direction: column;justify-content: center;height: 100%;">
+<v-dialog v-model="showErrorModal" max-width="700" style= "  margin: auto; display: flex; flex-direction: column;justify-content: center;height: 100%;" :persistent="true">
   <v-card>
     <v-card-title>Error</v-card-title>
     <v-card-text>
@@ -11,7 +11,7 @@
     </v-card-actions>
   </v-card>
 </v-dialog>
-<v-dialog v-model="showDeleteModal" max-width="700" style= "  margin: auto; display: flex; flex-direction: column;justify-content: center;height: 100%;">
+<v-dialog v-model="showDeleteModal" max-width="700" style= "  margin: auto; display: flex; flex-direction: column;justify-content: center;height: 100%;" :persistent="true">
   <v-card>
     <v-card-title>Delete Confirmation</v-card-title>
     <v-card-text>
@@ -26,7 +26,7 @@
 
   <div class="photo">
     <!---<div id="photoname">{{ personname }}</div>--->
-    <img id="photo" :src="source" alt="hello" /> <br/>
+    <img id="photo" :src="source" alt="hello"/> <br/>
     <input
       type="file"
       @change="handleFileInputChange"
@@ -41,7 +41,7 @@
   margin-left: 2%;
   font-size: 100%;"><font-awesome-icon :icon="['fas','trash-alt']" /></button>
   <div style="text-align: center">
-      <v-dialog v-model="showPhotoModal" max-width="700">
+      <v-dialog v-model="showPhotoModal" max-width="700" :persistent="true">
       <v-card>
         <v-card-title>Confirm Delete</v-card-title>
         <v-card-text>
@@ -73,8 +73,14 @@
         </button>
     </div>
       <div id="email">
+        <div v-if='this.email'>
         <h3>Email</h3>
         {{ email }}
+        </div>
+        <div v-else>
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" width="20" height="20">
+            <div>Signed in with Google</div> 
+        </div>
       </div>
     </div>
     <div id="tele-major">
@@ -114,8 +120,9 @@
     <hr />
       <div id="exchangeuni">
         <h3>Exchange University</h3>
-      <div id="childComponent" :key="refreshComp1">
-        {{exchangeuni}}
+      <div id="childComponent" :key="refreshComp1" style="display: flex; flex-direction: column;">
+        <span>{{exchangeuni}}</span>
+        <p v-if="semester !== 'None'">{{semester}}</p>
       </div>
  
       <button id="exchangeUniversity" @click="showModal =true" v-if="!showModal" style="  background-color: rgb(204, 204, 204, 0.5);
@@ -167,7 +174,7 @@
     cursor: pointer;
     font-weight: bold;
     margin-left: 2px;">Save</button>
-          <button class="modalCancelButton" @click="showModal = false, exchangeError = false, semester ='', tempexchangeuni = '' " style="    background-color: rgb(204, 204, 204, 0.5);
+          <button class="modalCancelButton" @click="showModal = false, exchangeError = false, tempexchangeuni = '' " style="    background-color: rgb(204, 204, 204, 0.5);
     padding: 2px 8px;
     border-radius: 5px;
     cursor: pointer;
@@ -179,7 +186,7 @@
       </div>
     <hr/>  
 
-    <div id="password">
+    <div id="password" v-if="this.password">
       <label for="passwordInput">Password</label>
         <div id="passwordAccount" :key="refreshComp">
           <input
@@ -188,19 +195,19 @@
             :type="showPassword ? 'text' : 'password'"
             :disabled=true
           />
-          <button id="showPassword" @click="showPassword = !showPassword">
+          <!--button id="showPassword" @click="showPassword = !showPassword">
             <font-awesome-icon :icon="showPassword ? 'eye-slash' : 'eye'" />
-          </button>
+          </button-->
         </div>
         <div id="passwordModal">
           <PasswordModal @passwordData="changePassword" />
       </div>
     </div>
-    <hr />
+    <hr v-if="this.password"/>
 
     <div id="favourite">
       <!---DeleteFavouriteUni /--->
-      <h3>Favourites <button id="changefavourite" @click="changeFavourite = !changeFavourite">
+      <h3>Favourites <button id="changefavourite" @click="changeFavourite = !changeFavourite" style="transform: translateX(70%)">
       <font-awesome-icon :icon="['fas','trash-alt']" />
       <font-awesome-icon :icon="changeFavourite ?   'unlock':'lock'" />
     </button></h3>
@@ -264,7 +271,8 @@ export default {
       onAuthStateChanged(auth, async (user) => {
         if (user) {
           this.user = user;
-          this.userData = await this.getUserData(user.email);
+          this.userData = await this.getUserData(user.uid);
+          this.uId = user.uid
           this.semester = this.userData.semester
           this.username = this.userData.username
           this.password = this.userData.password
@@ -277,11 +285,22 @@ export default {
         } else {
           this.$router.push('/login');
         }
+        const universityList = await getDocs(collection(db, 'ListOfUniversities'))
+        universityList.forEach((docs) => {
+          this.uniList.push(docs.id)
+        })
+        const year = new Date().getFullYear()
+        const year2 = year + 1
+        const year3 = year + 2
+        this.semList.push("Semester 1"+ ", "+year+"/"+ year2)
+        this.semList.push("Semester 2"+ ", " +year+"/"+ year2)
+        this.semList.push("Semester 1"+ ", " +year2+"/"+ year3)
+        this.semList.push("Semester 2"+ ", " +year2+"/"+ year3  )
         const teleHandles = await getDocs(collection(db, 'Account'))
         this.teleListAll = teleHandles.docs.map(doc => doc.data())
         this.updateTeleList()
         if (this.photo) {
-          const imageRef = ref(storage, `images/${this.email}/profile.jpg`)
+          const imageRef = ref(storage, `images/${this.uId}/profile.jpg`)
           this.source = await getDownloadURL(imageRef)
           }
       })
@@ -329,18 +348,18 @@ export default {
         return 
       }
       if (this.showusername) {
-        await this.updateUserData(this.email, { username: this.username });
+        await this.updateUserData(this.uId, { username: this.username });
       }
     },
     async changeTele() {
       this.showtele = !this.showtele
       if (this.showtele) {
         if (this.tele.length === 0) {
-          await this.updateUserData(this.email, {telegram: ""})
+          await this.updateUserData(this.uId, {telegram: ""})
           this.refreshComp1 += 1
           this.tele = "-"
         } else {
-          await this.updateUserData(this.email, {telegram: this.tele})
+          await this.updateUserData(this.uId, {telegram: this.tele})
           this.refreshComp1 += 1
         }
       }
@@ -353,7 +372,7 @@ export default {
         return 
       }
       if (this.showmajoroptions) {
-        await this.updateUserData(this.email, {major: this.major})
+        await this.updateUserData(this.uId, {major: this.major})
       }
     },
     async changeExchange() {
@@ -364,8 +383,8 @@ export default {
         this.tempexchangeuni = ""
         this.semester = ""
         this.refreshComp1 += 1
-        await this.updateUserData(this.email, {exchangeUniversity: this.exchangeuni})
-        await this.updateUserData(this.email, {semester: "None"})  
+        await this.updateUserData(this.uId, {exchangeUniversity: this.exchangeuni})
+        await this.updateUserData(this.uId, {semester: "None"})  
         return
       }
       if (this.semList.includes(this.semesterTemp) && this.uniList.includes(this.tempexchangeuni)) {
@@ -375,8 +394,8 @@ export default {
         this.showModal=false
         this.semesterTemp =''
         this.tempexchangeuni = ''
-        await this.updateUserData(this.email, {exchangeUniversity: this.exchangeuni})
-        await this.updateUserData(this.email, {semester: this.semester})
+        await this.updateUserData(this.uId, {exchangeUniversity: this.exchangeuni})
+        await this.updateUserData(this.uId, {semester: this.semester})
         return
         } else {
           this.exchangeError = true
@@ -388,7 +407,7 @@ export default {
         const credential = EmailAuthProvider.credential(this.email, this.password)
         await reauthenticateWithCredential(this.user, credential);
         await updatePassword(this.user, newPw)
-        await this.updateUserData(this.email, {password: newPw})
+        await this.updateUserData(this.uId, {password: newPw})
         this.password = newPw;
         this.refreshComp += 1;
         } catch(error) {
@@ -402,7 +421,7 @@ export default {
       },
     async deleteFavourite(idx) {
       this.favList.splice(idx,1);
-      await this.updateUserData(this.email, {favouriteUniversity: this.favList})
+      await this.updateUserData(this.uId, {favouriteUniversity: this.favList})
     },
 
     updateTeleList() {
@@ -422,10 +441,10 @@ export default {
       
       if (this.photo) {
       try {
-        const imageRef = ref(storage, `images/${this.email}/profile.jpg`)
+        const imageRef = ref(storage, `images/${this.uId}/profile.jpg`)
         await deleteObject(imageRef);
         console.log("Delete sucess");
-        await this.updateUserData(this.email, {photo: false});
+        await this.updateUserData(this.uId, {photo: false});
         this.photo=false;
       } catch(error) {
         console.log("error: ", error);
@@ -437,17 +456,18 @@ export default {
       const file = event.target.files[0];
       const reader = new FileReader();
       reader.onload = () => {
-        this.source = reader.result;
+        this.source = reader.result; 
       };
-      //reader.readAsDataURL(file);
+      reader.readAsDataURL(file);
       //console.log(reader);
       //console.log(file);
-      const imageRef = ref(storage, `images/${this.email}/profile.jpg`);
+      const imageRef = ref(storage, `images/${this.uId}/profile.jpg`);
       try{
       await uploadBytes(imageRef, file)
-      await this.updateUserData(this.email, {photo: true})
+      await this.updateUserData(this.uId, {photo: true})
       this.photo = true
       document.getElementById("fileinput").value =""
+      console.log("success uploading photo")
       } catch (error) {
         console.error("error in image: ",error)
       }
@@ -456,7 +476,7 @@ export default {
       
       try {
         await this.deleteImage()
-        await deleteDoc(doc(db, "Account",this.email))
+        await deleteDoc(doc(db, "Account",this.uId))
         await deleteUser(this.user)
         this.$router.push('/signin')
         console.log("Delete successfully!")
@@ -474,6 +494,7 @@ export default {
       refreshComp1: 0,
       user: null,
       userData: null,
+      uId: null,
       username: "",
       email: "",
       major: "",
@@ -489,8 +510,8 @@ export default {
       majorList: ["science", "english", "math"],
       password: "password",
       //showPassword: false,
-      uniList: ["None","nus"],
-      semList: ["2023 summer", "2022 winter"],
+      uniList: ["None"],
+      semList: ["None"],
       showModal: false,
       showErrorModal: false,
       showDeleteModal: false,
@@ -501,7 +522,7 @@ export default {
       changeFavourite: false,
       deleteIdx: null,
       teleList: [],
-      theleListAll:[],
+      teleListAll:[],
 
     };
   },
