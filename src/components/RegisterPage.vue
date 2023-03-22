@@ -3,19 +3,35 @@
   <v-card>
     <v-card-title>Error</v-card-title>
     <v-card-text>
-      <div v-if="this.password !==  this.confirmPassword || this.password.length <6">Please ensure that both passwords match and is at least 6 characters long.</div>
-      <div v-else-if="!formIsValid">Please check that the required fields are filed.</div>
-      <div v-else>There was an error in the form. Please fill in another email addres.</div>
+      <div v-if="!(this.userName && this.email && this.major && this.password && this.confirmPassword)">Ensure that all required fields are filed.</div>
+      <div v-else-if="this.password !==  this.confirmPassword || this.password.length <6">Ensure that both passwords are the same and at least 6 characters long.</div>
+      <div v-if="this.errorMessage">Email invalid / taken. Please fill in another email address.</div>
+
     </v-card-text> 
     <v-card-actions >
-      <v-btn color="primary" @click="showErrorModal = false" >OK</v-btn>
+      <v-btn color="primary" @click="showErrorModal = false, errorMessage = ''" >OK</v-btn>
     </v-card-actions>
   </v-card>
 </v-dialog>
+
+
+<v-dialog v-model="showSuccessModal" max-width="700" style= "  margin: auto; display: flex; flex-direction: column;justify-content: center;height: 100%;" :persistent="true">
+  <v-card>
+    <v-card-title style="color: green">Success</v-card-title>
+    <v-card-text style="color: green">
+      Success! Please verify your email before Signing In.
+    </v-card-text> 
+    <v-card-actions >
+      <v-btn color="green" @click="closeSuccessModal" >OK</v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
+
+
   <div class="register">
     <img id='image' src="../assets/register.png" alt="">
   <div class="" >
-    <h2 style="transform: translateX(60%)">Register</h2>
+    <h2 style="transform: translateX(65%)">Register</h2>
     <form id="form">
     <v-text-field v-model="userName" label="Username *" type="text" required/>
     <!--v-text-field v-model="name" label="Name *" type='text' required/-->
@@ -55,8 +71,6 @@
       </v-list>
 
     </v-autocomplete>
-
-    <v-btn class="button" block @click="register" style="transform: translateX(60%)">Register</v-btn>
     </form>
   </div>
 </div>
@@ -66,8 +80,8 @@
 import '@mdi/font/css/materialdesignicons.min.css';
 import {auth, firebaseApp} from '../firebase.js';
 import {getFirestore} from 'firebase/firestore'
-import {doc, setDoc} from 'firebase/firestore';
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {doc, setDoc, getDocs, collection} from 'firebase/firestore';
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
 const db = getFirestore(firebaseApp);
 
@@ -75,10 +89,24 @@ const db = getFirestore(firebaseApp);
 export default {
     name: "RegisterPage",
 
+    async mounted() {
+        const universityList = await getDocs(collection(db, 'ListOfUniversities'))
+        universityList.forEach((docs) => {
+          this.uniOption.push(docs.id)
+        })
+        const year = new Date().getFullYear() % 100
+        const year2 = year + 1
+        const year3 = year + 2
+        this.semesterOption.push("Semester 1"+ ", "+year+"/"+ year2)
+        this.semesterOption.push("Semester 2"+ ", " +year+"/"+ year2)
+        this.semesterOption.push("Semester 1"+ ", " +year2+"/"+ year3)
+        this.semesterOption.push("Semester 2"+ ", " +year2+"/"+ year3  )
+    },
+
     data() {
       return {
         showPassword: false,
-        majorOption: ["hello", "ok"],
+        majorOption: ['english', 'math'],
         userName: "",
         name: "",
         email: "",
@@ -88,9 +116,12 @@ export default {
         tele: "",
         exchangeUni: "",
         semester: "",
-        uniOption: ['None','a','b'],
-        semesterOption: ["None",'a','b'],
-        showErrorModal: false,      
+        uniOption: ['None'],
+        semesterOption: ["None"],
+        errorMessage: "",
+        showErrorModal: false,
+        user: null,
+        showSuccessModal: false,
       }
     }, 
 
@@ -108,13 +139,17 @@ export default {
             );
 
             // Add the user information to Firestore
+            this.user = userCredential.user
             await this.addAccount(userCredential.user);
+            await sendEmailVerification(userCredential.user)
 
             // Navigate to the account management page
-            this.$router.push("/signin/account-management-page");
+            this.showSuccessModal = true;
             document.getElementById('form').reset()
           } catch (error) {
             console.error("Error registering user", error);
+            this.errorMessage = error.message;
+            this.showErrorModal = true;
             
           }
         } 
@@ -125,11 +160,11 @@ export default {
 
       async addAccount() {
       try {
-        const docRef = await setDoc(doc(db, "Account", this.email), {
+        const docRef = await setDoc(doc(db, "Account", this.user.uid), {
           username: this.userName,
           email: this.email,
           major: this.major,
-          password: this.password,
+          password: true,
           telegram: this.tele ? this.tele : "",
           exchangeUniversity: this.exchangeUni ? this.exchangeUni : "None",
           favouriteUniversity: [],
@@ -143,6 +178,11 @@ export default {
         this.showErrorModal = true
       }
       },
+
+      closeSuccessModal() {
+        this.showSuccessModal = false
+        this.$router.push('/signin')
+      }
     },
 
     computed: {
