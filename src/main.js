@@ -8,6 +8,7 @@ import RegisterPage from "./components/RegisterPage.vue"
 import SignInPage from "./components/SignInPage.vue"
 import GeneralHelpPage from "./components/GeneralHelp.vue"
 import { createRouter, createWebHistory } from 'vue-router'
+import VueDisqus from "vue-disqus"
 
 // Vuetify
 import 'vuetify/styles'
@@ -26,6 +27,8 @@ const routes = [
   { path: '/university', component: ListOfUniversities },
   // { path: '/individual-university', component: IndividualUniverity },
   { path: '/university/:universityName', component: IndividualUniversity},
+  { path: '/all-universities', component: ListOfUniversities },
+  { path: '/individual-university', component: IndividualUniversity , props: {universityName: "City University Of Hong Kong"}},
   { path: '/register', component: RegisterPage },
   { path: '/signin', component: SignInPage },
   { path: '/generalhelp', component: GeneralHelpPage },
@@ -37,6 +40,6 @@ const router = createRouter({
 })
 
 
-createApp(App).use(router).use(vuetify).mount('#app')
+createApp(App).use(VueDisqus,{shortname:"nusxchange"}).use(router).use(vuetify).mount('#app')
   
 
