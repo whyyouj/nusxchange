@@ -55,7 +55,6 @@ export default {
       password: "",
       invalidSignin: false,
       emailNotVerify: false,
-      page: '',
     };
   },
    mounted() {
