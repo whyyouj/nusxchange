@@ -3,7 +3,7 @@ import { createApp } from 'vue'
 import HomePage from "./components/HomePage.vue"
 import MappingPage from "./components/MappingPage.vue"
 import ListOfUniversities from "./components/ListOfUniversities.vue"
-import IndividualUniverity from "./components/IndividualUniversity.vue"
+import IndividualUniversity from "./components/IndividualUniversity.vue"
 import RegisterPage from "./components/RegisterPage.vue"
 import SignInPage from "./components/SignInPage.vue"
 import GeneralHelpPage from "./components/GeneralHelp.vue"
@@ -11,6 +11,7 @@ import AccountManagementPage from "./components/AccountManagementPage.vue"
 import RegisterPageGoogle from "./components/RegisterPageGoogle.vue"
 import PasswordReset from "./components/PasswordReset.vue"
 import { createRouter, createWebHistory } from 'vue-router'
+import VueDisqus from "vue-disqus"
 
 
 // Vuetify
@@ -27,8 +28,8 @@ const vuetify = createVuetify({
 const routes = [
   { path: '/', component: HomePage },
   { path: '/mapping', component: MappingPage },
-  { path: '/all-universities', component: ListOfUniversities },
-  { path: '/individual-university', component: IndividualUniverity },
+  { path: '/university', component: ListOfUniversities },
+  { path: '/university/:universityName', component: IndividualUniversity},
   { path: '/register', component: RegisterPage },
   { path: '/signin', component: SignInPage },
   { path: '/generalhelp', component: GeneralHelpPage },
@@ -43,6 +44,6 @@ const router = createRouter({
 })
 
 
-createApp(App).use(router).use(vuetify).mount('#app')
+createApp(App).use(VueDisqus,{shortname:"nusxchange"}).use(router).use(vuetify).mount('#app')
   
 
