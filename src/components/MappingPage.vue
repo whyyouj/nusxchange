@@ -43,6 +43,7 @@ export default {
     return {
       inputText: '',
       inputs: [],
+      errorMessage: 'You have already added this module!',
       continents: [
         {
           id: 1,
@@ -83,12 +84,17 @@ export default {
     }
   },
   methods: {
+    
     addInput() {
-      if (this.inputText !== '' && this.inputs.length < 6) {
+    if (this.inputText !== '' && this.inputs.length < 6) {
+      if (this.inputs.indexOf(this.inputText.toUpperCase()) === -1) {
         this.inputs.push(this.inputText.toUpperCase());
         this.inputText = '';
+      } else {
+        window.alert('This module has already been added.'); // Show the error message as a pop-up
       }
-    },
+    }
+  },
     toggleContinent(continent) {
       if (continent.active) {
         continent.active = false;
@@ -133,7 +139,7 @@ input[type=text] {
 }
 
 .add-module-btn {
-  background-color: #4CAF50;
+  background-color: #194569;
   color: white;
   border-radius: 10px;
   border: none;
@@ -143,7 +149,7 @@ input[type=text] {
 }
 
 .add-module-btn:hover {
-  background-color: #45a049;
+  background-color: #3e88c5;
 }
 
 .input-list {
