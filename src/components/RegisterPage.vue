@@ -69,9 +69,11 @@
           <v-list-item-title>{{ option }}</v-list-item-title>
         </v-list-item>
       </v-list>
-        <v-btn class="button" block @click="register" style="transform: translateX(60%)">Register</v-btn>
+        
     </v-autocomplete>
+    
     </form>
+    <v-btn class="button" block @click="register" style="transform: translateX(60%; margin-top: 5%">Register</v-btn>
   </div>
 </div>
 </template>
@@ -229,6 +231,7 @@ export default {
   color: var(--secondary);
   width: 250%;
   height: 8%;
+  margin-top: 3%;
   margin-bottom: -20%;
 }
 
