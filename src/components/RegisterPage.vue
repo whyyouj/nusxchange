@@ -69,7 +69,7 @@
           <v-list-item-title>{{ option }}</v-list-item-title>
         </v-list-item>
       </v-list>
-
+        <v-btn class="button" block @click="register" style="transform: translateX(60%)">Register</v-btn>
     </v-autocomplete>
     </form>
   </div>
