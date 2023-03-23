@@ -10,9 +10,14 @@
       <input type="text" :placeholder="inputText ? '' : 'Which NUS Module would you like to map?'" v-model="inputText" @input="inputText = inputText.toUpperCase()" @keyup.enter="addInput">
       <button class="add-module-btn" @click="addInput">Add Module</button>
     </div>
-    <div v-if="inputs.length > 0" class="input-list" style="margin-top: 20px;">
-      <p v-for="(input, index) in inputs" :key="index">{{ input.toUpperCase() }}</p>
-
+    <div v-if="inputs.length > 0" class="input-list-container" style="margin-top: 20px;">
+      <div class="input-list">
+        <p v-for="(input, index) in inputs" :key="index">{{ input.toUpperCase() }}</p>
+      </div>
+      <div class="clear-submit-btn-container">
+        <button v-if="inputs.length > 0" class="clear-module-btn" @click="clearInputs">Clear</button>
+        <button v-if="inputs.length > 0" class="submit-module-btn" @click="submitInputs">Submit</button>
+      </div>
     </div>
     <!-- Add the filter bar below the input list -->
     <div class="filter-bar" style="margin-top: 20px;">
@@ -86,21 +91,20 @@ export default {
   methods: {
     
     addInput() {
-    if (this.inputText !== '' && this.inputs.length < 6) {
-      if (this.inputs.indexOf(this.inputText.toUpperCase()) === -1) {
-        this.inputs.push(this.inputText.toUpperCase());
-        this.inputText = '';
-      } else {
-        window.alert('This module has already been added.'); // Show the error message as a pop-up
+      if (this.inputText !== '' && this.inputs.length < 6) {
+        if (this.inputs.indexOf(this.inputText.toUpperCase()) === -1) {
+          this.inputs.push(this.inputText.toUpperCase());
+          this.inputText = '';
+        } else {
+          window.alert('This module has already been added.'); // Show the error message as a pop-up
+        }
       }
-    }
-  },
+    },
     toggleContinent(continent) {
       if (continent.active) {
         continent.active = false;
       } else {
-        this.continents.forEach((item) => {
-          item.active = false;
+        this.continents.forEach((item) => { item.active = false;
         });
         continent.active = true;
       }
@@ -108,6 +112,12 @@ export default {
     getActiveContinent() {
       return this.continents.find((continent) => continent.active).name;
     },
+    clearInputs() {
+      this.inputs = [];
+    },
+    submitInputs() {
+      console.log("Temporarily disabled.")
+    }
   }
 };
 </script>
@@ -152,10 +162,16 @@ input[type=text] {
   background-color: #3e88c5;
 }
 
-.input-list {
+.input-list-container {
   margin-top: 20px;
   display: flex;
+  flex-direction: column;
+}
+
+.input-list {
+  display: flex;
   flex-wrap: wrap;
+  margin-bottom: 10px;
 }
 
 .input-list p {
@@ -168,10 +184,44 @@ input[type=text] {
   padding: 5px 10px;
 }
 
+.clear-submit-btn-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.clear-module-btn {
+  background-color: #194569;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 12px 20px;
+  margin-right: 10px;
+}
+
+.clear-module-btn:hover {
+  background-color: #3e88c5;
+}
+
+.submit-module-btn {
+  background-color: #194569;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 12px 20px;
+}
+
+.submit-module-btn:hover {
+  background-color: #3e88c5;
+}
+
 .filter-bar {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-top: 20px;
   font-family: "Outfit";
 }
 
@@ -204,6 +254,7 @@ input[type=text] {
   transform: translateX(-100%);
   transition: background-color 0.2s ease-out, transform 0.3s ease-out;
 }
+
 
 .filter-bar li:hover::before {
   background-color: #cadeed;
