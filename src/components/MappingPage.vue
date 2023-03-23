@@ -32,16 +32,18 @@
         </li>
       </ul>
     </div>
-     <ModuleTile
-      :university="university"
-      :local-modules-count="localModules.length"
-      :partner-university="partnerUniversity"
-      :continent="continent"
-      :country="country"
-      :gpa="gpa"
-      :language-requirements="languageRequirements"
-      :module-sets="moduleSets"
-    />
+    <div class="module-tile-container" v-for="moduleTile in filteredModuleTiles" :key="moduleTile.university">
+      <ModuleTile
+        :university="moduleTile.university"
+        :local-modules-count="moduleTile.localModules.length"
+        :partner-university="moduleTile.partnerUniversity"
+        :continent="moduleTile.continent"
+        :country="moduleTile.country"
+        :gpa="moduleTile.gpa"
+        :language-requirements="moduleTile.languageRequirements"
+        :module-sets="moduleTile.moduleSets"
+      />
+    </div>
   </div>
 </template>
 
@@ -100,52 +102,120 @@ export default {
           active: false,
         },
       ],
-      university: 'National University of Singapore',
-      localModules: ['Module A', 'Module B', 'Module C'],
-      partnerUniversity: 'Partner University',
-      continent: 'Asia',
-      country: 'Singapore',
-      gpa: 3.5,
-      languageRequirements: 'English',
-      moduleSets: [
+      universityData: [
         {
-          localCode: 'MA1234',
-          localName: 'Module A',
-          partnerModules: [
+          university: 'National University of Singapore',
+          localModules: ['Module A', 'Module B', 'Module C'],
+          partnerUniversity: 'Partner University 1',
+          continent: 'Asia',
+          country: 'Singapore',
+          gpa: 3.5,
+          languageRequirements: 'English',
+          moduleSets: [
             {
-              partnerCode: 'PA1234',
-              partnerName: 'Partner Module 1'
+              localCode: 'MA1234',
+              localName: 'Module A',
+              partnerModules: [
+                {
+                  partnerCode: 'PA1234',
+                  partnerName: 'Partner Module 1'
+                },
+                {
+                  partnerCode: 'PA5678',
+                  partnerName: 'Partner Module 2'
+                }
+              ]
             },
             {
-              partnerCode: 'PA5678',
-              partnerName: 'Partner Module 2'
+              localCode: 'MB5678',
+              localName: 'Module B',
+              partnerModules: [
+                {
+                  partnerCode: 'PB1234',
+                  partnerName: 'Partner Module 3'
+                },
+                {
+                  partnerCode: 'PB5678',
+                  partnerName: 'Partner Module 4'
+                },
+                {
+                  partnerCode: 'PB9012',
+                  partnerName: 'Partner Module 5'
+                }
+              ]
             }
           ]
         },
         {
-          localCode: 'MB5678',
-          localName: 'Module B',
-          partnerModules: [
+          university: 'University of California, Berkeley',
+          localModules: ['Module X', 'Module Y', 'Module Z'],
+          partnerUniversity: 'Partner University 2',
+          continent: 'North America',
+          country: 'United States',
+          gpa: 3.8,
+          languageRequirements: 'English',
+          moduleSets: [
             {
-              partnerCode: 'PB1234',
-              partnerName: 'Partner Module 3'
+              localCode: 'CX1234',
+              localName: 'Module X',
+              partnerModules: [
+                {
+                  partnerCode: 'PX1234',
+                  partnerName: 'Partner Module 1'
+                },
+                {
+                  partnerCode: 'PX5678',
+                  partnerName: 'Partner Module 2'
+                }
+              ]
             },
             {
-              partnerCode: 'PB5678',
-              partnerName: 'Partner Module 4'
+              localCode: 'CY5678',
+              localName: 'Module Y',
+              partnerModules: [
+                {
+                  partnerCode: 'PY1234',
+                  partnerName: 'Partner Module 3'
+                },
+                {
+                  partnerCode: 'PY5678',
+                  partnerName: 'Partner Module 4'
+                },
+                {
+                  partnerCode: 'PY9012',
+                  partnerName: 'Partner Module 5'
+                }
+              ]
             },
             {
-              partnerCode: 'PB9012',
-              partnerName: 'Partner Module 5'
+              localCode: 'CZ9012',
+              localName: 'Module Z',
+              partnerModules: [
+                {
+                  partnerCode: 'PZ1234',
+                  partnerName: 'Partner Module 6'
+                },
+                {
+                  partnerCode: 'PZ5678',
+                  partnerName: 'Partner Module 7'
+                }
+              ]
             }
           ]
         }
       ]
-    
     }
   },
-  methods: {
-    
+  computed: {
+    filteredModuleTiles() {
+      if (this.getActiveContinent() === 'All') {
+        return this.universityData;
+      } else {
+        return this.universityData.filter((university) => university.continent === this.getActiveContinent());
+      }
+    }
+  },
+    methods: {
     addInput() {
       if (this.inputText !== '' && this.inputs.length < 6) {
         if (this.inputs.indexOf(this.inputText.toUpperCase()) === -1) {
@@ -173,9 +243,20 @@ export default {
     },
     submitInputs() {
       console.log("Temporarily disabled.")
+    },
+    filterModules(moduleSets, continent) {
+      let filteredModules = [];
+
+      moduleSets.forEach((moduleSet) => {
+        if (moduleSet.countryContinent === continent) {
+          filteredModules.push(moduleSet);
+        }
+      });
+
+      return filteredModules;
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -311,7 +392,6 @@ input[type=text] {
   transition: background-color 0.2s ease-out, transform 0.3s ease-out;
 }
 
-
 .filter-bar li:hover::before {
   background-color: #cadeed;
   transform: translateX(0%);
@@ -321,4 +401,11 @@ input[type=text] {
   background-color: #5f84a2;
   transform: translateX(0%);
 }
-</style>
+
+.module-tile-container {
+  margin-top: 20px;
+  /* display: flex; */
+  flex-wrap: wrap;
+  gap: 20px;
+}
+</style>       
