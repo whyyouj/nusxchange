@@ -7,14 +7,15 @@
     <h2>Module Mapping Page</h2>
     <img src="https://wallpapercave.com/wp/wp1954746.jpg" alt="" style="width: 100%; border-radius: 15px;">
     <div class="search-container">
-      <input type="text" placeholder="Search..." v-model="inputText">
+      <input type="text" :placeholder="inputText ? '' : 'Which NUS Module would you like to map?'" v-model="inputText" @input="inputText = inputText.toUpperCase()" @keyup.enter="addInput">
       <button class="add-module-btn" @click="addInput">Add Module</button>
     </div>
-    <div v-if="inputs.length > 0" class="input-list">
-      <p v-for="(input, index) in inputs" :key="index">{{ input }}</p>
+    <div v-if="inputs.length > 0" class="input-list" style="margin-top: 20px;">
+      <p v-for="(input, index) in inputs" :key="index">{{ input.toUpperCase() }}</p>
+
     </div>
     <!-- Add the filter bar below the input list -->
-    <div class="filter-bar">
+    <div class="filter-bar" style="margin-top: 20px;">
       <ul>
         <li
           v-for="continent in continents"
@@ -84,9 +85,8 @@ export default {
   methods: {
     addInput() {
       if (this.inputText !== '' && this.inputs.length < 6) {
-        this.inputs.push(this.inputText);
+        this.inputs.push(this.inputText.toUpperCase());
         this.inputText = '';
-        console.log(this.inputs)
       }
     },
     toggleContinent(continent) {
@@ -126,6 +126,10 @@ input[type=text] {
   border-radius: 10px;
   font-size: 16px;
   margin-right: 10px;
+  text-transform: none; /* added line to auto capitalize text */
+  ::placeholder { /* added placeholder style */
+    text-transform: none;
+  }
 }
 
 .add-module-btn {
