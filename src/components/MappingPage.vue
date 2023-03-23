@@ -32,6 +32,16 @@
         </li>
       </ul>
     </div>
+     <ModuleTile
+      :university="university"
+      :local-modules-count="localModules.length"
+      :partner-university="partnerUniversity"
+      :continent="continent"
+      :country="country"
+      :gpa="gpa"
+      :language-requirements="languageRequirements"
+      :module-sets="moduleSets"
+    />
   </div>
 </template>
 
@@ -39,11 +49,15 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore} from 'firebase/firestore'
 import {collection, getDocs} from 'firebase/firestore';
+import ModuleTile from '@/components/ModuleTile.vue';
 
 const db = getFirestore(firebaseApp);
 db,collection,getDocs
 
 export default {
+  components: {
+    ModuleTile,
+  },
   data() {
     return {
       inputText: '',
@@ -86,6 +100,48 @@ export default {
           active: false,
         },
       ],
+      university: 'National University of Singapore',
+      localModules: ['Module A', 'Module B', 'Module C'],
+      partnerUniversity: 'Partner University',
+      continent: 'Asia',
+      country: 'Singapore',
+      gpa: 3.5,
+      languageRequirements: 'English',
+      moduleSets: [
+        {
+          localCode: 'MA1234',
+          localName: 'Module A',
+          partnerModules: [
+            {
+              partnerCode: 'PA1234',
+              partnerName: 'Partner Module 1'
+            },
+            {
+              partnerCode: 'PA5678',
+              partnerName: 'Partner Module 2'
+            }
+          ]
+        },
+        {
+          localCode: 'MB5678',
+          localName: 'Module B',
+          partnerModules: [
+            {
+              partnerCode: 'PB1234',
+              partnerName: 'Partner Module 3'
+            },
+            {
+              partnerCode: 'PB5678',
+              partnerName: 'Partner Module 4'
+            },
+            {
+              partnerCode: 'PB9012',
+              partnerName: 'Partner Module 5'
+            }
+          ]
+        }
+      ]
+    
     }
   },
   methods: {
