@@ -168,6 +168,7 @@ export default {
 .button {
   background-color: var(--primary);
   color: white;
+  margin-top: 3%;
 }
 .register {
   justify-content: center;
@@ -181,6 +182,7 @@ export default {
   width: 250%;
   height: 8%;
   margin-bottom: -20%;
+  margin-top: 3%
 }
 
 /*#inner-v {

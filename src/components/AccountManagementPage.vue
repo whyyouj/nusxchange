@@ -267,7 +267,7 @@ const db = getFirestore(firebaseApp);
 export default {
   name: "AccountManagementPage",
 
-    async mounted() {
+    async beforeMount() {
       onAuthStateChanged(auth, async (user) => {
         if (user) {
           this.user = user;

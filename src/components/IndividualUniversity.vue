@@ -167,7 +167,7 @@
 
 <script>
 import { GoogleMap, Marker } from "vue3-google-map";
-import firebaseApp from "../firebase.js";
+import {firebaseApp} from "../firebase.js";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 

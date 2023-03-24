@@ -57,12 +57,12 @@ export default {
       emailNotVerify: false,
     };
   },
-   mounted() {
+   async mounted() {
         var ui = firebaseui.auth.AuthUI.getInstance()
         if (!ui) {
             ui = new firebaseui.auth.AuthUI(firebase.auth())
         }
-   this.googleSignin().then(page => {
+   await this.googleSignin().then(page => {
     var uiConfig = {
       signInSuccessUrl: page,
       signInOptions: [
@@ -90,15 +90,17 @@ export default {
               console.log("User exists: ", userDoc);
               resolve("/signin/account-management-page");
             } else {
+              reject;
+              resolve("/register-google")
               console.log("User does not exist");
-              resolve("/register-google");
+              
             }
           }).catch(error => {
             console.log("Error getting documents: ", error);
-            reject(error);
+            resolve("/register-google");
           });
         } else {
-          resolve("/signin");
+          resolve("/register-google");
         }
       });
     });

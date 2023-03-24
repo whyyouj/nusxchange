@@ -35,7 +35,7 @@
 
 <script>
 import UniTile from "@/components/UniversityTile.vue";
-import firebaseApp from "../firebase.js";
+import {firebaseApp} from "../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import { collection, getDocs } from "firebase/firestore";
 
