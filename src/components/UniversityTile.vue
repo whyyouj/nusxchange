@@ -1,62 +1,64 @@
 <template>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Outfit:b">
-
-  <div class="tile" @click="navigateToUniversityPage">
-    <div class="tile-image">
-      <img :src="imageUrl" :alt="name">
-    </div>
-    <div class="tile-content">
-      <h3 class="tile-title">{{ name }}</h3>
-      <div class="tile-location">
-        <p>
-          <i class="fa fa-location-arrow"></i>{{ country }}&nbsp;
-          <i class="fa fa-globe"></i>{{ continent }}
-        </p>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <div class="tile">
+    <router-link
+      :to="`/university/` + name"
+      style="text-decoration: none; color: var(--primary)"
+    >
+      <div class="tile-image">
+        <img :src="imageUrl" :alt="name" />
       </div>
-      <div class="tile-gpa">
-        <p>Minimum GPA: {{ gpa }}</p>
+      <div class="tile-content">
+        <h3 class="tile-title">{{ name }}</h3>
+        <div class="tile-location">
+          <p>
+            <i class="fa fa-location-arrow"></i>{{ country }}&nbsp;
+            <i class="fa fa-globe"></i>{{ continent }}
+          </p>
+        </div>
+        <div class="tile-gpa">
+          <p>Minimum GPA: {{ gpa }}</p>
+        </div>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'UniTile',
+  name: "UniTile",
   props: {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     country: {
       type: String,
-      required: true
+      required: true,
     },
     continent: {
       type: String,
-      required: true
+      required: true,
     },
     gpa: {
       type: Number,
-      required: true
+      required: true,
     },
     imageUrl: {
       type: String,
-      required: true
+      required: true,
     },
     universityUrl: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
-  methods: {
-    navigateToUniversityPage() {
-      window.location.href = this.universityUrl;
-    }
-  }
-}
+};
 </script>
+
 <style scoped>
 .tile {
   display: flex;
