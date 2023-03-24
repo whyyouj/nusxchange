@@ -1,9 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <div class="main">
-    <h2> Module Mapping Page </h2>
-    <img src="https://wallpapercave.com/wp/wp1954746.jpg" alt="" style="width: 100%; border-radius: 15px;">
-=======
   <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Outfit:b"
@@ -49,7 +44,6 @@
         :module-sets="moduleTile.moduleSets"
       />
     </div>
->>>>>>> 5c484df79e01d1606b239c0a5d2899968c4d9405
   </div>
 </template>
 
@@ -57,14 +51,6 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore} from 'firebase/firestore'
 import {collection, getDocs} from 'firebase/firestore';
-<<<<<<< HEAD
-
-const db = getFirestore(firebaseApp);
-
-export default {
-
-};
-=======
 import ModuleTile from '@/components/ModuleTile.vue';
 
 const db = getFirestore(firebaseApp);
@@ -271,7 +257,6 @@ export default {
     }
   }
 }
->>>>>>> 5c484df79e01d1606b239c0a5d2899968c4d9405
 </script>
 
 <style scoped>
@@ -279,9 +264,6 @@ export default {
   margin: auto;
   max-width: 80%;
 }
-<<<<<<< HEAD
-</style>
-=======
 
 .search-container {
   margin-top: 20px;
@@ -427,4 +409,3 @@ input[type=text] {
   gap: 20px;
 }
 </style>       
->>>>>>> 5c484df79e01d1606b239c0a5d2899968c4d9405
