@@ -49,12 +49,10 @@
 
 <script>
 import firebaseApp from '../firebase.js';
-import {getFirestore} from 'firebase/firestore'
-import {collection, getDocs} from 'firebase/firestore';
+import {collection, getDocs, getFirestore} from 'firebase/firestore'
 import ModuleTile from '@/components/ModuleTile.vue';
 
 const db = getFirestore(firebaseApp);
-db,collection,getDocs
 
 export default {
   components: {
@@ -102,108 +100,109 @@ export default {
           active: false,
         },
       ],
-      universityData: [
-        {
-          university: 'National University of Singapore',
-          localModules: ['Module A', 'Module B', 'Module C'],
-          partnerUniversity: 'Partner University 1',
-          continent: 'Asia',
-          country: 'Singapore',
-          gpa: 3.5,
-          languageRequirements: 'English',
-          moduleSets: [
-            {
-              localCode: 'MA1234',
-              localName: 'Module A',
-              partnerModules: [
-                {
-                  partnerCode: 'PA1234',
-                  partnerName: 'Partner Module 1'
-                },
-                {
-                  partnerCode: 'PA5678',
-                  partnerName: 'Partner Module 2'
-                }
-              ]
-            },
-            {
-              localCode: 'MB5678',
-              localName: 'Module B',
-              partnerModules: [
-                {
-                  partnerCode: 'PB1234',
-                  partnerName: 'Partner Module 3'
-                },
-                {
-                  partnerCode: 'PB5678',
-                  partnerName: 'Partner Module 4'
-                },
-                {
-                  partnerCode: 'PB9012',
-                  partnerName: 'Partner Module 5'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          university: 'University of California, Berkeley',
-          localModules: ['Module X', 'Module Y', 'Module Z'],
-          partnerUniversity: 'Partner University 2',
-          continent: 'North America',
-          country: 'United States',
-          gpa: 3.8,
-          languageRequirements: 'English',
-          moduleSets: [
-            {
-              localCode: 'CX1234',
-              localName: 'Module X',
-              partnerModules: [
-                {
-                  partnerCode: 'PX1234',
-                  partnerName: 'Partner Module 1'
-                },
-                {
-                  partnerCode: 'PX5678',
-                  partnerName: 'Partner Module 2'
-                }
-              ]
-            },
-            {
-              localCode: 'CY5678',
-              localName: 'Module Y',
-              partnerModules: [
-                {
-                  partnerCode: 'PY1234',
-                  partnerName: 'Partner Module 3'
-                },
-                {
-                  partnerCode: 'PY5678',
-                  partnerName: 'Partner Module 4'
-                },
-                {
-                  partnerCode: 'PY9012',
-                  partnerName: 'Partner Module 5'
-                }
-              ]
-            },
-            {
-              localCode: 'CZ9012',
-              localName: 'Module Z',
-              partnerModules: [
-                {
-                  partnerCode: 'PZ1234',
-                  partnerName: 'Partner Module 6'
-                },
-                {
-                  partnerCode: 'PZ5678',
-                  partnerName: 'Partner Module 7'
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      universityData: []
+      // universityData: [
+        // {
+        //   university: 'National University of Singapore',
+        //   localModules: ['Module A', 'Module B', 'Module C'],
+        //   partnerUniversity: 'Partner University 1',
+        //   continent: 'Asia',
+        //   country: 'Singapore',
+        //   gpa: 3.5,
+        //   languageRequirements: 'English',
+        //   moduleSets: [
+        //     {
+        //       localCode: 'MA1234',
+        //       localName: 'Module A',
+        //       partnerModules: [
+        //         {
+        //           partnerCode: 'PA1234',
+        //           partnerName: 'Partner Module 1'
+        //         },
+        //         {
+        //           partnerCode: 'PA5678',
+        //           partnerName: 'Partner Module 2'
+        //         }
+        //       ]
+        //     },
+        //     {
+        //       localCode: 'MB5678',
+        //       localName: 'Module B',
+        //       partnerModules: [
+        //         {
+        //           partnerCode: 'PB1234',
+        //           partnerName: 'Partner Module 3'
+        //         },
+        //         {
+        //           partnerCode: 'PB5678',
+        //           partnerName: 'Partner Module 4'
+        //         },
+        //         {
+        //           partnerCode: 'PB9012',
+        //           partnerName: 'Partner Module 5'
+        //         }
+        //       ]
+        //     }
+        //   ]
+        // },
+      //   {
+      //     university: 'University of California, Berkeley',
+      //     localModules: ['Module X', 'Module Y', 'Module Z'],
+      //     partnerUniversity: 'Partner University 2',
+      //     continent: 'North America',
+      //     country: 'United States',
+      //     gpa: 3.8,
+      //     languageRequirements: 'English',
+      //     moduleSets: [
+      //       {
+      //         localCode: 'CX1234',
+      //         localName: 'Module X',
+      //         partnerModules: [
+      //           {
+      //             partnerCode: 'PX1234',
+      //             partnerName: 'Partner Module 1'
+      //           },
+      //           {
+      //             partnerCode: 'PX5678',
+      //             partnerName: 'Partner Module 2'
+      //           }
+      //         ]
+      //       },
+      //       {
+      //         localCode: 'CY5678',
+      //         localName: 'Module Y',
+      //         partnerModules: [
+      //           {
+      //             partnerCode: 'PY1234',
+      //             partnerName: 'Partner Module 3'
+      //           },
+      //           {
+      //             partnerCode: 'PY5678',
+      //             partnerName: 'Partner Module 4'
+      //           },
+      //           {
+      //             partnerCode: 'PY9012',
+      //             partnerName: 'Partner Module 5'
+      //           }
+      //         ]
+      //       },
+      //       {
+      //         localCode: 'CZ9012',
+      //         localName: 'Module Z',
+      //         partnerModules: [
+      //           {
+      //             partnerCode: 'PZ1234',
+      //             partnerName: 'Partner Module 6'
+      //           },
+      //           {
+      //             partnerCode: 'PZ5678',
+      //             partnerName: 'Partner Module 7'
+      //           }
+      //         ]
+      //       }
+      //     ]
+      //   }
+      // ]
     }
   },
   computed: {
@@ -241,8 +240,24 @@ export default {
     clearInputs() {
       this.inputs = [];
     },
-    submitInputs() {
-      console.log("Temporarily disabled.")
+    async submitInputs() {
+      const listOfUnis = await getDocs(collection(db, "ListOfUniversities"));
+      const uniAvail = [];
+
+      listOfUnis.forEach((doc) => {
+        uniAvail.push(doc.id)
+      })
+
+      console.log(uniAvail)
+
+      const nusModsCollectionRef = collection(db, "NUS Module Mapping")
+      console.log("Created NUS Modules Collection")
+      const nusMods = await getDocs(nusModsCollectionRef)
+      console.log("Created NUS Modules Docs")
+
+      nusMods.forEach((mod) => {
+        console.log(mod.data())
+      })
     },
     filterModules(moduleSets, continent) {
       let filteredModules = [];
@@ -255,6 +270,9 @@ export default {
 
       return filteredModules;
     }
+  },
+  created() {
+    this.submitInputs()
   }
 }
 </script>
@@ -280,9 +298,10 @@ input[type=text] {
   font-size: 16px;
   margin-right: 10px;
   text-transform: none; /* added line to auto capitalize text */
-  ::placeholder { /* added placeholder style */
-    text-transform: none;
-  }
+}
+
+::placeholder { /* added placeholder style */
+  text-transform: none;
 }
 
 .add-module-btn {
