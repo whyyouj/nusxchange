@@ -235,6 +235,7 @@ export default {
 </script>
 
 <style scoped>
+
 .home {
   display: flex;
   flex-flow: row nowrap;

@@ -104,7 +104,7 @@ export default {
     },
     data() {
       return {
-        majorOption: ['english', 'math'],
+        majorOption: ['College of Humanities and Sciences (CHS)','NUS Business School', 'Computing', 'Dentistry', 'College of Design and Engineering (CDE)','Law', 'Medicine','Nursing','Pharmacy','Nus College', "Music"],
         userName: "",
         name: "",
         major: "",
@@ -202,7 +202,7 @@ export default {
   width: 250%;
   height: 8%;
   margin-bottom: -20%;
-  margin-top: 3%
+  margin-top: 10%
 }
 
 /*#inner-v {

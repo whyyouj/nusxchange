@@ -108,11 +108,11 @@ export default {
     data() {
       return {
         showPassword: false,
-        majorOption: ['english', 'math'],
+        majorOption: ['College of Humanities and Sciences (CHS)','NUS Business School', 'Computing', 'Dentistry', 'College of Design and Engineering (CDE)','Law', 'Medicine','Nursing','Pharmacy','Nus College', "Music"],
         userName: "",
         name: "",
         email: "",
-        major: "",
+        major: '',
         password: "",
         confirmPassword: "",
         tele: "",
@@ -231,7 +231,7 @@ export default {
   color: var(--secondary);
   width: 250%;
   height: 8%;
-  margin-top: 3%;
+  margin-top: 10%;
   margin-bottom: -20%;
 }
 

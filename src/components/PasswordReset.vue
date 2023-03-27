@@ -15,28 +15,19 @@
       src="https://content.presspage.com/uploads/2580/1920_utown.jpg?10000"
       class="image"
     />
-    <div class="login">
+    <div class="reset-password">
       <!--img style="width: 80px; height: 80px" src="../assets/nusxchange.png" /-->
-      
+      <img style="width: 80px; height: 80px" src="../assets/nusxchange.png" />
+      <h2>Reset Password</h2>
       <div style="width: 70%">
-        <h4 style="margin-bottom: 5%">Please enter your registered email</h4>
-        <v-text-field v-model="email" label="Email" type="email" />
+        <v-text-field v-model="email" label="Enter your registered email" type="email" />
         <v-btn class="button" block @click="emailVeri">Get reset link</v-btn>
         <p v-if="invalidEmail" style="color: red; text-align:center">Invalid Email</p>
-        <router-link class="links" to="/signin"
-          style="color: var(--secondary);
-  align-self: center;
-  font-weight: bold; font-size: 14px;">Sign-In Page</router-link
-        >
+        
 
-        <div
-          style="
-            display: flex;
-            align-content: center;
-            justify-content: space-between;
-          "
-        >
-      </div>
+        <div class="back">
+        <h3>Back:</h3>   <router-link class="links" to="/signin">Sign-In Page</router-link>
+        </div>
       </div>
 
       
@@ -95,18 +86,34 @@ export default {
   height: 100%;
   border-radius: 10px;
 }
-.home .login {
+.home .reset-password {
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-around;
   align-items: center;
-  margin-top: 3%;
+  margin-top: 10%;
   margin-bottom: 5%;
+  height:70%;
 }
 .home .button {
   background-color: var(--primary);
   color: white;
+}
+.back {
+justify-content: center;
+  font-size: 14px;
+  width: 45%;
+  margin-top: 5%;
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+}
+.back .links {
+  color: var(--secondary);
+  align-self: center;
+  font-weight: bold;
+
 }
 
 
