@@ -26,7 +26,7 @@
 
   <div class="photo">
     <!---<div id="photoname">{{ personname }}</div>--->
-    <img id="photo" :src="source" alt="hello"/> <br/>
+    <img id="photo" :src="source" alt=""/> <br/>
     <input
       type="file"
       @change="handleFileInputChange"
@@ -213,7 +213,7 @@
     </button></h3>
     <div v-if="favList.length ===0" id="favouriteList">No favourites selected</div>
     <div v-for="(uni, idx) in favList" :key="idx" id="favouriteList">
-      {{idx+1}}. {{uni}}
+      {{idx+1}}.  <router-link class="uni-link" :to="`/university/` + uni" style="text-decoration: none; color: var(--primary) ">{{uni}}</router-link>
       <span v-if="changeFavourite" class="delete-icon" @click="deleteFavourite(idx)">
         <font-awesome-icon :icon="['fas','times']" />
     </span>
@@ -720,6 +720,9 @@ hr {
   border-radius: 10px;
   font-size: 15px;
   margin-left: 60%;
+}
+.uni-link:hover {
+  font-weight: bold;
 }
 .delete-icon {
   float: right;

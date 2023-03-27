@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase";
+import { signInWithEmailAndPassword} from "firebase/auth";
+import { auth } from '../firebase.js';
 
 import firebase from '@/uifire.js'
 import 'firebase/compat/auth'
@@ -55,42 +55,84 @@ export default {
       password: "",
       invalidSignin: false,
       emailNotVerify: false,
+      user: null
+
     };
   },
-   async mounted() {
-        var ui = firebaseui.auth.AuthUI.getInstance()
-        if (!ui) {
-            ui = new firebaseui.auth.AuthUI(firebase.auth())
-        }
-   await this.googleSignin().then(page => {
-    var uiConfig = {
-      signInSuccessUrl: page,
-      signInOptions: [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID
-      ]
+    /*created() {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+      } else {
+        this.user = null;
+      }
+    });
+  },*/
+  /*async mounted() {
+      var ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
+      await this.googleSignin().then(page => {
+      var uiConfig = {
+        signInSuccessUrl: page,
+        signInOptions: [
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID
+        ]
+      };
+      ui.start("#firebaseui-auth-container", uiConfig)
+      }).catch(error => {
+        console.log("Error checking user: ", error);
+      });
+      const style = document.createElement('style');
+      document.head.appendChild(style);
+    }, */
+    
+  /*const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
+  const uiConfig = {
+      signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
     };
-    ui.start("#firebaseui-auth-container", uiConfig)
-  }).catch(error => {
-    console.log("Error checking user: ", error);
-  });
-  const style = document.createElement('style');
-  document.head.appendChild(style);
+  ui.start('#firebaseui-auth-container', uiConfig);
+  try {
+    const user = await this.googleSignin();
+    if (user) {
+      console.log('User logged in:', user);
+      this.$router.push('/signin/account-management-page');
+    } else {
+      console.log('User not logged in.');
+    }
+  } catch (error) {
+    console.error('Error signing in:', error);
+  }*/
+  /*created() {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+        this.handleUserStateChange();
+      } else {
+        this.user = null;
+      }
+    });
+  },*/
+  mounted() {
+    var ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
+    var uiConfig = {
+      signInSuccessUrl: "/register-google",
+      signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
+    };
+    ui.start("#firebaseui-auth-container", uiConfig);
+  },
 
-
-    },
+    
   methods: {
-  googleSignin() {
-    return new Promise((resolve, reject) => {
-      firebase.auth().onAuthStateChanged(user => {
+  async googleSignin() {
+    return await new Promise((resolve, reject) => {
+      firebase.auth().onAuthStateChanged(async user => {
         if (user) {
           const usersRef = doc(db, "Account", user.uid);
           getDoc(usersRef).then(querySnapshot => {
             if (querySnapshot.exists()) {
               const userDoc = querySnapshot.data();
               console.log("User exists: ", userDoc);
-              resolve("/signin/account-management-page");
+              resolve("/");
             } else {
-              reject;
               resolve("/register-google")
               console.log("User does not exist");
               
@@ -100,11 +142,66 @@ export default {
             resolve("/register-google");
           });
         } else {
+          
+          console.log("User does not exist. Here.k");
           resolve("/register-google");
+          reject
+        }})
+
+    });},
+  /*async googleSignin() {
+  return new Promise((resolve, reject) => {
+
+    firebase.auth().onAuthStateChanged(async (user) => {
+      if (user) {
+        const usersRef = doc(db, 'Account', user.uid);
+        const querySnapshot = await getDoc(usersRef);
+        if (querySnapshot.exists()) {
+          console.log('User exists:', querySnapshot.data());
+          resolve(user);
+        } else {
+          console.log('User does not exist.');
+          resolve(null);
         }
-      });
+      } else {
+        console.log('User does not exist.');
+        resolve(null);
+      }
+      reject
     });
-  },
+  });*/
+    /*async mounted() {
+    var ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
+    var uiConfig = {
+      signInSuccessUrl: "/",
+      signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
+    };
+    ui.start("#firebaseui-auth-container", uiConfig);
+  },*//*
+    async handleUserStateChange() {
+      if (this.user) {
+        const usersRef = doc(db, "Account", this.user.uid);
+        getDoc(usersRef)
+          .then((querySnapshot) => {
+            if (querySnapshot.exists()) {
+              const userDoc = querySnapshot.data();
+              console.log("User exists: ", userDoc);
+              this.$router.push("/");
+            } else {
+              console.log("User does not exist");
+              this.$router.push("/register-google");
+            }
+          })
+          .catch((error) => {
+            console.log("Error getting documents: ", error);
+            this.$router.push("/register-google");
+          });
+      } else {
+        console.log("User does not exist. Here.k");
+        this.$router.push("/register-google");
+      }
+    },*/
+
   
     async Login() {
     try {
@@ -121,6 +218,7 @@ export default {
         console.error("User email not verified")
         this.emailNotVerify = true
         this.invalidSignin = false 
+        await auth.signOut();
       }
        // Redirect to the desired page after login
     } catch (error) {

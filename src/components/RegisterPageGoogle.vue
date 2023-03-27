@@ -1,4 +1,5 @@
 <template>
+<div v-if='view'>
 <v-dialog v-model="showErrorModal" max-width="700" style= "  margin: auto; display: flex; flex-direction: column;justify-content: center;height: 100%;">
   <v-card>
     <v-card-title>Error</v-card-title>
@@ -50,21 +51,39 @@
     </form>
   </div>
 </div>
+</div>
 </template>
 
 <script>
 import '@mdi/font/css/materialdesignicons.min.css';
 import {auth, firebaseApp} from '../firebase.js';
 import {getFirestore} from 'firebase/firestore'
-import {doc, setDoc, getDocs, collection} from 'firebase/firestore';
+import {doc, setDoc, getDocs, collection, getDoc} from 'firebase/firestore';
 import { onAuthStateChanged } from "firebase/auth";
 
 const db = getFirestore(firebaseApp);
 
 
 export default {
-    name: "RegisterPage",
-
+    name: "RegisterPageGoogle",
+    async beforeMount() {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+            const usersRef = doc(db, 'Account', user.uid);
+            const querySnapshot = await getDoc(usersRef);
+            if (querySnapshot.exists()) {
+            console.log('User exists:', querySnapshot.data());
+            this.$router.push("/");
+            } else {
+            console.log('User does not exist.');
+            this.view = true
+            }
+            } else {
+                console.log('User does not exist.');
+                this.view = true
+            }
+                })
+    },
     async mounted() {
         const universityList = await getDocs(collection(db, 'ListOfUniversities'))
         universityList.forEach((docs) => {
@@ -97,6 +116,7 @@ export default {
         errorMessage: "",
         showErrorModal: false,
         user: null,
+        view: false,
       }
     }, 
 
