@@ -233,7 +233,7 @@
 
     <div id="favourite">
       <!---DeleteFavouriteUni /--->
-      <h3>Favourites <button id="changefavourite" @click="changeFavourite = !changeFavourite" style="transform: translateX(70%)">
+      <h3>Favourites <button v-if="!(favList.length ===0)" id="changefavourite" @click="changeFavourite = !changeFavourite" style="transform: translateX(70%)">
       Delete
       <font-awesome-icon :icon="changeFavourite ?   'unlock':'lock'" />
     </button></h3>
