@@ -20,13 +20,27 @@
         <div class="uni-name">
           <h1>{{ this.universityName }}</h1>
         </div>
-        <div class="favourite" style="align-self: center; padding-right: 2%">
-          <v-icon
-            :class="isPressed ? 'red--text' : ''"
-            @click="isPressed = !isPressed"
-          >
-            {{ isPressed ? "mdi-cards-heart" : "mdi-heart-outline" }}
+        <div
+          v-if="isLoggedIn"
+          class="favourite"
+          style="align-self: center; padding-right: 2%"
+        >
+          <v-icon @click="this.updateFavouriteUni(this.universityName)">
+            {{ isFavourite ? "mdi-cards-heart" : "mdi-heart-outline" }}
           </v-icon>
+          <v-snackbar v-model="showSnackbar" :timeout="2000">
+            <div v-if="isFavourite">
+              Successfully added {{ this.universityName }} to Favourites!
+            </div>
+            <div v-else>
+              Successfully removed {{ this.universityName }} from Favourites.
+            </div>
+            <template v-slot:actions>
+              <v-btn color="red" variant="text" @click="showSnackbar = false">
+                Close
+              </v-btn>
+            </template>
+          </v-snackbar>
         </div>
       </div>
       <img class="image" :src="this.universityData.imageURL" />
@@ -167,8 +181,9 @@
 
 <script>
 import { GoogleMap, Marker } from "vue3-google-map";
-import {firebaseApp} from "../firebase.js";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { firebaseApp } from "../firebase.js";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -176,7 +191,49 @@ export default {
     GoogleMap,
     Marker,
   },
+  mounted() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        this.favouriteUniversities = await this.getFavouriteUnis(user.uid);
+        this.isLoggedIn = true;
+      } else {
+        console.log("SIGNED OUT!");
+      }
+    });
+  },
+
   methods: {
+    async updateFavouriteUni(universityName) {
+      const index = this.favouriteUniversities.indexOf(universityName);
+      if (index === -1) {
+        // Not favourited
+        this.favouriteUniversities.push(universityName);
+      } else {
+        // Favourited
+        this.favouriteUniversities.splice(index, 1);
+      }
+      await setDoc(
+        this.accountRef,
+        { favouriteUniversity: this.favouriteUniversities },
+        { merge: true }
+      );
+      console.log(this.favouriteUniversities);
+      this.showSnackbar = true;
+    },
+    async getFavouriteUnis(email) {
+      try {
+        this.accountRef = doc(db, "Account", email);
+        const userData = await getDoc(this.accountRef);
+        if (userData.exists()) {
+          return userData.data().favouriteUniversity;
+        } else {
+          console.log("No such document!");
+        }
+      } catch (error) {
+        console.error("Error getting document:", error);
+      }
+    },
     async fetchAllData() {
       this.nearbyRestaurantsData = await this.fetchData("restaurant");
       this.nearbyAttractionsData = await this.fetchData("tourist_attraction");
@@ -227,7 +284,7 @@ export default {
         this.longitude = null;
         console.log("Unable to get coordinates.");
       }
-      console.log(this.center);
+      // console.log(this.center);
     },
   },
   computed: {
@@ -278,6 +335,9 @@ export default {
           link: this.universityData.housingURL,
         },
       ];
+    },
+    isFavourite() {
+      return this.favouriteUniversities.includes(this.universityName);
     },
   },
   async beforeMount() {
@@ -343,13 +403,16 @@ export default {
     return {
       universityName: this.$route.params.universityName,
       api_key: "AIzaSyCcEZCP5u8LgWpLbsWnfGeDwREh22vuYJ8",
+      accountRef: null,
       selectedTab: 0,
       isDataLoaded: false,
-      isPressed: false,
+      isLoggedIn: false,
+      showSnackbar: false,
       nearbyRestaurantsData: null,
       nearbyAttractionsData: null,
       nearbyHotelsData: null,
       universityData: null,
+      favouriteUniversities: [],
       firebaseError: false,
       center: null,
       longitude: null,
