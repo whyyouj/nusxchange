@@ -101,8 +101,109 @@ export default {
         },
       ],
       universityInformation: {},
-      uniAvail: []
-    }
+      uniAvail: [],
+      universityData: []
+      // universityData: [
+      //     {
+      //       university: 'National University of Singapore',
+      //       localModules: ['Module A', 'Module B', 'Module C'],
+      //       continent: 'Asia',
+      //       country: 'Singapore',
+      //       gpa: 3.5,
+      //       languageRequirements: 'English',
+      //       moduleSets: [
+      //         {
+      //           localCode: 'MA1234',
+      //           localName: 'Module A',
+      //           partnerModules: [
+      //             {
+      //               partnerCode: 'PA1234',
+      //               partnerName: 'Partner Module 1'
+      //             },
+      //             {
+      //               partnerCode: 'PA5678',
+      //               partnerName: 'Partner Module 2'
+      //             }
+      //           ]
+      //         },
+      //         {
+      //           localCode: 'MB5678',
+      //           localName: 'Module B',
+      //           partnerModules: [
+      //             {
+      //               partnerCode: 'PB1234',
+      //               partnerName: 'Partner Module 3'
+      //             },
+      //             {
+      //               partnerCode: 'PB5678',
+      //               partnerName: 'Partner Module 4'
+      //             },
+      //             {
+      //               partnerCode: 'PB9012',
+      //               partnerName: 'Partner Module 5'
+      //             }
+      //           ]
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       university: 'University of California, Berkeley',
+      //       localModules: ['Module X', 'Module Y', 'Module Z'],
+      //       continent: 'North America',
+      //       country: 'United States',
+      //       gpa: 3.8,
+      //       languageRequirements: 'English',
+      //       moduleSets: [
+      //         {
+      //           localCode: 'CX1234',
+      //           localName: 'Module X',
+      //           partnerModules: [
+      //             {
+      //               partnerCode: 'PX1234',
+      //               partnerName: 'Partner Module 1'
+      //             },
+      //             {
+      //               partnerCode: 'PX5678',
+      //               partnerName: 'Partner Module 2'
+      //             }
+      //           ]
+      //         },
+      //         {
+      //           localCode: 'CY5678',
+      //           localName: 'Module Y',
+      //           partnerModules: [
+      //             {
+      //               partnerCode: 'PY1234',
+      //               partnerName: 'Partner Module 3'
+      //             },
+      //             {
+      //               partnerCode: 'PY5678',
+      //               partnerName: 'Partner Module 4'
+      //             },
+      //             {
+      //               partnerCode: 'PY9012',
+      //               partnerName: 'Partner Module 5'
+      //             }
+      //           ]
+      //         },
+      //         {
+      //           localCode: 'CZ9012',
+      //           localName: 'Module Z',
+      //           partnerModules: [
+      //             {
+      //               partnerCode: 'PZ1234',
+      //               partnerName: 'Partner Module 6'
+      //             },
+      //             {
+      //               partnerCode: 'PZ5678',
+      //               partnerName: 'Partner Module 7'
+      //             }
+      //           ]
+      //         }
+      //       ]
+      //     }
+      //   ]
+      }
   },
   async created() {
     const listOfUnis = await getDocs(collection(db, "ListOfUniversities"));
@@ -152,6 +253,7 @@ export default {
       this.inputs = [];
     },
     async submitInputs() {
+      this.universityData = []
       let universityModHash = {}
 
       for (const mod of this.inputs) { // Getting the input NUS Modules
@@ -161,26 +263,49 @@ export default {
         console.log(nusModTitle.ModuleTitle)
 
         for (const uni of this.uniAvail) { // Getting the universities that offer that NUS Module
-          const nusModInfo = await getDocs(collection(nusModRef, uni))
+          const nusModInfo = await getDocs(collection(nusModRef, uni.toLowerCase()))
           nusModInfo.forEach(info => {
             if (!(uni in universityModHash)) {
               universityModHash[uni] = {}
             }
             if (!(mod in universityModHash[uni])) {
-              universityModHash[uni]["localCode"] = mod
-              universityModHash[uni]["localName"] = nusModTitle
-              universityModHash[uni]["partnerModules"] = []
+              universityModHash[uni][mod] = {}
+              universityModHash[uni][mod]["localName"] = nusModTitle
+              universityModHash[uni][mod]["partnerModules"] = []
             }
-            // console.log(info.id)
-            // console.log(info.data())
             let PUModCode = info.id
             let PUModTitle = info.data().PUModTitle
-            universityModHash[uni]["partnerModules"]["partnerCode"] = PUModCode
-            universityModHash[uni]["partnerModules"]["partnerName"] = PUModTitle
+            let addToPartnerModules = {}
+            addToPartnerModules["partnerCode"] = PUModCode
+            addToPartnerModules["partnerName"] = PUModTitle
+            universityModHash[uni][mod]["partnerModules"].push(addToPartnerModules)
           })
         }
       }
-      console.log(universityModHash)
+
+      for (let uni in universityModHash) {
+        const toAdd = {
+          university: uni,
+          localModules: [],
+          continent: this.universityInformation[uni]["Continent"],
+          country: this.universityInformation[uni]["Country"],
+          gpa: this.universityInformation[uni]["GPA"],
+          languageRequirements: this.universityInformation[uni]["LangReq"],
+          moduleSets: []
+        }
+
+        for (let localModCode in universityModHash[uni]) {
+          toAdd["localModules"].push(localModCode)
+          let toAddToModuleSet = {
+            localCode: localModCode,
+            localName: universityModHash[uni][localModCode]["localName"]["ModuleTitle"],
+            partnerModules: universityModHash[uni][localModCode]["partnerModules"]
+          }
+          toAdd["moduleSets"].push(toAddToModuleSet)
+        }
+
+        this.universityData.push(toAdd)
+      }
     },
     filterModules(moduleSets, continent) {
       let filteredModules = [];
