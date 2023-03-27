@@ -49,7 +49,7 @@
 
 <script>
 import firebaseApp from '../firebase.js';
-import {collection, getDocs, getFirestore} from 'firebase/firestore'
+import {collection, getDocs, getFirestore, doc} from 'firebase/firestore'
 import ModuleTile from '@/components/ModuleTile.vue';
 
 const db = getFirestore(firebaseApp);
@@ -248,16 +248,16 @@ export default {
         uniAvail.push(doc.id)
       })
 
-      console.log(uniAvail)
-
-      const nusModsCollectionRef = collection(db, "NUS Module Mapping")
-      console.log("Created NUS Modules Collection")
-      const nusMods = await getDocs(nusModsCollectionRef)
-      console.log("Created NUS Modules Docs")
-
-      nusMods.forEach((mod) => {
-        console.log(mod.data())
-      })
+      for (const mod of this.inputs) {
+        const nusModRef = doc(db, "NUS Module Mapping", mod)
+        for (const uni of uniAvail) {
+          const nusModInfo = await getDocs(collection(nusModRef, uni))
+          nusModInfo.forEach(info => {
+            console.log(info.id)
+            console.log(info.data())
+          })
+        }
+      }
     },
     filterModules(moduleSets, continent) {
       let filteredModules = [];
