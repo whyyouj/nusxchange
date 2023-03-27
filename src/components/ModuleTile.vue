@@ -34,10 +34,6 @@ export default {
       type: Number,
       required: true
     },
-    partnerUniversity: {
-      type: String,
-      required: true
-    },
     continent: {
       type: String,
       required: true

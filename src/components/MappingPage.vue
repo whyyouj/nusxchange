@@ -49,7 +49,7 @@
 
 <script>
 import firebaseApp from '../firebase.js';
-import {collection, getDocs, getFirestore, doc} from 'firebase/firestore'
+import {collection, getDocs, getFirestore, doc, getDoc} from 'firebase/firestore'
 import ModuleTile from '@/components/ModuleTile.vue';
 
 const db = getFirestore(firebaseApp);
@@ -100,110 +100,21 @@ export default {
           active: false,
         },
       ],
-      universityData: []
-      // universityData: [
-        // {
-        //   university: 'National University of Singapore',
-        //   localModules: ['Module A', 'Module B', 'Module C'],
-        //   partnerUniversity: 'Partner University 1',
-        //   continent: 'Asia',
-        //   country: 'Singapore',
-        //   gpa: 3.5,
-        //   languageRequirements: 'English',
-        //   moduleSets: [
-        //     {
-        //       localCode: 'MA1234',
-        //       localName: 'Module A',
-        //       partnerModules: [
-        //         {
-        //           partnerCode: 'PA1234',
-        //           partnerName: 'Partner Module 1'
-        //         },
-        //         {
-        //           partnerCode: 'PA5678',
-        //           partnerName: 'Partner Module 2'
-        //         }
-        //       ]
-        //     },
-        //     {
-        //       localCode: 'MB5678',
-        //       localName: 'Module B',
-        //       partnerModules: [
-        //         {
-        //           partnerCode: 'PB1234',
-        //           partnerName: 'Partner Module 3'
-        //         },
-        //         {
-        //           partnerCode: 'PB5678',
-        //           partnerName: 'Partner Module 4'
-        //         },
-        //         {
-        //           partnerCode: 'PB9012',
-        //           partnerName: 'Partner Module 5'
-        //         }
-        //       ]
-        //     }
-        //   ]
-        // },
-      //   {
-      //     university: 'University of California, Berkeley',
-      //     localModules: ['Module X', 'Module Y', 'Module Z'],
-      //     partnerUniversity: 'Partner University 2',
-      //     continent: 'North America',
-      //     country: 'United States',
-      //     gpa: 3.8,
-      //     languageRequirements: 'English',
-      //     moduleSets: [
-      //       {
-      //         localCode: 'CX1234',
-      //         localName: 'Module X',
-      //         partnerModules: [
-      //           {
-      //             partnerCode: 'PX1234',
-      //             partnerName: 'Partner Module 1'
-      //           },
-      //           {
-      //             partnerCode: 'PX5678',
-      //             partnerName: 'Partner Module 2'
-      //           }
-      //         ]
-      //       },
-      //       {
-      //         localCode: 'CY5678',
-      //         localName: 'Module Y',
-      //         partnerModules: [
-      //           {
-      //             partnerCode: 'PY1234',
-      //             partnerName: 'Partner Module 3'
-      //           },
-      //           {
-      //             partnerCode: 'PY5678',
-      //             partnerName: 'Partner Module 4'
-      //           },
-      //           {
-      //             partnerCode: 'PY9012',
-      //             partnerName: 'Partner Module 5'
-      //           }
-      //         ]
-      //       },
-      //       {
-      //         localCode: 'CZ9012',
-      //         localName: 'Module Z',
-      //         partnerModules: [
-      //           {
-      //             partnerCode: 'PZ1234',
-      //             partnerName: 'Partner Module 6'
-      //           },
-      //           {
-      //             partnerCode: 'PZ5678',
-      //             partnerName: 'Partner Module 7'
-      //           }
-      //         ]
-      //       }
-      //     ]
-      //   }
-      // ]
+      universityInformation: {},
+      uniAvail: []
     }
+  },
+  async created() {
+    const listOfUnis = await getDocs(collection(db, "ListOfUniversities"));
+
+    listOfUnis.forEach((doc) => {
+      this.uniAvail.push(doc.id)
+      this.universityInformation[doc.id] = {}
+      this.universityInformation[doc.id]["Country"] = doc.data().Country
+      this.universityInformation[doc.id]["Continent"] = doc.data().Continent
+      this.universityInformation[doc.id]["GPA"] = doc.data().MinGPA
+      this.universityInformation[doc.id]["LangReq"] = doc.data().LanguageProficiency
+    })
   },
   computed: {
     filteredModuleTiles() {
@@ -241,23 +152,35 @@ export default {
       this.inputs = [];
     },
     async submitInputs() {
-      const listOfUnis = await getDocs(collection(db, "ListOfUniversities"));
-      const uniAvail = [];
+      let universityModHash = {}
 
-      listOfUnis.forEach((doc) => {
-        uniAvail.push(doc.id)
-      })
-
-      for (const mod of this.inputs) {
+      for (const mod of this.inputs) { // Getting the input NUS Modules
         const nusModRef = doc(db, "NUS Module Mapping", mod)
-        for (const uni of uniAvail) {
+        const modSnap = await getDoc(nusModRef)
+        const nusModTitle = modSnap.data()
+        console.log(nusModTitle.ModuleTitle)
+
+        for (const uni of this.uniAvail) { // Getting the universities that offer that NUS Module
           const nusModInfo = await getDocs(collection(nusModRef, uni))
           nusModInfo.forEach(info => {
-            console.log(info.id)
-            console.log(info.data())
+            if (!(uni in universityModHash)) {
+              universityModHash[uni] = {}
+            }
+            if (!(mod in universityModHash[uni])) {
+              universityModHash[uni]["localCode"] = mod
+              universityModHash[uni]["localName"] = nusModTitle
+              universityModHash[uni]["partnerModules"] = []
+            }
+            // console.log(info.id)
+            // console.log(info.data())
+            let PUModCode = info.id
+            let PUModTitle = info.data().PUModTitle
+            universityModHash[uni]["partnerModules"]["partnerCode"] = PUModCode
+            universityModHash[uni]["partnerModules"]["partnerName"] = PUModTitle
           })
         }
       }
+      console.log(universityModHash)
     },
     filterModules(moduleSets, continent) {
       let filteredModules = [];
@@ -270,9 +193,6 @@ export default {
 
       return filteredModules;
     }
-  },
-  created() {
-    this.submitInputs()
   }
 }
 </script>
