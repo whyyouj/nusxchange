@@ -32,7 +32,7 @@
         </li>
       </ul>
     </div>
-    <div class="module-tile-container" v-for="moduleTile in filteredModuleTiles" :key="moduleTile.university">
+    <div class="module-tile-container" v-for="moduleTile in filteredandSortedModuleTiles" :key="moduleTile.university">
       <ModuleTile
         :university="moduleTile.university"
         :local-modules-count="moduleTile.localModules.length"
@@ -218,12 +218,14 @@ export default {
     })
   },
   computed: {
-    filteredModuleTiles() {
+    filteredandSortedModuleTiles() {
+     let filteredModuleTiles = [];
       if (this.getActiveContinent() === 'All') {
-        return this.universityData;
+        filteredModuleTiles = this.universityData;
       } else {
-        return this.universityData.filter((university) => university.continent === this.getActiveContinent());
+        filteredModuleTiles = this.universityData.filter((university) => university.continent === this.getActiveContinent());
       }
+      return filteredModuleTiles.sort((a, b) => b.localModules.length - a.localModules.length);
     }
   },
     methods: {
