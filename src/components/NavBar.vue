@@ -187,10 +187,10 @@ export default {
   flex-flow: row nowrap;
   justify-content: center;
   height: 100%;
-  width: 30%;
+  width: 40%;
 }
 
 .navbar-buttons .links {
-  padding: 0% 10%;
+  padding: 0% 5%;
 }
 </style>
