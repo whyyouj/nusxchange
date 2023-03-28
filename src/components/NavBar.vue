@@ -175,6 +175,8 @@ export default {
   color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   padding: 3% 3%;
+  display: flex;
+  align-items: center;
 }
 .links:hover {
   background-color: rgba(255, 255, 255, 0.1);
@@ -184,7 +186,11 @@ export default {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
+  height: 100%;
   width: 30%;
-  margin-left: auto;
+}
+
+.navbar-buttons .links {
+  padding: 0% 10%;
 }
 </style>
