@@ -13,7 +13,7 @@
   </v-card>
 </v-dialog-->
 
-    <v-snackbar v-model="showErrorModal" :timeout="3000" style="left: 65%; right: 0; transform: translateY(-25%);">
+    <v-snackbar v-model="showErrorModal" :timeout="3000" style="left: 70%; right: 0; transform: translateY(-25%);">
     <div v-if="!(this.userName && this.major)" style="color: red">
         Error. Ensure that all required fields are filled.
     </div>
@@ -24,7 +24,7 @@
     </template>
     </v-snackbar>
 
-  <v-snackbar v-model="showSuccessModal" :timeout="3000" style="left: 65%; right: 0; transform: translateY(-25%);">
+  <v-snackbar v-model="showSuccessModal" :timeout="3000" style="left: 70%; right: 0; transform: translateY(-25%);">
     <div style="color: green">
       Success!
     </div>

@@ -48,7 +48,7 @@
     </v-card>
   </v-dialog-->
 
-  <v-snackbar v-model="showErrorModal" :timeout="3000" style="left: 65%; right: 0; transform: translateY(-1%);">
+  <v-snackbar v-model="showErrorModal" :timeout="3000" style="left: 70%; right: 0; transform: translateY(-1%);">
     <div id="v-snack" v-if="
         !(
           this.userName &&
@@ -67,7 +67,7 @@
     >
         Ensure that both passwords are the same / 6 characters long.
     </div>
-    <div id="v-snack" v-if="this.errorMessage">
+    <div id="v-snack" v-else-if="this.errorMessage">
       Email invalid / taken. Please fill in another email address.
     </div>
     <template v-slot:actions>
@@ -100,7 +100,7 @@
     </v-card>
   </v-dialog-->
 
-  <v-snackbar v-model="showSuccessModal" :timeout="3000" style="left: 65%; right: 0; transform: translateY(-5%);">
+  <v-snackbar v-model="showSuccessModal" :timeout="3000" style="left: 70%; right: 0; transform: translateY(-5%);">
     <div style="color: green">
       Success! Please verify your email before Signing In.
     </div>
