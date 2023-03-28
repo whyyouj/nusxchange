@@ -195,23 +195,13 @@ export default {
     const auth = getAuth();
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        if (
-          user.emailVerified ||
-          user.providerData.some(
-            (provider) => provider.providerId === "google.com"
-          )
-        ) {
-          try {
           this.favouriteUniversities = await this.getFavouriteUnis(user.uid);
           this.isLoggedIn = true;
-          } catch(error) {
-            console.log("SIGNED OUT!", error);
-          }
         } else {
         console.log("SIGNED OUT!");
         this.isLoggedIn= false;
       }
-    }});
+    });
   },
 
   methods: {

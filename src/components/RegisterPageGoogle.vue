@@ -73,6 +73,7 @@ export default {
             const querySnapshot = await getDoc(usersRef);
             if (querySnapshot.exists()) {
             console.log('User exists:', querySnapshot.data());
+            this.registerUser = true;
             this.$router.push("/");
             } else {
             console.log('User does not exist.');
@@ -102,6 +103,12 @@ export default {
             }
         })
     },
+    async unmounted() {
+        if (!this.registerUser) {
+            auth.signOut()
+            console.log("Sign out unregistered user account")
+        }
+    },
     data() {
       return {
         majorOption: ['College of Humanities and Sciences (CHS)','NUS Business School', 'Computing', 'Dentistry', 'College of Design and Engineering (CDE)','Law', 'Medicine','Nursing','Pharmacy','Nus College', "Music"],
@@ -117,6 +124,7 @@ export default {
         showErrorModal: false,
         user: null,
         view: false,
+        registerUser: false,
       }
     }, 
 
@@ -129,6 +137,7 @@ export default {
 
             // Navigate to the account management page
             await this.addAccount(this.user)
+            this.registerUser = true
             this.$router.push("/signin/account-management-page");
             document.getElementById('form').reset()
         } 
