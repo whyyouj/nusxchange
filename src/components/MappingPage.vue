@@ -32,7 +32,8 @@
         </li>
       </ul>
     </div>
-    <div class="module-tile-container" v-for="moduleTile in filteredandSortedModuleTiles" :key="moduleTile.university">
+    <div class="module-tile-container" v-if="filteredandSortedModuleTiles.length > 0">
+      <div v-for="moduleTile in filteredandSortedModuleTiles" :key="moduleTile.university">
       <ModuleTile
         :university="moduleTile.university"
         :local-modules-count="moduleTile.localModules.length"
@@ -44,6 +45,12 @@
         :module-sets="moduleTile.moduleSets"
       />
     </div>
+  </div>
+  <div v-else class="text-center" >
+    <br>
+    <p>No mappable universities. Try keying in more modules.</p>
+    <br>
+  </div>
   </div>
 </template>
 
