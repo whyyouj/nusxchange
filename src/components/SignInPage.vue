@@ -12,7 +12,7 @@
         <v-text-field v-model="password" label="Password" type="password" />
         <v-btn class="button" block @click="Login">Login</v-btn>
         <p v-if="invalidSignin" style="color: red; text-align:center; font-size: 12px; font-family: verdana, arial">Invalid Email/Password</p>
-        <p v-if='emailNotVerify' style="color: red; text-align:center; font-size: 12px; font-family: verdana, arial ">Please verify your email</p>
+        <p v-if='emailNotVerify' style="color: red; text-align:center; color: red; font-size: 12px; font-family: verdana, arial ">Please verify your email</p>
       </div>
       <p style="margin-top:5% ; text-align:center">or</p>
       <div style="width: 100%;" id="firebaseui-auth-container"/>
@@ -242,7 +242,7 @@ export default {
 }
 .home .image {
   width: 70%;
-  height: 100%;
+  height: 90vh;
   border-radius: 10px;
 }
 .home .login {

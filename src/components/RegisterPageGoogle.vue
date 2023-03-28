@@ -37,7 +37,7 @@
 
 
   <div class="register">
-    <img id='image' src="../assets/register.png" alt="">
+    <img id='image' src="../assets/register.jpg" alt="">
   <div class="" >
     <h2 style="transform: translateX(65%)">Register</h2>
     <form id="form">
@@ -228,9 +228,10 @@ export default {
   flex-flow: row nowrap;
 }
 #image {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90vh;
   margin-right: 10%;
+  border-radius: 1%;
 }
 
 .button {

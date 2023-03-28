@@ -83,7 +83,7 @@ export default {
 }
 .home .image {
   width: 70%;
-  height: 100%;
+  height: 90vh;
   border-radius: 10px;
 }
 .home .reset-password {
