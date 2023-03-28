@@ -1,5 +1,9 @@
 <template>
   <div class="module-tile">
+    <router-link
+      :to="`/university/` + university"
+      style="text-decoration: none; color: var(--primary)"
+    >
     <div class="module-tile-header">
       <div class="university">{{ university }}</div>
       <div class="local-modules-count">{{ localModulesCount }} </div>
@@ -20,6 +24,7 @@
         </div>
       </div>
     </div>
+    </router-link>
   </div>
 </template>
 

@@ -48,7 +48,7 @@
   </div>
   <div v-else class="text-center" >
     <br>
-    <p>No mappable universities. Try keying in more modules.</p>
+    <p>No mappable universities. Try keying in more / different modules.</p>
     <br>
   </div>
   </div>
