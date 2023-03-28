@@ -1,7 +1,7 @@
 <template>
-  <v-dialog
+  <!--v-dialog
     v-model="showErrorModal"
-    max-width="700"
+    max-width="500"
     style="
       margin: auto;
       display: flex;
@@ -46,9 +46,38 @@
         >
       </v-card-actions>
     </v-card>
-  </v-dialog>
+  </v-dialog-->
 
-  <v-dialog
+  <v-snackbar v-model="showErrorModal" :timeout="3000" style="left: 65%; right: 0; transform: translateY(-1%);">
+    <div id="v-snack" v-if="
+        !(
+          this.userName &&
+          this.email &&
+          this.major &&
+          this.password &&
+          this.confirmPassword
+        )
+      ">
+        Ensure that all required fields are filled.
+    </div>
+    <div id="v-snack"
+          v-else-if="
+            this.password !== this.confirmPassword || this.password.length < 6
+          "
+    >
+        Ensure that both passwords are the same / 6 characters long.
+    </div>
+    <div id="v-snack" v-if="this.errorMessage">
+      Email invalid / taken. Please fill in another email address.
+    </div>
+    <template v-slot:actions>
+        <v-btn color="grey" variant="text" @click="(showErrorModal = false), (errorMessage = '') ">
+        Close
+        </v-btn>
+    </template>
+  </v-snackbar>
+
+  <!--v-dialog
     v-model="showSuccessModal"
     max-width="700"
     style="
@@ -69,7 +98,19 @@
         <v-btn color="green" @click="closeSuccessModal">OK</v-btn>
       </v-card-actions>
     </v-card>
-  </v-dialog>
+  </v-dialog-->
+
+  <v-snackbar v-model="showSuccessModal" :timeout="3000" style="left: 65%; right: 0; transform: translateY(-5%);">
+    <div style="color: green">
+      Success! Please verify your email before Signing In.
+    </div>
+    <template v-slot:actions>
+        <v-btn color="grey" variant="text" @click="closeSuccessModal">
+        Close
+        </v-btn>
+    </template>
+  </v-snackbar>
+
 
   <div class="register">
     <img id="image" src="../assets/register.png" alt="" />
@@ -218,6 +259,18 @@ export default {
       }
     }, 
 
+  watch: {
+    showErrorModal(value) {
+      if (!value) {
+        this.errorMessage = ''
+      }
+    },
+    showSuccessModal(value) {
+      if (!value) {
+        this.closeSuccessModal()
+      }
+    }
+  },
   methods: {
     async register() {
       if (this.formIsValid) {
@@ -315,7 +368,7 @@ export default {
   color: var(--secondary);
   width: 250%;
   height: 8%;
-  margin-top: 10%;
+  margin-top: 15%;
   margin-bottom: -20%;
 }
 
@@ -349,4 +402,9 @@ export default {
   width: 10px;
   height: 10px;
 }
+
+#v-snack {
+  color: red;
+}
+
 </style>

@@ -11,8 +11,8 @@
         <v-text-field v-model="email" label="Email" type="email" />
         <v-text-field v-model="password" label="Password" type="password" />
         <v-btn class="button" block @click="Login">Login</v-btn>
-        <p v-if="invalidSignin" style="color: red; text-align:center">Invalid Email/Password</p>
-        <p v-if='emailNotVerify' style="color: red; text-align:center">Please verify your email</p>
+        <p v-if="invalidSignin" style="color: red; text-align:center; font-size: 12px; font-family: verdana, arial">Invalid Email/Password</p>
+        <p v-if='emailNotVerify' style="color: red; text-align:center; font-size: 12px; font-family: verdana, arial ">Please verify your email</p>
       </div>
       <p style="margin-top:5% ; text-align:center">or</p>
       <div style="width: 100%;" id="firebaseui-auth-container"/>
@@ -213,11 +213,11 @@ export default {
       const user = userCredential.user;
       if (user.emailVerified) {
         console.log("User logged in:", user);
-      this.$router.push("/signin/account-management-page");
+      this.$router.push("/");
       } else {
         console.error("User email not verified")
         this.emailNotVerify = true
-        this.invalidSignin = false 
+        this.invalidSignin = false
         await auth.signOut();
       }
        // Redirect to the desired page after login

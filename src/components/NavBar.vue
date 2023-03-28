@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="showSignOutModal"
-    max-width="700"
+    max-width="350"
     style="
       margin: auto;
       display: flex;

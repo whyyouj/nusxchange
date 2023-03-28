@@ -1,17 +1,41 @@
 <template>
 <div v-if='view'>
-<v-dialog v-model="showErrorModal" max-width="700" style= "  margin: auto; display: flex; flex-direction: column;justify-content: center;height: 100%;">
+<!--v-dialog v-model="showErrorModal" max-width="500" style= " margin: auto; display: flex; flex-direction: column;justify-content: center;height: 100%;">
   <v-card>
-    <v-card-title>Error</v-card-title>
+    <v-card-title style= "color:red;">Error</v-card-title>
     <v-card-text>
       <div v-if="!(this.userName && this.major)">Ensure that all required fields are filed.</div>
 
     </v-card-text> 
     <v-card-actions >
-      <v-btn color="primary" @click="showErrorModal = false, errorMessage = ''" >OK</v-btn>
+      <v-btn color='blue-grey-darken-2' @click="showErrorModal = false, errorMessage = ''" >OK</v-btn>
     </v-card-actions>
   </v-card>
-</v-dialog>
+</v-dialog-->
+
+    <v-snackbar v-model="showErrorModal" :timeout="3000" style="left: 65%; right: 0; transform: translateY(-25%);">
+    <div v-if="!(this.userName && this.major)" style="color: red">
+        Error. Ensure that all required fields are filled.
+    </div>
+    <template v-slot:actions>
+        <v-btn color="grey" variant="text" @click="showErrorModal = false">
+        Close
+        </v-btn>
+    </template>
+    </v-snackbar>
+
+  <v-snackbar v-model="showSuccessModal" :timeout="3000" style="left: 65%; right: 0; transform: translateY(-25%);">
+    <div style="color: green">
+      Success!
+    </div>
+    <template v-slot:actions>
+        <v-btn color="grey" variant="text" @click="closeSuccessModal">
+        Close
+        </v-btn>
+    </template>
+  </v-snackbar>
+
+
   <div class="register">
     <img id='image' src="../assets/register.png" alt="">
   <div class="" >
@@ -47,7 +71,7 @@
 
     </v-autocomplete>
 
-    <v-btn class="button" block @click="register" style="transform: translateX(60%)">Register</v-btn>
+    <v-btn class="button" block @click="register" style="transform: translateX(60%) ">Register</v-btn>
     </form>
   </div>
 </div>
@@ -125,9 +149,17 @@ export default {
         user: null,
         view: false,
         registerUser: false,
+        showSuccessModal:false,
       }
     }, 
 
+    watch: {
+        showSuccessModal(value) {
+        if (!value) {
+            this.closeSuccessModal()
+        }
+        }
+    },
 
     methods: {
 
@@ -138,7 +170,7 @@ export default {
             // Navigate to the account management page
             await this.addAccount(this.user)
             this.registerUser = true
-            this.$router.push("/signin/account-management-page");
+            this.showSuccessModal = true;
             document.getElementById('form').reset()
         } 
         else {
@@ -166,7 +198,14 @@ export default {
         this.showErrorModal = true
       }
       },
+
+    closeSuccessModal() {
+            this.$router.push("/")
+        },  
+
     },
+
+    
 
     computed: {
       formIsValid() {
@@ -197,7 +236,7 @@ export default {
 .button {
   background-color: var(--primary);
   color: white;
-  margin-top: 3%;
+  margin-top: 10%;
 }
 .register {
   justify-content: center;

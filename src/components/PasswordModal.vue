@@ -9,10 +9,9 @@
     <div class="modal-body">
       <div
         class="password-input"
-        style="display: flex; flex-direction: column; align-items: flex-start"
       >
         <div>
-          <input
+          <!--input
             class="passwordInput"
             style="margin-bottom: 5%; width: 85%"
             :type="showPassword ? 'text' : 'password'"
@@ -30,7 +29,34 @@
             v-model="newPassword2"
             placeholder="Confirm new password"
             style="width: 98%"
-          />
+          /-->
+
+        <v-text-field
+          v-model="newPassword"
+          label="Password"
+          :type="showPassword ? 'text' : 'password'"
+          @click:append="showPassword = !showPassword"
+          required
+        >
+          <template v-slot:append>
+            <v-btn
+              style="width: 5px; height: 10px"
+              icon
+              @click="showPassword = !showPassword"
+            >
+              <v-icon>{{
+                showPassword ? "mdi mdi-eye-off" : "mdi mdi-eye"
+              }}</v-icon>
+              <!--font-awesome-icon :icon="showPassword ? 'eye-slash' : 'eye'" /-->
+            </v-btn>
+          </template>
+        </v-text-field>
+        <v-text-field
+          v-model="newPassword2"
+          label="Confirm Password"
+          :type="showPassword ? 'text' : 'password'"
+          required
+        />
         </div>
       </div>
       <h4 v-if="passwordError" id="errorMsg">
@@ -60,13 +86,13 @@
 <script>
 import { library } from "@fortawesome/fontawesome-svg-core"; // npm install --save @fortawesome/free-solid-svg-icons
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"; // npm install --save @fortawesome/fontawesome-free
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"; // npm install --save @fortawesome/vue-fontawesome
+//import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"; // npm install --save @fortawesome/vue-fontawesome
 library.add(faEye, faEyeSlash);
 export default {
   name: "PasswordModal",
-  components: {
-    FontAwesomeIcon,
-  },
+  //components: {
+  //  FontAwesomeIcon,
+  //},
   data() {
     return {
       showModal: false,
@@ -113,6 +139,8 @@ export default {
 }
 #errorMsg {
   color: red;
+  font-size: 12px; 
+  font-family: verdana, arial
 }
 .modal-header h3 {
   margin: 0;
@@ -152,9 +180,7 @@ export default {
   margin-left: 2px;
 }
 .password-input {
-  display: flex;
-  align-items: center;
-  width: 80%;
+  width: 30%;
 }
 .password-input button {
   margin-left: 5px;

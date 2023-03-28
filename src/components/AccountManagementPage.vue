@@ -1,5 +1,5 @@
 <template>
-  <v-dialog
+  <!--v-dialog
     v-model="showErrorModal"
     max-width="700"
     style="
@@ -25,10 +25,10 @@
         <v-btn color="primary" @click="showErrorModal = false">OK</v-btn>
       </v-card-actions>
     </v-card>
-  </v-dialog>
+  </v-dialog-->
   <v-dialog
     v-model="showDeleteModal"
-    max-width="700"
+    max-width="500"
     style="
       margin: auto;
       display: flex;
@@ -39,14 +39,27 @@
     :persistent="true"
   >
     <v-card>
-      <v-card-title>Delete Confirmation</v-card-title>
+      <v-card-title >Delete Confirmation</v-card-title>
       <v-card-text> Are you sure you want to Delete your Account </v-card-text>
       <v-card-actions>
         <v-btn color="primary" @click="deleteAccount">Yes</v-btn>
-        <v-btn color="primary" @click="showDeleteModal = false">No</v-btn>
+        <v-btn color="primary" @click="showDeleteModal = false">Cancel</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
+      <!--v-snackbar
+      v-model="showDeleteModal"
+      color="error"
+      absolute
+      top="0"
+      left="0"
+      right="0"
+      bottom="0"
+    >
+      Are you sure you want to Delete your Account?
+      <v-btn text @click="deleteAccount">Yes</v-btn>
+      <v-btn text @click="showDeleteModal = false">No</v-btn>
+    </v-snackbar-->
 
   <div class="photo">
     <!---<div id="photoname">{{ personname }}</div>--->
@@ -72,13 +85,13 @@
       <font-awesome-icon :icon="['fas', 'trash-alt']" />
     </button>
     <div style="text-align: center">
-      <v-dialog v-model="showPhotoModal" max-width="700" :persistent="true">
+      <v-dialog v-model="showPhotoModal" max-width="500" :persistent="true">
         <v-card>
-          <v-card-title>Confirm Delete</v-card-title>
-          <v-card-text> Are you sure you want to delete? </v-card-text>
+          <v-card-title>Delete Confirmation</v-card-title>
+          <v-card-text> Are you sure you want to Delete your Profile Photo? </v-card-text>
           <v-card-actions>
             <v-btn color="primary" @click="deleteImage">Yes</v-btn>
-            <v-btn @click="showPhotoModal = false">Cancel</v-btn>
+            <v-btn color="primary" @click="showPhotoModal = false">Cancel</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -91,14 +104,13 @@
         <h3>
           Username
           <button
-            style="margin-left: 7%"
             id="changeusername"
             @click="changeUsername"
           >
-            <font-awesome-icon :icon="showusername ? 'pen' : 'check'" />
+          <font-awesome-icon :icon="showusername ? ['fas', 'edit'] : 'check'"/>
           </button>
         </h3>
-        <input
+        <!--input
           id="username-input"
           type="text"
           v-model="username"
@@ -110,7 +122,16 @@
           "
           required
           minlength="1"
-        />
+        /-->
+        <span v-if="showusername">{{ username }}</span>
+        <span v-else> <v-text-field
+          
+          v-model="username"
+          label="Change Username"
+          type="text"
+          required
+          style="width:150%"
+        /></span>
       </div>
       <div id="email">
         <div v-if="this.email">
@@ -132,23 +153,32 @@
       <div id="tele">
         <h3>
           Telegram Handle
-          <button style="margin-left: 7%" id="changetele" @click="changeTele">
-            <font-awesome-icon :icon="showtele ? 'pen' : 'check'" />
+          <button id="changetele" @click="changeTele">
+            <font-awesome-icon :icon="showtele ? ['fas', 'edit'] : 'check'" />
           </button>
         </h3>
-        <input
+        <!--input
           id="tele-input"
           type="text"
           v-model="tele"
           :disabled="showtele"
           style="font-family: Raleway, sans-serif; color: #194569"
-        />
+        /-->
+        <span v-if="showtele">{{ tele ? tele : "-" }}</span>
+        <span v-else> <v-text-field
+          
+          v-model="tele"
+          label="Telegram Handle"
+          type="text"
+          required
+          style="width:50%;"
+        /></span>
       </div>
       <div id="major">
         <h3>
           Faculty
           <button id="changemajor" @click="changeMajor">
-            <font-awesome-icon :icon="showmajoroptions ? 'pen' : 'check'" />
+            <font-awesome-icon :icon="showmajoroptions ? ['fas', 'edit'] : 'check'" />
           </button>
         </h3>
         <!--input
@@ -283,7 +313,7 @@
             <h4
               v-if="exchangeError"
               id="errorMsg"
-              style="color: red; font-size: 10px"
+              style="color: red; font-size: 12px; font-family: verdana, arial "
             >
               INVALID UNIVERSITY / SEMESTER
             </h4>
@@ -332,7 +362,7 @@
       <div id="passwordAccount" :key="refreshComp">
         <input
           id="passwordInput"
-          v-model="password"
+          value= "password"
           :type="showPassword ? 'text' : 'password'"
           :disabled="true"
         />
@@ -385,7 +415,7 @@
     <hr />
     <div id="teleothers" :key="refreshComp1">
       <h3>Telegram Handles</h3>
-      <div v-if="tele === '-' || exchangeuni == 'None'" id="teleHandles">
+      <div v-if="tele === '' || exchangeuni == 'None'" id="teleHandles">
         Please include your telegram handle and exchange university to access
         this information!
       </div>
@@ -416,6 +446,7 @@ import {
   faTimes,
   faLock,
   faUnlock,
+  faEdit,
 } from "@fortawesome/free-solid-svg-icons"; // npm install --save @fortawesome/fontawesome-free
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"; // npm install --save @fortawesome/vue-fontawesome
 //import PasswordAccount from "./PasswordAccount.vue";
@@ -453,7 +484,8 @@ library.add(
   faTrashAlt,
   faTimes,
   faLock,
-  faUnlock
+  faUnlock,
+  faEdit,
 );
 const db = getFirestore(firebaseApp);
 export default {
@@ -470,12 +502,12 @@ export default {
         this.password = this.userData.password;
         this.email = this.userData.email;
         this.major = this.userData.major;
-        this.tele = this.userData.telegram ? this.userData.telegram : "-";
+        this.tele = this.userData.telegram ? this.userData.telegram : "";
         this.exchangeuni = this.userData.exchangeUniversity;
         this.favList = this.userData.favouriteUniversity;
         this.photo = this.userData.photo;
       } else {
-        this.$router.push("/login");
+        this.$router.push("/signin");
       }
       const universityList = await getDocs(
         collection(db, "ListOfUniversities")
@@ -551,7 +583,7 @@ export default {
         if (this.tele.length === 0) {
           await this.updateUserData(this.uId, { telegram: "" });
           this.refreshComp1 += 1;
-          this.tele = "-";
+          this.tele = "";
         } else {
           await this.updateUserData(this.uId, { telegram: this.tele });
           this.refreshComp1 += 1;
@@ -708,7 +740,7 @@ export default {
       username: "",
       email: "",
       major: "",
-      tele: "-",
+      tele: "",
       exchangeuni: "-",
       tempexchangeuni: "",
       exchangeError: false,
