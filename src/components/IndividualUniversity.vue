@@ -202,7 +202,6 @@ export default {
           )
         ) {
           try {
-          await this.getUserData(user.uid);
           this.favouriteUniversities = await this.getFavouriteUnis(user.uid);
           this.isLoggedIn = true;
           } catch(error) {

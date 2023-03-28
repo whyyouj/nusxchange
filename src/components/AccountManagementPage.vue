@@ -291,7 +291,8 @@
           @click="changeFavourite = !changeFavourite"
           style="transform: translateX(70%)"
         >
-          Delete
+           <font-awesome-icon :icon="['fas','trash-alt']" />
+             &nbsp;
           <font-awesome-icon :icon="changeFavourite ? 'unlock' : 'lock'" />
         </button>
       </h3>
