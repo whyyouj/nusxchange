@@ -87,10 +87,17 @@
 
   <div class="info" style="margin-top: 5%">
     <div id="username-email">
-        <div class="username">
-        <h3>Username <button style="margin-left: 7%" id="changeusername" @click="changeUsername">
-          <font-awesome-icon :icon="showusername ? 'pen' : 'check'" />
-        </button></h3>
+      <div class="username">
+        <h3>
+          Username
+          <button
+            style="margin-left: 7%"
+            id="changeusername"
+            @click="changeUsername"
+          >
+            <font-awesome-icon :icon="showusername ? 'pen' : 'check'" />
+          </button>
+        </h3>
         <input
           id="username-input"
           type="text"
@@ -104,8 +111,7 @@
           required
           minlength="1"
         />
-        
-    </div>
+      </div>
       <div id="email">
         <div v-if="this.email">
           <h3>Email</h3>
@@ -124,9 +130,12 @@
     </div>
     <div id="tele-major">
       <div id="tele">
-        <h3>Telegram Handle <button style="margin-left: 7%" id="changetele" @click="changeTele">
-          <font-awesome-icon :icon="showtele ? 'pen' : 'check'" />
-        </button></h3>
+        <h3>
+          Telegram Handle
+          <button style="margin-left: 7%" id="changetele" @click="changeTele">
+            <font-awesome-icon :icon="showtele ? 'pen' : 'check'" />
+          </button>
+        </h3>
         <input
           id="tele-input"
           type="text"
@@ -134,13 +143,14 @@
           :disabled="showtele"
           style="font-family: Raleway, sans-serif; color: #194569"
         />
-        
       </div>
-            <div id="major">
-        <h3>Faculty
-        <button id="changemajor" @click="changeMajor">
-          <font-awesome-icon :icon="showmajoroptions ? 'pen' : 'check'" />
-        </button></h3>
+      <div id="major">
+        <h3>
+          Faculty
+          <button id="changemajor" @click="changeMajor">
+            <font-awesome-icon :icon="showmajoroptions ? 'pen' : 'check'" />
+          </button>
+        </h3>
         <!--input
           id="major-input"
           type="text"
@@ -153,26 +163,38 @@
             {{ option }}
           </option>
         </datalist-->
-        <span v-if="showmajoroptions">{{major}}</span>
-        <v-autocomplete v-else class="v-auto" v-model="major" label="Faculty" :items="majorList"> 
-        <v-list>
-          <v-list-item v-for="(option, index) in majorList" :key="index" @click="major = option">
-            <v-list-item-title>{{ option }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-autocomplete>
-        
+        <span v-if="showmajoroptions">{{ major }}</span>
+        <v-autocomplete
+          v-else
+          class="v-auto"
+          v-model="major"
+          label="Faculty"
+          :items="majorList"
+        >
+          <v-list>
+            <v-list-item
+              v-for="(option, index) in majorList"
+              :key="index"
+              @click="major = option"
+            >
+              <v-list-item-title>{{ option }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-autocomplete>
       </div>
-
     </div>
 
     <hr />
-      <div id="exchangeuni">
-        <h3>Exchange University</h3>
-      <div id="childComponent" :key="refreshComp1" style="display: flex; flex-direction: column;">
-        <span>{{exchangeuni}}</span>
+    <div id="exchangeuni">
+      <h3>Exchange University</h3>
+      <div
+        id="childComponent"
+        :key="refreshComp1"
+        style="display: flex; flex-direction: column"
+      >
+        <span>{{ exchangeuni }}</span>
         <h3 v-if="!(semester === 'None' || !semester)">Semester</h3>
-        <span v-if="!(semester === 'None' || !semester)">{{semester}}</span>
+        <span v-if="!(semester === 'None' || !semester)">{{ semester }}</span>
       </div>
 
       <button
@@ -192,8 +214,8 @@
       </button>
       <div class="modal" v-show="showModal">
         <div class="modal-body">
-        <div>
-        <!--label for="exchange-input">University: </label>
+          <div>
+            <!--label for="exchange-input">University: </label>
         <input
           id="exchange-input"
           type="text"
@@ -206,19 +228,27 @@
           <option v-for="(option, id) in uniList" :key="id" :value="option">
             {{ option }}
           </option>
-        </datalist--> 
-      <h3>Change:</h3>
-      <v-autocomplete class="v-auto" v-model="tempexchangeuni" label="Exchange University" :items="uniList"> 
-      <v-list>
-        <v-list-item v-for="(option, index) in uniList" :key="index" @click="exchangeUni = option">
-          <v-list-item-title>{{ option }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-autocomplete>
-
-        </div>
-        <div>
-        <!--label for="sem-input">Semester: </label>
+        </datalist-->
+            <h3>Change:</h3>
+            <v-autocomplete
+              class="v-auto"
+              v-model="tempexchangeuni"
+              label="Exchange University"
+              :items="uniList"
+            >
+              <v-list>
+                <v-list-item
+                  v-for="(option, index) in uniList"
+                  :key="index"
+                  @click="exchangeUni = option"
+                >
+                  <v-list-item-title>{{ option }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-autocomplete>
+          </div>
+          <div>
+            <!--label for="sem-input">Semester: </label>
         <input
           id="sem-input"
           type="text"
@@ -231,34 +261,68 @@
           <option v-for="(option, id) in semList" :key="id" :value="option">
             {{ option }}
           </option>
-        </datalis-->  
-      <v-autocomplete class="v-auto" v-model="semesterTemp" label="Semester" :items="semList"> 
-      <v-list>
-        <v-list-item v-for="(option, index) in semList" :key="index" @click="semester = option">
-          <v-list-item-title>{{ option }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-
-    </v-autocomplete>
+        </datalis-->
+            <v-autocomplete
+              class="v-auto"
+              v-model="semesterTemp"
+              label="Semester"
+              :items="semList"
+            >
+              <v-list>
+                <v-list-item
+                  v-for="(option, index) in semList"
+                  :key="index"
+                  @click="semester = option"
+                >
+                  <v-list-item-title>{{ option }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-autocomplete>
+          </div>
+          <div>
+            <h4
+              v-if="exchangeError"
+              id="errorMsg"
+              style="color: red; font-size: 10px"
+            >
+              INVALID UNIVERSITY / SEMESTER
+            </h4>
+          </div>
+          <div class="modal-footer" style="margin-top: 2%">
+            <button
+              class="modalSaveButton"
+              @click="changeExchange"
+              style="
+                background-color: rgb(204, 204, 204, 0.5);
+                padding: 2px 8px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+                margin-left: 2px;
+              "
+            >
+              Save
+            </button>
+            <button
+              class="modalCancelButton"
+              @click="
+                (showModal = false),
+                  (exchangeError = false),
+                  (tempexchangeuni = '')
+              "
+              style="
+                background-color: rgb(204, 204, 204, 0.5);
+                padding: 2px 8px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+                margin-left: 2px;
+              "
+            >
+              Cancel
+            </button>
+          </div>
         </div>
-        <div>
-        <h4 v-if="exchangeError" id="errorMsg" style="color: red; font-size: 10px">INVALID UNIVERSITY / SEMESTER </h4>
-        </div>
-        <div class="modal-footer" style="margin-top: 2%">
-          <button class="modalSaveButton" @click="changeExchange" style="    background-color: rgb(204, 204, 204, 0.5);
-    padding: 2px 8px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-left: 2px;">Save</button>
-          <button class="modalCancelButton" @click="showModal = false, exchangeError = false, tempexchangeuni = '' " style="    background-color: rgb(204, 204, 204, 0.5);
-    padding: 2px 8px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-left: 2px;">Cancel</button>
-        </div> 
-      </div>
       </div>
     </div>
     <hr />
@@ -286,13 +350,15 @@
       <!---DeleteFavouriteUni /--->
       <h3>
         Favourites
-        <button v-if="!(favList.length ===0)"
+        <button
+          v-if="!(favList.length === 0)"
           id="changefavourite"
           @click="changeFavourite = !changeFavourite"
-          style="transform: translateX(70%)"
+          style="margin-right: 5%"
         >
-           <font-awesome-icon :icon="['fas','trash-alt']" />
-             &nbsp;
+          Edit Favourites
+          <!-- <font-awesome-icon :icon="['fas', 'trash-alt']" /> -->
+          &nbsp;
           <font-awesome-icon :icon="changeFavourite ? 'unlock' : 'lock'" />
         </button>
       </h3>
@@ -495,9 +561,9 @@ export default {
     async changeMajor() {
       this.showmajoroptions = !this.showmajoroptions;
       if (!this.majorList.includes(this.major)) {
-        this.showErrorModal = true
-        this.showmajoroptions = false
-        return 
+        this.showErrorModal = true;
+        this.showmajoroptions = false;
+        return;
       }
       if (this.showmajoroptions) {
         await this.updateUserData(this.uId, { major: this.major });
@@ -651,7 +717,19 @@ export default {
       showmajoroptions: true,
       showusername: true,
       showtele: true,
-      majorList: ['College of Humanities and Sciences (CHS)','NUS Business School', 'Computing', 'Dentistry', 'College of Design and Engineering (CDE)','Law', 'Medicine','Nursing','Pharmacy','Nus College', "Music"],
+      majorList: [
+        "College of Humanities and Sciences (CHS)",
+        "NUS Business School",
+        "Computing",
+        "Dentistry",
+        "College of Design and Engineering (CDE)",
+        "Law",
+        "Medicine",
+        "Nursing",
+        "Pharmacy",
+        "Nus College",
+        "Music",
+      ],
       password: "password",
       //showPassword: false,
       uniList: ["None"],
@@ -706,12 +784,6 @@ export default {
   transform: translate(-50%, 250%);
   font-size: 150%;
 }*/
-#fileinput {
-  position: relative;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-80%, 50%);
-}
 #filelabel {
   cursor: pointer;
   display: inline-block;
@@ -731,14 +803,15 @@ export default {
 }
 #username {
   margin-top: 10%;
+}
+#email,
+#major,
+#username,
+#tele,
+#exchangeuni {
   font-weight: 100;
 }
-#email {
-  font-weight: 100;
-}
-#major {
-  font-weight: 100;
-}
+
 #changemajor {
   margin-left: 10%;
 }
@@ -752,7 +825,8 @@ export default {
   border: 2px solid;
 }
 
-#username-input option {
+#username-input option,
+#tele-input option {
   color: #333;
 }
 #username-input:not([disabled]) {
@@ -761,9 +835,6 @@ export default {
   border: 2px solid;
 }
 
-#tele-input option {
-  color: #333;
-}
 #tele-input:not([disabled]) {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
@@ -790,13 +861,6 @@ export default {
 
 #changeFav {
   margin-left: 10%;
-}
-
-#tele {
-  font-weight: 100;
-}
-#exchangeuni {
-  font-weight: 100;
 }
 #username-email {
   display: flex;
@@ -866,9 +930,8 @@ hr {
   font-weight: bold;
 }
 .v-auto {
-  width: 80%
+  width: 80%;
 }
-
 .delete-icon {
   float: right;
   margin-right: 50px;
@@ -877,6 +940,4 @@ hr {
 .delete-icon:hover {
   color: red;
 }
-
-
 </style>
