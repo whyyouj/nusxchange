@@ -261,6 +261,7 @@ export default {
       for (const mod of this.inputs) { // Getting the input NUS Modules
         const nusModRef = doc(db, "NUS Module Mapping", mod)
         const modSnap = await getDoc(nusModRef)
+        if (modSnap.exists()) {  
         const nusModTitle = modSnap.data()
         console.log(nusModTitle.ModuleTitle)
 
@@ -282,6 +283,10 @@ export default {
             addToPartnerModules["partnerName"] = PUModTitle
             universityModHash[uni][mod]["partnerModules"].push(addToPartnerModules)
           })
+        }
+        } else {
+          console.log(`Module code "${mod}" not found in database.`)
+          window.alert(`Module code "${mod}" not found in database.`)
         }
       }
 
