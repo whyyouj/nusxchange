@@ -679,7 +679,7 @@ export default {
     },
 
     async deleteImage() {
-      this.source = require("../assets/nusxchange.png");
+      this.source = require("../assets/nusxchangee.png");
       this.showPhotoModal = false;
 
       if (this.photo) {
@@ -729,7 +729,7 @@ export default {
   },
   data() {
     return {
-      source: require("../assets/nusxchange.png"),
+      source: require("../assets/nusxchangee.png"),
       photo: false,
       showPhotoModal: false,
       refreshComp: 0,

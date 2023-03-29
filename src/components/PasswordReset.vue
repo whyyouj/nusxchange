@@ -17,7 +17,7 @@
     />
     <div class="reset-password">
       <!--img style="width: 80px; height: 80px" src="../assets/nusxchange.png" /-->
-      <img style="width: 80px; height: 80px" src="../assets/nusxchange.png" />
+      <img style="width: 100px; height: 100px" src="../assets/nusxchange.png" />
       <h2>Reset Password</h2>
       <div style="width: 70%">
         <v-text-field v-model="email" label="Enter your registered email" type="email" />

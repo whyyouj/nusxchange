@@ -5,7 +5,7 @@
       class="image"
     />
     <div class="login">
-      <img style="width: 80px; height: 80px" src="../assets/nusxchange.png" />
+      <img style="width: 100px; height: 100px" src="../assets/nusxchange.png" />
       <h2>Login</h2>
       <div style="width: 70%">
         <v-text-field v-model="email" label="Email" type="email" />

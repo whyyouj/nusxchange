@@ -100,7 +100,7 @@ export default {
       userName: "",
       userData: null,
       photo: false,
-      source: require("../assets/nusxchange.png"),
+      source: require("../assets/nusxchangee.png"),
       showSignOutModal: false,
     };
   },
