@@ -38,6 +38,8 @@ import UniTile from "@/components/UniversityTile.vue";
 import {firebaseApp} from "../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import { collection, getDocs } from "firebase/firestore";
+import { getDoc } from 'firebase/firestore';
+
 
 const db = getFirestore(firebaseApp);
 
@@ -64,6 +66,43 @@ export default {
       console.log(this.universities);
     });
   },
+
+async created() {
+  // Retrieve data from NusModuleMapping collection
+  const nusModuleMappingCollectionRef = collection(db, 'NusModuleMapping');
+  const nusModuleMappingDocsSnapshot = await getDocs(nusModuleMappingCollectionRef);
+  const nusModuleMapping = {};
+  nusModuleMappingDocsSnapshot.forEach((doc) => {
+    nusModuleMapping[doc.id] = doc.data();
+  });
+
+  // Retrieve data from ListOfUniversities collection
+  const listOfUniversitiesCollectionRef = collection(db, 'ListOfUniversities');
+  const listOfUniversitiesDocsSnapshot = await getDocs(listOfUniversitiesCollectionRef);
+  const moduleSets = [];
+  listOfUniversitiesDocsSnapshot.forEach((doc) => {
+    const localModule = {
+      code: doc.id,
+      name: doc.data().name
+    };
+    const partnerModules = [];
+    doc.data().universities.forEach(async (university) => {
+      const universityDoc = await getDoc(doc(db, 'NusModuleMapping', university));
+      const partnerModule = {
+        university: university,
+        code: universityDoc.data().modules[doc.id]
+      };
+      partnerModules.push(partnerModule);
+    });
+    moduleSets.push({
+      localModule: localModule,
+      partnerModules: partnerModules
+    });
+  });
+
+  // Assign the retrieved data to the component data property
+  this.moduleSets = moduleSets;
+},
 
   data() {
     return {
@@ -105,6 +144,7 @@ export default {
           active: false,
         },
       ],
+      moduleSets: []
     };
   },
   computed: {
