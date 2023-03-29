@@ -32,7 +32,8 @@
         </li>
       </ul>
     </div>
-    <div class="module-tile-container" v-for="moduleTile in filteredModuleTiles" :key="moduleTile.university">
+    <div class="module-tile-container" v-if="filteredandSortedModuleTiles.length > 0">
+      <div v-for="moduleTile in filteredandSortedModuleTiles" :key="moduleTile.university">
       <ModuleTile
         :university="moduleTile.university"
         :local-modules-count="moduleTile.localModules.length"
@@ -44,6 +45,12 @@
         :module-sets="moduleTile.moduleSets"
       />
     </div>
+  </div>
+  <div v-else class="text-center" >
+    <br>
+    <p>No mappable universities. Try keying in more / different modules.</p>
+    <br>
+  </div>
   </div>
 </template>
 
@@ -218,12 +225,14 @@ export default {
     })
   },
   computed: {
-    filteredModuleTiles() {
+    filteredandSortedModuleTiles() {
+     let filteredModuleTiles = [];
       if (this.getActiveContinent() === 'All') {
-        return this.universityData;
+        filteredModuleTiles = this.universityData;
       } else {
-        return this.universityData.filter((university) => university.continent === this.getActiveContinent());
+        filteredModuleTiles = this.universityData.filter((university) => university.continent === this.getActiveContinent());
       }
+      return filteredModuleTiles.sort((a, b) => b.localModules.length - a.localModules.length);
     }
   },
     methods: {
@@ -259,6 +268,7 @@ export default {
       for (const mod of this.inputs) { // Getting the input NUS Modules
         const nusModRef = doc(db, "NUS Module Mapping", mod)
         const modSnap = await getDoc(nusModRef)
+        if (modSnap.exists()) {  
         const nusModTitle = modSnap.data()
         console.log(nusModTitle.ModuleTitle)
 
@@ -280,6 +290,10 @@ export default {
             addToPartnerModules["partnerName"] = PUModTitle
             universityModHash[uni][mod]["partnerModules"].push(addToPartnerModules)
           })
+        }
+        } else {
+          console.log(`Module code "${mod}" not found in database.`)
+          window.alert(`Module code "${mod}" not found in database.`)
         }
       }
 
