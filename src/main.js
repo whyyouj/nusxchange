@@ -7,8 +7,12 @@ import IndividualUniversity from "./components/IndividualUniversity.vue"
 import RegisterPage from "./components/RegisterPage.vue"
 import SignInPage from "./components/SignInPage.vue"
 import GeneralHelpPage from "./components/GeneralHelp.vue"
+import AccountManagementPage from "./components/AccountManagementPage.vue"
+import RegisterPageGoogle from "./components/RegisterPageGoogle.vue"
+import PasswordReset from "./components/PasswordReset.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 import VueDisqus from "vue-disqus"
+
 
 // Vuetify
 import 'vuetify/styles'
@@ -29,6 +33,9 @@ const routes = [
   { path: '/register', component: RegisterPage },
   { path: '/signin', component: SignInPage },
   { path: '/generalhelp', component: GeneralHelpPage },
+  { path: '/signin/account-management-page', component: AccountManagementPage},
+  { path: '/register-google', component: RegisterPageGoogle},
+  { path: '/password-reset', component: PasswordReset}
 ]
 
 const router = createRouter({

@@ -1,6 +1,6 @@
 <template>
   <div class="nusxchange-font">
-    <NavBar />
+    <NavBar :key="$route.fullPath" />
     <router-view></router-view>
   </div>
 </template>

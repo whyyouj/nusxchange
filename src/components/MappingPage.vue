@@ -5,22 +5,52 @@
   />
   <div class="main">
     <h2>Module Mapping Page</h2>
-    <img src="https://wallpapercave.com/wp/wp1954746.jpg" alt="" style="width: 100%; border-radius: 15px;">
+    <img
+      src="https://wallpapercave.com/wp/wp1954746.jpg"
+      alt=""
+      style="width: 100%; border-radius: 15px"
+    />
     <div class="search-container">
-      <input type="text" :placeholder="inputText ? '' : 'Which NUS Module would you like to map?'" v-model="inputText" @input="inputText = inputText.toUpperCase()" @keyup.enter="addInput">
+      <input
+        type="text"
+        :placeholder="
+          inputText ? '' : 'Which NUS Module would you like to map?'
+        "
+        v-model="inputText"
+        @input="inputText = inputText.toUpperCase()"
+        @keyup.enter="addInput"
+      />
       <button class="add-module-btn" @click="addInput">Add Module</button>
     </div>
-    <div v-if="inputs.length > 0" class="input-list-container" style="margin-top: 20px;">
+    <div
+      v-if="inputs.length > 0"
+      class="input-list-container"
+      style="margin-top: 20px"
+    >
       <div class="input-list">
-        <p v-for="(input, index) in inputs" :key="index">{{ input.toUpperCase() }}</p>
+        <p v-for="(input, index) in inputs" :key="index">
+          {{ input.toUpperCase() }}
+        </p>
       </div>
       <div class="clear-submit-btn-container">
-        <button v-if="inputs.length > 0" class="clear-module-btn" @click="clearInputs">Clear</button>
-        <button v-if="inputs.length > 0" class="submit-module-btn" @click="submitInputs">Submit</button>
+        <button
+          v-if="inputs.length > 0"
+          class="clear-module-btn"
+          @click="clearInputs"
+        >
+          Clear
+        </button>
+        <button
+          v-if="inputs.length > 0"
+          class="submit-module-btn"
+          @click="submitInputs"
+        >
+          Submit
+        </button>
       </div>
     </div>
     <!-- Add the filter bar below the input list -->
-    <div class="filter-bar" style="margin-top: 20px;">
+    <div class="filter-bar" style="margin-top: 20px">
       <ul>
         <li
           v-for="continent in continents"
@@ -32,25 +62,44 @@
         </li>
       </ul>
     </div>
-    <div class="module-tile-container" v-for="moduleTile in filteredModuleTiles" :key="moduleTile.university">
-      <ModuleTile
-        :university="moduleTile.university"
-        :local-modules-count="moduleTile.localModules.length"
-        :partner-university="moduleTile.partnerUniversity"
-        :continent="moduleTile.continent"
-        :country="moduleTile.country"
-        :gpa="moduleTile.gpa"
-        :language-requirements="moduleTile.languageRequirements"
-        :module-sets="moduleTile.moduleSets"
-      />
+    <div
+      class="module-tile-container"
+      v-if="filteredandSortedModuleTiles.length > 0"
+    >
+      <div
+        v-for="moduleTile in filteredandSortedModuleTiles"
+        :key="moduleTile.university"
+      >
+        <ModuleTile
+          :university="moduleTile.university"
+          :local-modules-count="moduleTile.localModules.length"
+          :partner-university="moduleTile.partnerUniversity"
+          :continent="moduleTile.continent"
+          :country="moduleTile.country"
+          :gpa="moduleTile.gpa"
+          :language-requirements="moduleTile.languageRequirements"
+          :module-sets="moduleTile.moduleSets"
+        />
+      </div>
+    </div>
+    <div v-else class="text-center">
+      <br />
+      <p>No mappable universities. Try keying in more / different modules.</p>
+      <br />
     </div>
   </div>
 </template>
 
 <script>
-import firebaseApp from '../firebase.js';
-import {collection, getDocs, getFirestore, doc, getDoc} from 'firebase/firestore'
-import ModuleTile from '@/components/ModuleTile.vue';
+import firebaseApp from "../firebase.js";
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  doc,
+  getDoc,
+} from "firebase/firestore";
+import ModuleTile from "@/components/ModuleTile.vue";
 
 const db = getFirestore(firebaseApp);
 
@@ -60,9 +109,9 @@ export default {
   },
   data() {
     return {
-      inputText: '',
+      inputText: "",
       inputs: [],
-      errorMessage: 'You have already added this module!',
+      errorMessage: "You have already added this module!",
       continents: [
         {
           id: 1,
@@ -102,38 +151,145 @@ export default {
       ],
       universityInformation: {},
       uniAvail: [],
-      universityData: []
-      }
+      universityData: [],
+      // universityData: [
+      //     {
+      //       university: 'National University of Singapore',
+      //       localModules: ['Module A', 'Module B', 'Module C'],
+      //       continent: 'Asia',
+      //       country: 'Singapore',
+      //       gpa: 3.5,
+      //       languageRequirements: 'English',
+      //       moduleSets: [
+      //         {
+      //           localCode: 'MA1234',
+      //           localName: 'Module A',
+      //           partnerModules: [
+      //             {
+      //               partnerCode: 'PA1234',
+      //               partnerName: 'Partner Module 1'
+      //             },
+      //             {
+      //               partnerCode: 'PA5678',
+      //               partnerName: 'Partner Module 2'
+      //             }
+      //           ]
+      //         },
+      //         {
+      //           localCode: 'MB5678',
+      //           localName: 'Module B',
+      //           partnerModules: [
+      //             {
+      //               partnerCode: 'PB1234',
+      //               partnerName: 'Partner Module 3'
+      //             },
+      //             {
+      //               partnerCode: 'PB5678',
+      //               partnerName: 'Partner Module 4'
+      //             },
+      //             {
+      //               partnerCode: 'PB9012',
+      //               partnerName: 'Partner Module 5'
+      //             }
+      //           ]
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       university: 'University of California, Berkeley',
+      //       localModules: ['Module X', 'Module Y', 'Module Z'],
+      //       continent: 'North America',
+      //       country: 'United States',
+      //       gpa: 3.8,
+      //       languageRequirements: 'English',
+      //       moduleSets: [
+      //         {
+      //           localCode: 'CX1234',
+      //           localName: 'Module X',
+      //           partnerModules: [
+      //             {
+      //               partnerCode: 'PX1234',
+      //               partnerName: 'Partner Module 1'
+      //             },
+      //             {
+      //               partnerCode: 'PX5678',
+      //               partnerName: 'Partner Module 2'
+      //             }
+      //           ]
+      //         },
+      //         {
+      //           localCode: 'CY5678',
+      //           localName: 'Module Y',
+      //           partnerModules: [
+      //             {
+      //               partnerCode: 'PY1234',
+      //               partnerName: 'Partner Module 3'
+      //             },
+      //             {
+      //               partnerCode: 'PY5678',
+      //               partnerName: 'Partner Module 4'
+      //             },
+      //             {
+      //               partnerCode: 'PY9012',
+      //               partnerName: 'Partner Module 5'
+      //             }
+      //           ]
+      //         },
+      //         {
+      //           localCode: 'CZ9012',
+      //           localName: 'Module Z',
+      //           partnerModules: [
+      //             {
+      //               partnerCode: 'PZ1234',
+      //               partnerName: 'Partner Module 6'
+      //             },
+      //             {
+      //               partnerCode: 'PZ5678',
+      //               partnerName: 'Partner Module 7'
+      //             }
+      //           ]
+      //         }
+      //       ]
+      //     }
+      //   ]
+    };
   },
   async created() {
     const listOfUnis = await getDocs(collection(db, "ListOfUniversities"));
 
     listOfUnis.forEach((doc) => {
-      this.uniAvail.push(doc.id)
-      this.universityInformation[doc.id] = {}
-      this.universityInformation[doc.id]["Country"] = doc.data().Country
-      this.universityInformation[doc.id]["Continent"] = doc.data().Continent
-      this.universityInformation[doc.id]["GPA"] = doc.data().MinGPA
-      this.universityInformation[doc.id]["LangReq"] = doc.data().LanguageProficiency
-    })
+      this.uniAvail.push(doc.id);
+      this.universityInformation[doc.id] = {};
+      this.universityInformation[doc.id]["Country"] = doc.data().Country;
+      this.universityInformation[doc.id]["Continent"] = doc.data().Continent;
+      this.universityInformation[doc.id]["GPA"] = doc.data().MinGPA;
+      this.universityInformation[doc.id]["LangReq"] =
+        doc.data().LanguageProficiency;
+    });
   },
   computed: {
-    filteredModuleTiles() {
-      if (this.getActiveContinent() === 'All') {
-        return this.universityData;
+    filteredandSortedModuleTiles() {
+      let filteredModuleTiles = [];
+      if (this.getActiveContinent() === "All") {
+        filteredModuleTiles = this.universityData;
       } else {
-        return this.universityData.filter((university) => university.continent === this.getActiveContinent());
+        filteredModuleTiles = this.universityData.filter(
+          (university) => university.continent === this.getActiveContinent()
+        );
       }
-    }
+      return filteredModuleTiles.sort(
+        (a, b) => b.localModules.length - a.localModules.length
+      );
+    },
   },
-    methods: {
+  methods: {
     addInput() {
-      if (this.inputText !== '' && this.inputs.length < 6) {
+      if (this.inputText !== "" && this.inputs.length < 6) {
         if (this.inputs.indexOf(this.inputText.toUpperCase()) === -1) {
           this.inputs.push(this.inputText.toUpperCase());
-          this.inputText = '';
+          this.inputText = "";
         } else {
-          window.alert('This module has already been added.'); // Show the error message as a pop-up
+          window.alert("This module has already been added."); // Show the error message as a pop-up
         }
       }
     },
@@ -141,7 +297,8 @@ export default {
       if (continent.active) {
         continent.active = false;
       } else {
-        this.continents.forEach((item) => { item.active = false;
+        this.continents.forEach((item) => {
+          item.active = false;
         });
         continent.active = true;
       }
@@ -153,33 +310,44 @@ export default {
       this.inputs = [];
     },
     async submitInputs() {
-      this.universityData = []
-      let universityModHash = {}
+      this.universityData = [];
+      let universityModHash = {};
 
-      for (const mod of this.inputs) { // Getting the input NUS Modules
-        const nusModRef = doc(db, "NUS Module Mapping", mod)
-        const modSnap = await getDoc(nusModRef)
-        const nusModTitle = modSnap.data()
-        console.log(nusModTitle.ModuleTitle)
+      for (const mod of this.inputs) {
+        // Getting the input NUS Modules
+        const nusModRef = doc(db, "NUS Module Mapping", mod);
+        const modSnap = await getDoc(nusModRef);
+        if (modSnap.exists()) {
+          const nusModTitle = modSnap.data();
+          console.log(nusModTitle.ModuleTitle);
 
-        for (const uni of this.uniAvail) { // Getting the universities that offer that NUS Module
-          const nusModInfo = await getDocs(collection(nusModRef, uni.toLowerCase()))
-          nusModInfo.forEach(info => {
-            if (!(uni in universityModHash)) {
-              universityModHash[uni] = {}
-            }
-            if (!(mod in universityModHash[uni])) {
-              universityModHash[uni][mod] = {}
-              universityModHash[uni][mod]["localName"] = nusModTitle
-              universityModHash[uni][mod]["partnerModules"] = []
-            }
-            let PUModCode = info.id
-            let PUModTitle = info.data().PUModTitle
-            let addToPartnerModules = {}
-            addToPartnerModules["partnerCode"] = PUModCode
-            addToPartnerModules["partnerName"] = PUModTitle
-            universityModHash[uni][mod]["partnerModules"].push(addToPartnerModules)
-          })
+          for (const uni of this.uniAvail) {
+            // Getting the universities that offer that NUS Module
+            const nusModInfo = await getDocs(
+              collection(nusModRef, uni.toLowerCase())
+            );
+            nusModInfo.forEach((info) => {
+              if (!(uni in universityModHash)) {
+                universityModHash[uni] = {};
+              }
+              if (!(mod in universityModHash[uni])) {
+                universityModHash[uni][mod] = {};
+                universityModHash[uni][mod]["localName"] = nusModTitle;
+                universityModHash[uni][mod]["partnerModules"] = [];
+              }
+              let PUModCode = info.id;
+              let PUModTitle = info.data().PUModTitle;
+              let addToPartnerModules = {};
+              addToPartnerModules["partnerCode"] = PUModCode;
+              addToPartnerModules["partnerName"] = PUModTitle;
+              universityModHash[uni][mod]["partnerModules"].push(
+                addToPartnerModules
+              );
+            });
+          }
+        } else {
+          console.log(`Module code "${mod}" not found in database.`);
+          window.alert(`Module code "${mod}" not found in database.`);
         }
       }
 
@@ -191,20 +359,22 @@ export default {
           country: this.universityInformation[uni]["Country"],
           gpa: this.universityInformation[uni]["GPA"],
           languageRequirements: this.universityInformation[uni]["LangReq"],
-          moduleSets: []
-        }
+          moduleSets: [],
+        };
 
         for (let localModCode in universityModHash[uni]) {
-          toAdd["localModules"].push(localModCode)
+          toAdd["localModules"].push(localModCode);
           let toAddToModuleSet = {
             localCode: localModCode,
-            localName: universityModHash[uni][localModCode]["localName"]["ModuleTitle"],
-            partnerModules: universityModHash[uni][localModCode]["partnerModules"]
-          }
-          toAdd["moduleSets"].push(toAddToModuleSet)
+            localName:
+              universityModHash[uni][localModCode]["localName"]["ModuleTitle"],
+            partnerModules:
+              universityModHash[uni][localModCode]["partnerModules"],
+          };
+          toAdd["moduleSets"].push(toAddToModuleSet);
         }
 
-        this.universityData.push(toAdd)
+        this.universityData.push(toAdd);
       }
     },
     filterModules(moduleSets, continent) {
@@ -217,15 +387,19 @@ export default {
       });
 
       return filteredModules;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
 .main {
   margin: auto;
-  max-width: 80%;
+  max-width: 88%;
+}
+
+.main > * {
+  margin: 1% 0%;
 }
 
 .search-container {
@@ -234,7 +408,7 @@ export default {
   align-items: center;
 }
 
-input[type=text] {
+input[type="text"] {
   flex: 1;
   padding: 12px 20px;
   box-sizing: border-box;
@@ -245,7 +419,8 @@ input[type=text] {
   text-transform: none; /* added line to auto capitalize text */
 }
 
-::placeholder { /* added placeholder style */
+::placeholder {
+  /* added placeholder style */
   text-transform: none;
 }
 
@@ -372,4 +547,4 @@ input[type=text] {
   flex-wrap: wrap;
   gap: 20px;
 }
-</style>       
+</style>
