@@ -163,10 +163,13 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  width: 88%;
+  margin-left: auto;
+  margin-right: auto;
 }
 img {
-  height: 500px;
-  width: 1120px;
+  height: 100%;
+  width: 100%;
   border-radius: 20px;
 }
 h1 {
@@ -182,7 +185,7 @@ h5 {
   padding-top: 5px;
 }
 .component {
-  width: 1120px;
+  width: 100%;
 }
 .row {
   display: flex;
