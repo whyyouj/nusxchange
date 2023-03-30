@@ -29,7 +29,7 @@
       <router-link class="links" to="/mapping">Module Mapping</router-link>
       <router-link class="links" to="/generalhelp">General Help</router-link>
     </div>
-    <div style="width: 5%; margin-right: -2%; margin-left: auto">
+    <div style="width: 5%; margin-right: auto; margin-left: auto">
       <img v-if="logIn" id="photo" :src="source" alt="" style="width: 100%" />
     </div>
     <div class="navbar-buttons">
@@ -181,16 +181,14 @@ export default {
 .links:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
-
 .navbar-buttons {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: center;
-  height: 100%;
+  justify-content: flex-end;
   width: 40%;
+  padding-right: 2%;
 }
-
 .navbar-buttons .links {
-  padding: 0% 5%;
+  padding: 6% 5%;
 }
 </style>
