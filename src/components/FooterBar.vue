@@ -7,7 +7,7 @@
           style="width: 100px; height: 100px"
           src="../assets/nusxchange1.png"
         />
-        The One-stop portal for Exchangers.
+        The One-stop Portal for Exchangers.
       </div>
       <div class="links">
         <div class="socials" style="display: flex; flex-flow: column nowrap">
@@ -16,15 +16,26 @@
           <div v-for="socialLink in this.socialLinks" :key="socialLink.name">
             <font-awesome-icon :icon="['fab', socialLink.iconName]" size="lg" />
             <a
-              style="padding-left: 1%"
+              style="padding-left: 5%"
               :href="socialLink.url"
               target="_blank"
               >{{ socialLink.name }}</a
             >
           </div>
         </div>
-        <div class="account">account</div>
-        <div class="newsletter">
+        <div class="account">
+          <h3>Pages</h3>
+          <router-link to="/university">Universities</router-link>
+          <router-link to="/mapping">Module Mapping</router-link>
+          <router-link to="/signin/account-management-page"
+            >Account Management</router-link
+          >
+        </div>
+        <div class="report">
+          <h3>Report Issues</h3>
+          <span style="font-weight: 100"
+            >Any issues or suggestions for our website?</span
+          >
           <v-btn onclick="window.location.href='mailto:nusxhange@gmail.com'">
             Send email
           </v-btn>
@@ -66,19 +77,31 @@ export default {
 </script>
 
 <style scoped>
-.main {
-  /* background-color: red; */
-}
 .content {
   display: flex;
 }
+.logo {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-around;
+}
 .socials {
-  width: 500px;
+  width: 20%;
   height: 200px;
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: column wrap;
   justify-content: space-around;
-  /* background-color: red; */
+}
+.account {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+.report {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 a {
   font-weight: 200;
@@ -96,7 +119,8 @@ a:hover {
 }
 .links {
   display: flex;
-  /* background-color: red; */
+  width: 100%;
+  justify-content: space-around;
 }
 .disclaimer {
   display: flex;
