@@ -77,9 +77,17 @@ export default {
 </script>
 
 <style scoped>
+.main {
+  padding-top: 5%;
+}
 .content {
   display: flex;
+  height: 200px;
 }
+.logo,
+.socials,
+.account,
+.report,
 .logo {
   display: flex;
   flex-flow: column wrap;
@@ -87,21 +95,6 @@ export default {
 }
 .socials {
   width: 20%;
-  height: 200px;
-  display: flex;
-  flex-flow: column wrap;
-  justify-content: space-around;
-}
-.account {
-  display: flex;
-  flex-flow: column wrap;
-  justify-content: space-around;
-  align-items: flex-start;
-}
-.report {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
 }
 a {
   font-weight: 200;
@@ -112,8 +105,6 @@ a:hover {
   color: black;
 }
 .logo {
-  display: flex;
-  flex-flow: column nowrap;
   align-items: center;
   width: 40%;
 }
