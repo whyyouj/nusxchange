@@ -12,34 +12,55 @@
       <div class="links">
         <div class="socials" style="display: flex; flex-flow: column nowrap">
           <h3>Socials</h3>
+
           <div v-for="socialLink in this.socialLinks" :key="socialLink.name">
-            <a href="socialLink.url">{{ socialLink.name }}</a>
+            <font-awesome-icon :icon="['fab', socialLink.iconName]" size="lg" />
+            <a
+              style="padding-left: 1%"
+              :href="socialLink.url"
+              target="_blank"
+              >{{ socialLink.name }}</a
+            >
           </div>
         </div>
         <div class="account">account</div>
-        <div class="newsletter">newsletter</div>
+        <div class="newsletter">
+          <v-btn onclick="window.location.href='mailto:nusxhange@gmail.com'">
+            Send email
+          </v-btn>
+        </div>
       </div>
     </div>
     <v-divider></v-divider>
     <div class="disclaimer">© 2023 NUSXchange. All rights reserved.</div>
   </div>
 </template>
-<!-- 
-export default { data() { return { links: [ { name: "NUS SEP Financial Aid",
-url: NUS_FINANCIAL_AID_URL, }, { name: "NUS Student Travel Insurance", url:
-NUS_STUDENT_TRAVEL_INSURANCE_URL, }, { name: "Third Party Travel Insurance",
-url: THIRD_PARTY_TRAVEL_INSURANCE_URL, }, { name: "International SOS", url:
-INTERNATIONAL_SOS_URL }, ], }; -->
 <script>
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 export default {
   data() {
     return {
       socialLinks: [
-        { name: "Twitter", url: "www.twitter.com" },
-        { name: "Gmail", url: "www.gmail.com" },
-        { name: "GitHub", url: "https://github.com/wjingen/nusxchange" },
+        {
+          name: "LinkedIn",
+          url: "https://www.linkedin.com/in/jingenwong",
+          iconName: "linkedin",
+        },
+        {
+          name: "GitHub",
+          url: "https://github.com/wjingen/nusxchange",
+          iconName: "github",
+        },
+        {
+          name: "YouTube",
+          url: "https://www.youtube.com",
+          iconName: "youtube",
+        },
       ],
     };
+  },
+  components: {
+    FontAwesomeIcon,
   },
 };
 </script>

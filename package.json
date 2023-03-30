@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.3.0",
-    "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@fortawesome/free-brands-svg-icons": "^6.4.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@mdi/font": "^7.2.96",
     "bootstrap": "^5.2.3",
@@ -17,6 +19,7 @@
     "firebase": "^9.18.0",
     "firebaseui": "^0.600.0",
     "font-awesome": "^4.7.0",
+    "fortawesome": "^0.0.1-security",
     "vue": "^3.2.13",
     "vue-disqus": "^5.1.0",
     "vue-google-signin-button": "^1.0.4",
