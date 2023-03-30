@@ -5,18 +5,42 @@
       class="image"
     />
     <div class="login">
-      <img style="width: 100px; height: 100px" src="../assets/nusxchange.png" />
+      <img
+        style="width: 100px; height: 100px"
+        src="../assets/nusxchange1.png"
+      />
       <h2>Login</h2>
       <div style="width: 70%">
         <v-text-field v-model="email" label="Email" type="email" />
         <v-text-field v-model="password" label="Password" type="password" />
         <v-btn class="button" block @click="Login">Login</v-btn>
-        <p v-if="invalidSignin" style="color: red; text-align:center; font-size: 12px; font-family: verdana, arial">Invalid Email/Password</p>
-        <p v-if='emailNotVerify' style="color: red; text-align:center; color: red; font-size: 12px; font-family: verdana, arial ">Please verify your email</p>
+        <p
+          v-if="invalidSignin"
+          style="
+            color: red;
+            text-align: center;
+            font-size: 12px;
+            font-family: verdana, arial;
+          "
+        >
+          Invalid Email/Password
+        </p>
+        <p
+          v-if="emailNotVerify"
+          style="
+            color: red;
+            text-align: center;
+            color: red;
+            font-size: 12px;
+            font-family: verdana, arial;
+          "
+        >
+          Please verify your email
+        </p>
       </div>
-      <p style="margin-top:5% ; text-align:center">or</p>
-      <div style="width: 100%;" id="firebaseui-auth-container"/>
-      
+      <p style="margin-top: 5%; text-align: center">or</p>
+      <div style="width: 100%" id="firebaseui-auth-container" />
+
       <div class="error-handling">
         <router-link class="links" to="/password-reset"
           >Forgot your password?</router-link
@@ -37,16 +61,16 @@
 </template>
 
 <script>
-import { signInWithEmailAndPassword} from "firebase/auth";
-import { auth } from '../firebase.js';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase.js";
 
-import firebase from '@/uifire.js'
-import 'firebase/compat/auth'
-import * as firebaseui from 'firebaseui'
-import 'firebaseui/dist/firebaseui.css'
-import {getFirestore} from 'firebase/firestore';
-import {firebaseApp} from '../firebase.js';
-import { doc, getDoc} from 'firebase/firestore';
+import firebase from "@/uifire.js";
+import "firebase/compat/auth";
+import * as firebaseui from "firebaseui";
+import "firebaseui/dist/firebaseui.css";
+import { getFirestore } from "firebase/firestore";
+import { firebaseApp } from "../firebase.js";
+import { doc, getDoc } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 export default {
   data() {
@@ -55,11 +79,10 @@ export default {
       password: "",
       invalidSignin: false,
       emailNotVerify: false,
-      user: null
-
+      user: null,
     };
   },
-    /*created() {
+  /*created() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.user = user;
@@ -84,7 +107,7 @@ export default {
       const style = document.createElement('style');
       document.head.appendChild(style);
     }, */
-    
+
   /*const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
   const uiConfig = {
       signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
@@ -112,7 +135,9 @@ export default {
     });
   },*/
   mounted() {
-    var ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
+    var ui =
+      firebaseui.auth.AuthUI.getInstance() ||
+      new firebaseui.auth.AuthUI(firebase.auth());
     var uiConfig = {
       signInSuccessUrl: "/register-google",
       signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
@@ -120,36 +145,36 @@ export default {
     ui.start("#firebaseui-auth-container", uiConfig);
   },
 
-    
   methods: {
-  async googleSignin() {
-    return await new Promise((resolve, reject) => {
-      firebase.auth().onAuthStateChanged(async user => {
-        if (user) {
-          const usersRef = doc(db, "Account", user.uid);
-          getDoc(usersRef).then(querySnapshot => {
-            if (querySnapshot.exists()) {
-              const userDoc = querySnapshot.data();
-              console.log("User exists: ", userDoc);
-              resolve("/");
-            } else {
-              resolve("/register-google")
-              console.log("User does not exist");
-              
-            }
-          }).catch(error => {
-            console.log("Error getting documents: ", error);
+    async googleSignin() {
+      return await new Promise((resolve, reject) => {
+        firebase.auth().onAuthStateChanged(async (user) => {
+          if (user) {
+            const usersRef = doc(db, "Account", user.uid);
+            getDoc(usersRef)
+              .then((querySnapshot) => {
+                if (querySnapshot.exists()) {
+                  const userDoc = querySnapshot.data();
+                  console.log("User exists: ", userDoc);
+                  resolve("/");
+                } else {
+                  resolve("/register-google");
+                  console.log("User does not exist");
+                }
+              })
+              .catch((error) => {
+                console.log("Error getting documents: ", error);
+                resolve("/register-google");
+              });
+          } else {
+            console.log("User does not exist. Here.k");
             resolve("/register-google");
-          });
-        } else {
-          
-          console.log("User does not exist. Here.k");
-          resolve("/register-google");
-          reject
-        }})
-
-    });},
-  /*async googleSignin() {
+            reject;
+          }
+        });
+      });
+    },
+    /*async googleSignin() {
   return new Promise((resolve, reject) => {
 
     firebase.auth().onAuthStateChanged(async (user) => {
@@ -177,7 +202,7 @@ export default {
       signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
     };
     ui.start("#firebaseui-auth-container", uiConfig);
-  },*//*
+  },*/ /*
     async handleUserStateChange() {
       if (this.user) {
         const usersRef = doc(db, "Account", this.user.uid);
@@ -202,40 +227,37 @@ export default {
       }
     },*/
 
-  
     async Login() {
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        this.email,
-        this.password
-      );
-      const user = userCredential.user;
-      if (user.emailVerified) {
-        console.log("User logged in:", user);
-      this.$router.push("/");
-      } else {
-        console.error("User email not verified")
-        this.emailNotVerify = true
-        this.invalidSignin = false
-        await auth.signOut();
+      try {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          this.email,
+          this.password
+        );
+        const user = userCredential.user;
+        if (user.emailVerified) {
+          console.log("User logged in:", user);
+          this.$router.push("/");
+        } else {
+          console.error("User email not verified");
+          this.emailNotVerify = true;
+          this.invalidSignin = false;
+          await auth.signOut();
+        }
+        // Redirect to the desired page after login
+      } catch (error) {
+        console.error("Login error:", error);
+        this.emailNotVerify = false;
+        this.invalidSignin = true;
+
+        // Handle errors here, such as displaying an error message to the user
       }
-       // Redirect to the desired page after login
-    } catch (error) {
-      console.error("Login error:", error);
-     this.emailNotVerify = false  
-      this.invalidSignin = true
-
-      // Handle errors here, such as displaying an error message to the user
-    }
-
-    }
+    },
   },
 };
 </script>
 
 <style scoped>
-
 .home {
   display: flex;
   flex-flow: row nowrap;
