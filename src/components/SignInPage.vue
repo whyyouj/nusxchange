@@ -7,7 +7,7 @@
     <div class="login">
       <img
         style="width: 100px; height: 100px"
-        src="../assets/nusxchange1.png"
+        src="../assets/clear_nusxchange.png"
       />
       <h2>Login</h2>
       <div style="width: 70%">

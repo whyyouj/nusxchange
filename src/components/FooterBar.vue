@@ -5,7 +5,7 @@
       <div class="logo">
         <img
           style="width: 100px; height: 100px"
-          src="../assets/nusxchange1.png"
+          src="../assets/clear_nusxchange.png"
         />
         The One-stop Portal for Exchangers.
       </div>
@@ -126,7 +126,7 @@ a:hover {
   display: flex;
   justify-content: center;
   font-weight: 100;
-  padding: 3%;
+  padding: 2%;
   background-color: rgba(0, 0, 0, 0.05);
 }
 </style>
