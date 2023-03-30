@@ -167,7 +167,11 @@
               <tr v-for="row in otherLinks" :key="row.name">
                 <td>{{ row.name }}</td>
                 <td v-if="row.link">
-                  <a :href="row.link">{{ row.link }}</a>
+                  <a
+                    :href="row.link"
+                    onclick="window.open(this.href,'_blank');return false;"
+                    >{{ row.link }}</a
+                  >
                 </td>
                 <td v-else>No link available.</td>
               </tr>
@@ -195,11 +199,11 @@ export default {
     const auth = getAuth();
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-          this.favouriteUniversities = await this.getFavouriteUnis(user.uid);
-          this.isLoggedIn = true;
-        } else {
+        this.favouriteUniversities = await this.getFavouriteUnis(user.uid);
+        this.isLoggedIn = true;
+      } else {
         console.log("SIGNED OUT!");
-        this.isLoggedIn= false;
+        this.isLoggedIn = false;
       }
     });
   },

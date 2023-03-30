@@ -119,7 +119,7 @@
       <div class="links">
         <div v-for="link in links" :key="link.url" class="row">
           <p>{{ link.name }}</p>
-          <a :href="link.url">{{ link.url }}</a>
+          <a :href="link.url" target="_blank">{{ link.url }}</a>
         </div>
       </div>
     </div>
@@ -195,9 +195,12 @@ h5 {
 }
 a {
   text-decoration: none;
-  color: #90afc4;
+  color: rgb(144, 175, 196); /* #90afc4; */
   font-weight: bold;
   width: 700px;
+}
+a:hover {
+  color: rgba(144, 175, 196, 0.5);
 }
 table {
   border-collapse: collapse;
