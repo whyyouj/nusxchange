@@ -14,6 +14,7 @@
     "@mdi/font": "^7.2.96",
     "bootstrap": "^5.2.3",
     "core-js": "^3.8.3",
+    "dependencies": "^0.0.1",
     "firebase": "^9.18.0",
     "firebaseui": "^0.600.0",
     "font-awesome": "^4.7.0",
