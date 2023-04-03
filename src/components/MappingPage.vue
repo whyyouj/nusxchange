@@ -25,7 +25,7 @@
       <button class="add-module-btn" @click="addInput">Add Module</button>
     </div>
     <div v-if="autoFilteredModules && filterModal" class = "z-10">
-      <ul>
+      <ul style = "list-style: none;">
         <li v-for="autoFilteredModule in autoFilteredModules" :key="autoFilteredModule" class = "py-2 border-b cursor-pointer" @click="setState(autoFilteredModule)">{{ autoFilteredModule }}</li>
       </ul>
     </div>
@@ -194,6 +194,7 @@ export default {
   },
   methods: {
     autoFilterModules() {
+      console.log(this.autoFilteredModules)
       if (this.inputText.length < 2) {
         return this.autoFilteredModules = [];
       }
@@ -207,6 +208,7 @@ export default {
       this.filterModal = false;
     },
     addInput() {
+      this.filterModal = false;
       if (this.inputText !== "" && this.inputs.length < 6) {
         if (this.inputs.indexOf(this.inputText.toUpperCase()) === -1) {
           this.inputs.push(this.inputText.toUpperCase());
