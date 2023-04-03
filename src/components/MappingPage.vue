@@ -208,7 +208,6 @@ export default {
       this.filterModal = false;
     },
     addInput() {
-      this.filterModal = false;
       this.autoFilteredModules = [];
       if (this.inputText !== "" && this.inputs.length < 6) {
         if (this.inputs.indexOf(this.inputText.toUpperCase()) === -1) {
