@@ -201,6 +201,11 @@ export default {
       this.autoFilteredModules = this.nusModuleCode.filter(text => {
         return text.toUpperCase().startsWith(this.inputText.toUpperCase());
       })
+      if (this.autoFilteredModules.length > 0) {
+        this.filterModal = true;
+      } else {
+        this.filterModal = false;
+      }
     },
     setState(autoFilteredModule) {
       this.inputText = autoFilteredModule;
@@ -217,6 +222,7 @@ export default {
           window.alert("This module has already been added."); // Show the error message as a pop-up
         }
       }
+      this.filterModal = false;
     },
     toggleContinent(continent) {
       if (continent.active) {
