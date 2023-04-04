@@ -90,9 +90,15 @@
       </div>
     </div>
     <div v-else class="text-center">
+      <div v-if="isLoading" class="loading-container">
+      <p>Loading Universities...</p>
+      <div class="loader"></div>
+    </div>
+      <div v-if = "!isLoading" class="no-mappable-universities">
       <br />
       <p>No mappable universities. Try keying in more / different modules.</p>
       <br />
+      </div>
     </div>
   </div>
 </template>
@@ -117,6 +123,7 @@ export default {
   data() {
     return {
       inputText: "",
+      isLoading: false,
       inputs: [],
       errorMessage: "You have already added this module!",
       continents: [
@@ -200,30 +207,33 @@ export default {
       }
       this.autoFilteredModules = this.nusModuleCode.filter(text => {
         return text.toUpperCase().startsWith(this.inputText.toUpperCase());
-      })
+      });
       if (this.autoFilteredModules.length > 0) {
-        this.filterModal = true;
-      } else {
-        this.filterModal = false;
-      }
-    },
+      this.filterModal = true;
+    } else {
+      this.filterModal = false;
+    }
+  },
     setState(autoFilteredModule) {
       this.inputText = autoFilteredModule;
       this.autoFilteredModules = [];
       this.filterModal = false;
     },
     addInput() {
-      this.autoFilteredModules = [];
-      if (this.inputText !== "" && this.inputs.length < 6) {
-        if (this.inputs.indexOf(this.inputText.toUpperCase()) === -1) {
-          this.inputs.push(this.inputText.toUpperCase());
-          this.inputText = "";
-        } else {
-          window.alert("This module has already been added."); // Show the error message as a pop-up
-        }
+    this.autoFilterModules();
+    if (this.autoFilteredModules.length === 1) {
+      this.setState(this.autoFilteredModules[0]);
+    }
+    if (this.inputText !== "") {
+      if (this.inputs.indexOf(this.inputText.toUpperCase()) === -1) {
+        this.inputs.push(this.inputText.toUpperCase());
+        this.inputText = "";
+      } else {
+        window.alert("This module has already been added.");
       }
-      this.filterModal = false;
-    },
+    }
+    this.filterModal = false;
+  },
     toggleContinent(continent) {
       if (continent.active) {
         continent.active = false;
@@ -243,6 +253,7 @@ export default {
     async submitInputs() {
       this.universityData = [];
       let universityModHash = {};
+      this.isLoading = true;
 
       for (const mod of this.inputs) {
         // Getting the input NUS Modules
@@ -254,9 +265,9 @@ export default {
 
           for (const uni of this.uniAvail) {
             // Getting the universities that offer that NUS Module
-            const nusModInfo = await getDocs(
-              collection(nusModRef, uni.toLowerCase())
-            );
+              const nusModInfo = await getDocs(
+                collection(nusModRef, uni.toLowerCase())
+              );
             nusModInfo.forEach((info) => {
               if (!(uni in universityModHash)) {
                 universityModHash[uni] = {};
@@ -307,6 +318,7 @@ export default {
 
         this.universityData.push(toAdd);
       }
+      this.isLoading = false;
     },
     filterModules(moduleSets, continent) {
       let filteredModules = [];
@@ -478,4 +490,30 @@ input[type="text"] {
   flex-wrap: wrap;
   gap: 20px;
 }
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 </style>
