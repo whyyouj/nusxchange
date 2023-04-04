@@ -62,28 +62,30 @@
       </div>
       <v-divider></v-divider>
       <div class="details">
-        <div class="description">
-          {{ this.universityData.uniDescription }}
-        </div>
-        <div style="display: flex; width: 100%">
-          <div class="academic-window">
-            <h3>Academic Window:</h3>
-            <p>Semester 1: {{ this.universityData.semOneWindow }}</p>
-            <p>Semester 2: {{ this.universityData.semTwoWindow }}</p>
+        <div style="display: flex">
+          <div class="description">
+            {{ this.universityData.uniDescription }}
           </div>
-          <div class="vacancies">
-            <h3>Vacancies:</h3>
-            <div
-              v-if="
-                this.universityData.semOneVacancies ||
-                this.universityData.semTwoVacancies
-              "
-            >
-              <p>Semester 1: {{ this.universityData.semOneVacancies }}</p>
-              <p>Semester 2: {{ this.universityData.semTwoVacancies }}</p>
+          <div style="width: 80%; margin-left: 10%">
+            <div class="academic-window">
+              <h3>Academic Window:</h3>
+              <p>Semester 1: {{ this.universityData.semOneWindow }}</p>
+              <p>Semester 2: {{ this.universityData.semTwoWindow }}</p>
             </div>
-            <div v-else>
-              <p>Any Semester: {{ this.universityData.anyVacancies }}</p>
+            <div class="vacancies">
+              <h3>Vacancies:</h3>
+              <div
+                v-if="
+                  this.universityData.semOneVacancies ||
+                  this.universityData.semTwoVacancies
+                "
+              >
+                <p>Semester 1: {{ this.universityData.semOneVacancies }}</p>
+                <p>Semester 2: {{ this.universityData.semTwoVacancies }}</p>
+              </div>
+              <div v-else>
+                <p>Any Semester: {{ this.universityData.anyVacancies }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -455,18 +457,20 @@ strong {
   color: #5f84a1;
   display: flex;
   justify-content: space-between;
+  margin: 2% 0%;
 }
 .description {
   font-weight: 500;
   width: 50%;
-  margin-bottom: 5%;
+  margin: 2% 0%;
 }
 .academic-window,
 .vacancies {
   font-weight: 100;
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 100%;
+  margin: 2% 0%;
 }
 .attractions,
 .google-maps {
