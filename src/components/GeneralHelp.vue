@@ -117,10 +117,24 @@
     <div class="component">
       <h1>Financial Aid, Insurance and International SOS</h1>
       <div class="links">
-        <div v-for="link in links" :key="link.url" class="row">
+        <!-- <div v-for="link in links" :key="link.url" class="row">
           <p>{{ link.name }}</p>
-          <a :href="link.url" target="_blank">{{ link.url }}</a>
-        </div>
+          <a :href="link.url" target="_blank" style="text-align: left">{{
+            link.url
+          }}</a>
+        </div> -->
+        <v-table>
+          <tbody>
+            <tr v-for="link in links" :key="link.url">
+              <td>{{ link.name }}</td>
+              <td>
+                <a :href="link.url" target="_blank" style="text-align: left">{{
+                  link.url
+                }}</a>
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
       </div>
     </div>
   </div>
@@ -191,17 +205,8 @@ h5 {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
-  text-align: left;
 }
-a {
-  text-decoration: none;
-  color: rgb(144, 175, 196); /* #90afc4; */
-  font-weight: bold;
-  width: 700px;
-}
-a:hover {
-  color: rgba(144, 175, 196, 0.5);
-}
+
 table {
   border-collapse: collapse;
   width: 100%;
@@ -218,5 +223,9 @@ td {
   border-bottom: solid;
   border-color: #90afc4;
   border-width: 0.1px;
+}
+
+a {
+  font-weight: 200;
 }
 </style>
