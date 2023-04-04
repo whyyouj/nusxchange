@@ -107,12 +107,18 @@
                   :key="index"
                   :value="index"
                 >
-                  <v-table>
+                  <v-table class="table">
                     <thead>
                       <tr>
-                        <th>Name</th>
-                        <th>Rating</th>
-                        <th>Total Ratings</th>
+                        <th style="font-weight: bold; color: var(--primary)">
+                          Name
+                        </th>
+                        <th style="font-weight: bold; color: var(--primary)">
+                          Rating
+                        </th>
+                        <th style="font-weight: bold; color: var(--primary)">
+                          Total Ratings
+                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -123,9 +129,29 @@
                         v-for="(data, dataIndex) in item.content"
                         :key="dataIndex"
                       >
-                        <td>{{ data.name }}</td>
-                        <td>{{ data.rating }}</td>
-                        <td>{{ data.user_ratings_total }}</td>
+                        <td>
+                          <span v-if="data.name">
+                            <a
+                              :href="
+                                'https://www.google.com/maps/search/?api=1&query=' +
+                                data.latitude +
+                                ',' +
+                                data.longitude
+                              "
+                              target="_blank"
+                              >{{ data.name }}</a
+                            >
+                          </span>
+                          <span v-else> NA </span>
+                        </td>
+                        <td>{{ data.rating ? data.rating : "NA" }}</td>
+                        <td>
+                          {{
+                            data.user_ratings_total
+                              ? data.user_ratings_total
+                              : "NA"
+                          }}
+                        </td>
                       </tr>
                     </tbody>
                   </v-table>
@@ -248,7 +274,7 @@ export default {
     },
     async fetchData(placeType) {
       const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Replace with your own proxy server
-      const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=53.46699022421609,-2.2338408013104565&radius=1000&type=${placeType}&key=${this.api_key}`;
+      const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${this.latitude},${this.longitude}&radius=1000&type=${placeType}&key=${this.api_key}`;
       const response = await fetch(proxyUrl + apiUrl, {
         headers: {
           Origin: "http://localhost:8080",
@@ -260,19 +286,50 @@ export default {
       const result = data.results;
       let processed_results = [];
       for (let i = 1; i < result.length; i++) {
-        try {
-          let row = {
-            name: result[i].name,
-            rating: result[i].rating,
-            user_ratings_total: result[i].user_ratings_total,
-          };
-          processed_results.push(row);
-        } catch (err) {
+        // try {
+        //   let row = {
+        //     name: result[i].name,
+        //     rating: result[i].rating,
+        //     user_ratings_total: result[i].user_ratings_total,
+        //     latitude: result[i].geometry.location.lat,
+        //     longitude: result[i].geometry.location.lng,
+        //   };
+        //   processed_results.push(row);
+        // } catch (err) {
+        //   console.log("SKIP");
+        // }
+        if (
+          result[i].name === undefined ||
+          result[i].rating === undefined ||
+          result[i].user_ratings_total === undefined ||
+          result[i].geometry.location.lat === undefined ||
+          result[i].geometry.location.lng === undefined
+        ) {
           console.log("SKIP");
+          continue;
         }
+
+        // Add row to processed_results
+        let row = {
+          name: result[i].name,
+          rating: result[i].rating,
+          user_ratings_total: result[i].user_ratings_total,
+          latitude: result[i].geometry.location.lat,
+          longitude: result[i].geometry.location.lng,
+        };
+        processed_results.push(row);
       }
+      processed_results.sort((a, b) => {
+        // Sort by rating in descending order
+        if (b.rating !== a.rating) {
+          return b.rating - a.rating;
+        }
+        // If ratings are equal, sort by number of ratings in descending order
+        return b.user_ratings_total - a.user_ratings_total;
+      });
       processed_results = processed_results.slice(0, 5);
       // Limit to top 5 results
+      console.log(processed_results);
       return processed_results;
     },
     onTabSelected(index) {
@@ -471,6 +528,9 @@ strong {
   flex-direction: column;
   width: 100%;
   margin: 2% 0%;
+}
+.table {
+  font-weight: 100;
 }
 .attractions,
 .google-maps {
