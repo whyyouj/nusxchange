@@ -43,7 +43,11 @@
           </v-snackbar>
         </div>
       </div>
-      <img class="image" :src="this.universityData.imageURL" />
+      <img
+        class="image"
+        :src="this.universityData.imageURL"
+        style="max-width: 100%; height: 500px"
+      />
       <div class="subtitle">
         <span
           >Location:
@@ -66,7 +70,7 @@
           <div class="description">
             {{ this.universityData.uniDescription }}
           </div>
-          <div style="width: 80%; margin-left: 10%">
+          <div style="width: 40%; margin-left: 10%">
             <div class="academic-window">
               <h3>Academic Window:</h3>
               <p>Semester 1: {{ this.universityData.semOneWindow }}</p>
@@ -268,12 +272,14 @@ export default {
       }
     },
     async fetchAllData() {
-      this.nearbyRestaurantsData = await this.fetchData("restaurant");
-      this.nearbyAttractionsData = await this.fetchData("tourist_attraction");
       this.nearbyHotelsData = await this.fetchData("lodging");
+      // this.nearbyAttractionsData = await this.fetchData("tourist_attraction");
+      this.nearbyAttractionsData = await this.fetchData("point_of_interest");
+      this.nearbyRestaurantsData = await this.fetchData("restaurant");
     },
     async fetchData(placeType) {
       const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Replace with your own proxy server
+      // https://developers.google.com/maps/documentation/places/web-service/supported_types
       const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${this.latitude},${this.longitude}&radius=1000&type=${placeType}&key=${this.api_key}`;
       const response = await fetch(proxyUrl + apiUrl, {
         headers: {
@@ -518,7 +524,7 @@ strong {
 }
 .description {
   font-weight: 500;
-  width: 50%;
+  width: 100%;
   margin: 2% 0%;
 }
 .academic-window,
