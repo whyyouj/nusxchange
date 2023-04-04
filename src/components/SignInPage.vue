@@ -38,7 +38,7 @@
           Please verify your email
         </p>
       </div>
-      <p style="margin-top: 5%; text-align: center">or</p>
+      <p style="margin-top: 5%; text-align: center; margin-bottom: 2%;">or</p>
       <div style="width: 100%" id="firebaseui-auth-container" />
 
       <div class="error-handling">
