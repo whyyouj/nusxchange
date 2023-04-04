@@ -39,7 +39,7 @@
     :persistent="true"
   >
     <v-card>
-      <v-card-title >Delete Confirmation</v-card-title>
+      <v-card-title>Delete Confirmation</v-card-title>
       <v-card-text> Are you sure you want to Delete your Account </v-card-text>
       <v-card-actions>
         <v-btn color="primary" @click="deleteAccount">Yes</v-btn>
@@ -47,7 +47,7 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-      <!--v-snackbar
+  <!--v-snackbar
       v-model="showDeleteModal"
       color="error"
       absolute
@@ -88,10 +88,14 @@
       <v-dialog v-model="showPhotoModal" max-width="500" :persistent="true">
         <v-card>
           <v-card-title>Delete Confirmation</v-card-title>
-          <v-card-text> Are you sure you want to Delete your Profile Photo? </v-card-text>
+          <v-card-text>
+            Are you sure you want to Delete your Profile Photo?
+          </v-card-text>
           <v-card-actions>
             <v-btn color="primary" @click="deleteImage">Yes</v-btn>
-            <v-btn color="primary" @click="showPhotoModal = false">Cancel</v-btn>
+            <v-btn color="primary" @click="showPhotoModal = false"
+              >Cancel</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -103,11 +107,10 @@
       <div class="username">
         <h3>
           Username
-          <button
-            id="changeusername"
-            @click="changeUsername"
-          >
-          <font-awesome-icon :icon="showusername ? ['fas', 'edit'] : 'check'"/>
+          <button id="changeusername" @click="changeUsername">
+            <font-awesome-icon
+              :icon="showusername ? ['fas', 'edit'] : 'check'"
+            />
           </button>
         </h3>
         <!--input
@@ -123,14 +126,14 @@
           required
           minlength="1"
         /-->
-        <span v-if="showusername">{{ username }}</span>
-        <span v-else> <v-text-field
-          
-          v-model="username"
-          label="Change Username"
-          type="text"
-          required
-          style="width:150%"
+        <span v-if="showusername" style="font-weight: 100">{{ username }}</span>
+        <span v-else>
+          <v-text-field
+            v-model="username"
+            label="Change Username"
+            type="text"
+            required
+            style="width: 150%"
         /></span>
       </div>
       <div id="email">
@@ -165,20 +168,22 @@
           style="font-family: Raleway, sans-serif; color: #194569"
         /-->
         <span v-if="showtele">{{ tele ? tele : "-" }}</span>
-        <span v-else> <v-text-field
-          
-          v-model="tele"
-          label="Telegram Handle"
-          type="text"
-          required
-          style="width:50%;"
+        <span v-else>
+          <v-text-field
+            v-model="tele"
+            label="Telegram Handle"
+            type="text"
+            required
+            style="width: 50%"
         /></span>
       </div>
       <div id="major">
         <h3>
           Faculty
           <button id="changemajor" @click="changeMajor">
-            <font-awesome-icon :icon="showmajoroptions ? ['fas', 'edit'] : 'check'" />
+            <font-awesome-icon
+              :icon="showmajoroptions ? ['fas', 'edit'] : 'check'"
+            />
           </button>
         </h3>
         <!--input
@@ -313,7 +318,7 @@
             <h4
               v-if="exchangeError"
               id="errorMsg"
-              style="color: red; font-size: 12px; font-family: verdana, arial "
+              style="color: red; font-size: 12px; font-family: verdana, arial"
             >
               INVALID UNIVERSITY / SEMESTER
             </h4>
@@ -362,7 +367,7 @@
       <div id="passwordAccount" :key="refreshComp">
         <input
           id="passwordInput"
-          value= "password"
+          value="password"
           :type="showPassword ? 'text' : 'password'"
           :disabled="true"
         />
@@ -485,7 +490,7 @@ library.add(
   faTimes,
   faLock,
   faUnlock,
-  faEdit,
+  faEdit
 );
 const db = getFirestore(firebaseApp);
 export default {
