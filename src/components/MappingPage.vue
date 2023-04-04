@@ -25,8 +25,8 @@
       <button class="add-module-btn" @click="addInput">Add Module</button>
     </div>
     <div v-if="autoFilteredModules && filterModal" class = "z-10">
-      <ul style = "list-style: none;">
-        <li v-for="autoFilteredModule in autoFilteredModules" :key="autoFilteredModule" class = "py-2 border-b cursor-pointer" @click="setState(autoFilteredModule)">{{ autoFilteredModule }}</li>
+      <ul style = "list-style: none; cursor: pointer;">
+        <li v-for="autoFilteredModule in autoFilteredModules" :key="autoFilteredModule" style = "py-2 border-b" @click="setState(autoFilteredModule)">{{ autoFilteredModule }}</li>
       </ul>
     </div>
     <div
@@ -208,6 +208,7 @@ export default {
       this.autoFilteredModules = this.nusModuleCode.filter(text => {
         return text.toUpperCase().startsWith(this.inputText.toUpperCase());
       });
+
       if (this.autoFilteredModules.length > 0) {
       this.filterModal = true;
     } else {
@@ -220,20 +221,25 @@ export default {
       this.filterModal = false;
     },
     addInput() {
-    this.autoFilterModules();
-    if (this.autoFilteredModules.length === 1) {
-      this.setState(this.autoFilteredModules[0]);
-    }
-    if (this.inputText !== "") {
-      if (this.inputs.indexOf(this.inputText.toUpperCase()) === -1) {
-        this.inputs.push(this.inputText.toUpperCase());
-        this.inputText = "";
-      } else {
-        window.alert("This module has already been added.");
+      this.autoFilterModules();
+      if (this.autoFilteredModules.length === 1) {
+        this.setState(this.autoFilteredModules[0]);
       }
-    }
-    this.filterModal = false;
-  },
+      if (this.inputText !== "") {
+        // Preventing modules that is not in the database from being added to this.inputs
+        if (!this.nusModuleCode.includes(this.inputText)) {
+          window.alert("The module code is not in the database. Please try another code")
+        } else {
+          if (this.inputs.indexOf(this.inputText.toUpperCase()) === -1) {
+            this.inputs.push(this.inputText.toUpperCase());
+            this.inputText = "";
+          } else {
+            window.alert("This module has already been added.");
+          }
+        }
+      }
+      this.filterModal = false;
+    },
     toggleContinent(continent) {
       if (continent.active) {
         continent.active = false;

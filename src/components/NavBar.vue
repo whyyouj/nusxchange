@@ -21,7 +21,7 @@
     </v-card>
   </v-dialog>
   <div class="main">
-    <img class="logo" src="../../src/assets/nusxchange.png" />
+    <img class="logo" src="../../src/assets/clear_nusxchange.png" />
     <h1 style="margin-left: 2%">NUSXchange</h1>
     <div class="link">
       <router-link class="links" to="/">Home</router-link>

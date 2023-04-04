@@ -407,12 +407,9 @@
       </div>
       <div v-for="(uni, idx) in favList" :key="idx" id="favouriteList">
         {{ idx + 1 }}.
-        <router-link
-          class="uni-link"
-          :to="`/university/` + uni"
-          style="text-decoration: none; color: var(--primary)"
-          >{{ uni }}</router-link
-        >
+        <router-link class="uni-link" :to="`/university/` + uni">{{
+          uni
+        }}</router-link>
         <span
           v-if="changeFavourite"
           class="delete-icon"
@@ -1027,6 +1024,11 @@ hr {
   border-radius: 10px;
   font-size: 15px;
   margin-left: 60%;
+}
+.uni-link {
+  text-decoration: none;
+  color: var(--primary);
+  font-weight: 100;
 }
 .uni-link:hover {
   font-weight: bold;

@@ -43,7 +43,11 @@
           </v-snackbar>
         </div>
       </div>
-      <img class="image" :src="this.universityData.imageURL" />
+      <img
+        class="image"
+        :src="this.universityData.imageURL"
+        style="max-width: 100%; height: 500px"
+      />
       <div class="subtitle">
         <span
           >Location:
@@ -62,28 +66,30 @@
       </div>
       <v-divider></v-divider>
       <div class="details">
-        <div class="description">
-          {{ this.universityData.uniDescription }}
-        </div>
-        <div style="display: flex; width: 100%">
-          <div class="academic-window">
-            <h3>Academic Window:</h3>
-            <p>Semester 1: {{ this.universityData.semOneWindow }}</p>
-            <p>Semester 2: {{ this.universityData.semTwoWindow }}</p>
+        <div style="display: flex">
+          <div class="description">
+            {{ this.universityData.uniDescription }}
           </div>
-          <div class="vacancies">
-            <h3>Vacancies:</h3>
-            <div
-              v-if="
-                this.universityData.semOneVacancies ||
-                this.universityData.semTwoVacancies
-              "
-            >
-              <p>Semester 1: {{ this.universityData.semOneVacancies }}</p>
-              <p>Semester 2: {{ this.universityData.semTwoVacancies }}</p>
+          <div style="width: 40%; margin-left: 10%">
+            <div class="academic-window">
+              <h3>Academic Window:</h3>
+              <p>Semester 1: {{ this.universityData.semOneWindow }}</p>
+              <p>Semester 2: {{ this.universityData.semTwoWindow }}</p>
             </div>
-            <div v-else>
-              <p>Any Semester: {{ this.universityData.anyVacancies }}</p>
+            <div class="vacancies">
+              <h3>Vacancies:</h3>
+              <div
+                v-if="
+                  this.universityData.semOneVacancies ||
+                  this.universityData.semTwoVacancies
+                "
+              >
+                <p>Semester 1: {{ this.universityData.semOneVacancies }}</p>
+                <p>Semester 2: {{ this.universityData.semTwoVacancies }}</p>
+              </div>
+              <div v-else>
+                <p>Any Semester: {{ this.universityData.anyVacancies }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -105,12 +111,18 @@
                   :key="index"
                   :value="index"
                 >
-                  <v-table>
+                  <v-table class="table">
                     <thead>
                       <tr>
-                        <th>Name</th>
-                        <th>Rating</th>
-                        <th>Total Ratings</th>
+                        <th style="font-weight: bold; color: var(--primary)">
+                          Name
+                        </th>
+                        <th style="font-weight: bold; color: var(--primary)">
+                          Rating
+                        </th>
+                        <th style="font-weight: bold; color: var(--primary)">
+                          Total Ratings
+                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -121,9 +133,29 @@
                         v-for="(data, dataIndex) in item.content"
                         :key="dataIndex"
                       >
-                        <td>{{ data.name }}</td>
-                        <td>{{ data.rating }}</td>
-                        <td>{{ data.user_ratings_total }}</td>
+                        <td>
+                          <span v-if="data.name">
+                            <a
+                              :href="
+                                'https://www.google.com/maps/search/?api=1&query=' +
+                                data.latitude +
+                                ',' +
+                                data.longitude
+                              "
+                              target="_blank"
+                              >{{ data.name }}</a
+                            >
+                          </span>
+                          <span v-else> NA </span>
+                        </td>
+                        <td>{{ data.rating ? data.rating : "NA" }}</td>
+                        <td>
+                          {{
+                            data.user_ratings_total
+                              ? data.user_ratings_total
+                              : "NA"
+                          }}
+                        </td>
                       </tr>
                     </tbody>
                   </v-table>
@@ -240,13 +272,15 @@ export default {
       }
     },
     async fetchAllData() {
-      this.nearbyRestaurantsData = await this.fetchData("restaurant");
-      this.nearbyAttractionsData = await this.fetchData("tourist_attraction");
       this.nearbyHotelsData = await this.fetchData("lodging");
+      // this.nearbyAttractionsData = await this.fetchData("tourist_attraction");
+      this.nearbyAttractionsData = await this.fetchData("point_of_interest");
+      this.nearbyRestaurantsData = await this.fetchData("restaurant");
     },
     async fetchData(placeType) {
       const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Replace with your own proxy server
-      const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=53.46699022421609,-2.2338408013104565&radius=1000&type=${placeType}&key=${this.api_key}`;
+      // https://developers.google.com/maps/documentation/places/web-service/supported_types
+      const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${this.latitude},${this.longitude}&radius=1000&type=${placeType}&key=${this.api_key}`;
       const response = await fetch(proxyUrl + apiUrl, {
         headers: {
           Origin: "http://localhost:8080",
@@ -258,19 +292,50 @@ export default {
       const result = data.results;
       let processed_results = [];
       for (let i = 1; i < result.length; i++) {
-        try {
-          let row = {
-            name: result[i].name,
-            rating: result[i].rating,
-            user_ratings_total: result[i].user_ratings_total,
-          };
-          processed_results.push(row);
-        } catch (err) {
+        // try {
+        //   let row = {
+        //     name: result[i].name,
+        //     rating: result[i].rating,
+        //     user_ratings_total: result[i].user_ratings_total,
+        //     latitude: result[i].geometry.location.lat,
+        //     longitude: result[i].geometry.location.lng,
+        //   };
+        //   processed_results.push(row);
+        // } catch (err) {
+        //   console.log("SKIP");
+        // }
+        if (
+          result[i].name === undefined ||
+          result[i].rating === undefined ||
+          result[i].user_ratings_total === undefined ||
+          result[i].geometry.location.lat === undefined ||
+          result[i].geometry.location.lng === undefined
+        ) {
           console.log("SKIP");
+          continue;
         }
+
+        // Add row to processed_results
+        let row = {
+          name: result[i].name,
+          rating: result[i].rating,
+          user_ratings_total: result[i].user_ratings_total,
+          latitude: result[i].geometry.location.lat,
+          longitude: result[i].geometry.location.lng,
+        };
+        processed_results.push(row);
       }
+      processed_results.sort((a, b) => {
+        // Sort by rating in descending order
+        if (b.rating !== a.rating) {
+          return b.rating - a.rating;
+        }
+        // If ratings are equal, sort by number of ratings in descending order
+        return b.user_ratings_total - a.user_ratings_total;
+      });
       processed_results = processed_results.slice(0, 5);
       // Limit to top 5 results
+      console.log(processed_results);
       return processed_results;
     },
     onTabSelected(index) {
@@ -455,18 +520,23 @@ strong {
   color: #5f84a1;
   display: flex;
   justify-content: space-between;
+  margin: 2% 0%;
 }
 .description {
   font-weight: 500;
-  width: 50%;
-  margin-bottom: 5%;
+  width: 100%;
+  margin: 2% 0%;
 }
 .academic-window,
 .vacancies {
   font-weight: 100;
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 100%;
+  margin: 2% 0%;
+}
+.table {
+  font-weight: 100;
 }
 .attractions,
 .google-maps {

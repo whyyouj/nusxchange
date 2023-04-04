@@ -7,7 +7,7 @@
     <div class="login">
       <img
         style="width: 100px; height: 100px"
-        src="../assets/nusxchange1.png"
+        src="../assets/clear_nusxchange.png"
       />
       <h2>Login</h2>
       <div style="width: 70%">
@@ -38,7 +38,7 @@
           Please verify your email
         </p>
       </div>
-      <p style="margin-top: 5%; text-align: center">or</p>
+      <p style="margin-top: 5%; text-align: center; margin-bottom: 2%;">or</p>
       <div style="width: 100%" id="firebaseui-auth-container" />
 
       <div class="error-handling">
