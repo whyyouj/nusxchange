@@ -63,11 +63,11 @@
 
   <div class="photo">
     <!---<div id="photoname">{{ personname }}</div>--->
-
-    <v-avatar style="height:100vh; width:50vw; margin-top:-30%">
+    <!--v-avatar style="height:100vh; width:50vw; margin-top:-30%; z-index:-1"-->
+    <v-avatar size="30rem" style="z-index:-1">
     <img id="photo" :src="source" alt="" />
     </v-avatar>
-    <div style="margin-top: -15%">
+    <div style="margin-top:-10%">
     <input
       type="file"
       @change="handleFileInputChange"
@@ -830,6 +830,9 @@ export default {
   z-index: 0;
   position: relative;
 }*/
+[v-cloak]{
+  display: none;
+}
 .photo {
   float: left;
   margin-right: 50%;
