@@ -67,7 +67,7 @@
     <v-avatar style="height:100vh; width:50vw; margin-top:-30%">
     <img id="photo" :src="source" alt="" />
     </v-avatar>
-    <div style="margin-top: -20%">
+    <div style="margin-top: -15%">
     <input
       type="file"
       @change="handleFileInputChange"
