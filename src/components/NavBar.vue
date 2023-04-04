@@ -21,7 +21,7 @@
     </v-card>
   </v-dialog>
   <div class="main">
-    <img class="logo" src="../../src/assets/nusxchange1.png" />
+    <img class="logo" src="../../src/assets/nusxchange.png" />
     <h1 style="margin-left: 2%">NUSXchange</h1>
     <div class="link">
       <router-link class="links" to="/">Home</router-link>
@@ -29,9 +29,13 @@
       <router-link class="links" to="/mapping">Module Mapping</router-link>
       <router-link class="links" to="/generalhelp">General Help</router-link>
     </div>
-    <div style="width: 5%; margin-right: auto; margin-left: auto">
-      <img v-if="logIn" id="photo" :src="source" alt="" style="width: 100%" />
+    <div style=" margin-right: -5%; margin-top: -1%; margin-left: auto">
+      <!--img v-if="logIn" id="photo" :src=source alt="" style="width: 100%;" /-->
+      <v-avatar v-if="logIn" size="5rem">
+      <img id="photo" :src="source" alt="" />
+      </v-avatar>
     </div>
+
     <div class="navbar-buttons">
       <router-link v-if="!logIn" class="links" to="/register"
         >Register</router-link
@@ -81,6 +85,7 @@ export default {
             if (this.photo) {
               const imageRef = ref(storage, `images/${user.uid}/profile.jpg`);
               this.source = await getDownloadURL(imageRef);
+              console.log('updata profile picture')
             }
           } catch (error) {
             this.logIn = false;
@@ -181,14 +186,16 @@ export default {
 .links:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
+
 .navbar-buttons {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: flex-end;
+  justify-content: center;
+  height: 100%;
   width: 40%;
-  padding-right: 2%;
 }
+
 .navbar-buttons .links {
-  padding: 6% 5%;
+  padding: 0% 5%;
 }
 </style>

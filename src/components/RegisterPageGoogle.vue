@@ -39,10 +39,10 @@
   <div class="register">
     <img id='image' src="../assets/register.jpg" alt="">
   <div class="" >
-    <h2 style="transform: translateX(65%)">Register</h2>
+    <h2 style="transform: translateX(65%); margin-top: 5%">Register</h2>
     <form id="form">
-    <v-text-field v-model="userName" label="Username *" type="text" required/>
-    <v-autocomplete v-model="major" label="Select Your Major *" :items="majorOption"> 
+    <v-text-field v-model="userName" label="Username *" type="text" required :maxlength="20"/>
+    <v-autocomplete v-model="major" label="Select Your Faculty *" :items="majorOption"> 
 
       <v-list>
         <v-list-item v-for="(option, index) in majorOption" :key="index" @click="major = option">
@@ -71,7 +71,7 @@
 
     </v-autocomplete>
 
-    <v-btn class="button" block @click="register" style="transform: translateX(60%) ">Register</v-btn>
+    <v-btn class="button" block @click="register" style="transform: translateX(65%) ">Register</v-btn>
     </form>
   </div>
 </div>
@@ -114,7 +114,7 @@ export default {
         universityList.forEach((docs) => {
           this.uniOption.push(docs.id)
         })
-        const year = new Date().getFullYear() % 100
+        const year = new Date().getFullYear()
         const year2 = year + 1
         const year3 = year + 2
         this.semesterOption.push("Semester 1"+ ", "+year+"/"+ year2)
@@ -135,7 +135,7 @@ export default {
     },
     data() {
       return {
-        majorOption: ['College of Humanities and Sciences (CHS)','NUS Business School', 'Computing', 'Dentistry', 'College of Design and Engineering (CDE)','Law', 'Medicine','Nursing','Pharmacy','Nus College', "Music"],
+        majorOption: ['College of Humanities and Sciences (CHS)','NUS Business School', 'Computing', 'Dentistry', 'College of Design and Engineering (CDE)','Law', 'Medicine','Nursing','Pharmacy','NUS College', "Music"],
         userName: "",
         name: "",
         major: "",
@@ -180,6 +180,11 @@ export default {
 
       async addAccount() {
       try {
+          if (this.tele) {
+            if (this.tele.charAt(0) !== "@"){
+              this.tele = "@" + this.tele
+            }
+        }
         const docRef = await setDoc(doc(db, "Account", this.user.uid), {
           username: this.userName,
           email: null,
@@ -231,7 +236,7 @@ export default {
   width: 90%;
   height: 90vh;
   margin-right: 10%;
-  border-radius: 1%;
+  border-radius: 0% 0% 2% 0%;
 }
 
 .button {
