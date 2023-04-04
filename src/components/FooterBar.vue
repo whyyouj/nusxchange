@@ -98,8 +98,6 @@ export default {
 }
 a {
   font-weight: 200;
-  text-decoration: none;
-  color: var(--primary);
 }
 a:hover {
   color: black;

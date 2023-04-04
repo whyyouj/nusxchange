@@ -193,15 +193,6 @@ h5 {
   margin-bottom: 10px;
   text-align: left;
 }
-a {
-  text-decoration: none;
-  color: rgb(144, 175, 196); /* #90afc4; */
-  font-weight: bold;
-  width: 700px;
-}
-a:hover {
-  color: rgba(144, 175, 196, 0.5);
-}
 table {
   border-collapse: collapse;
   width: 100%;
@@ -219,4 +210,13 @@ td {
   border-color: #90afc4;
   border-width: 0.1px;
 }
+/* a {
+  text-decoration: none;
+  color: var(--primary);
+  font-weight: bold;
+  width: 700px;
+}
+a:hover {
+  color: rgb(144, 175, 196);
+} */
 </style>
