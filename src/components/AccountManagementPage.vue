@@ -552,6 +552,9 @@ export default {
         const imageRef = ref(storage, `images/${this.uId}/profile.jpg`);
         this.source = await getDownloadURL(imageRef);
       }
+      else {
+        this.source = require("../assets/nusxchangee.png")
+      }
     });
   },
 
@@ -757,7 +760,7 @@ export default {
   },
   data() {
     return {
-      source: require("../assets/nusxchangee.png"),
+      source: '',
       photo: false,
       showPhotoModal: false,
       refreshComp: 0,

@@ -20,7 +20,7 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <div class="main">
+  <div class="main" >
     <img class="logo" src="../../src/assets/clear_nusxchange.png" />
     <h1 style="margin-left: 2%">NUSXchange</h1>
     <div class="link">
@@ -29,7 +29,7 @@
       <router-link class="links" to="/mapping">Module Mapping</router-link>
       <router-link class="links" to="/generalhelp">General Help</router-link>
     </div>
-    <div style=" margin-right: -5%; margin-top: -1%; margin-left: auto">
+    <div style=" margin-right: -5%; margin-top: -1%; margin-left: auto;" >
       <!--img v-if="logIn" id="photo" :src=source alt="" style="width: 100%;" /-->
       <v-avatar v-if="logIn" size="5rem">
       <img id="photo" :src="source" alt="" />
@@ -67,7 +67,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { ref, getDownloadURL } from "firebase/storage";
 const db = getFirestore(firebaseApp);
 export default {
-  mounted() {
+  beforeMount() {
     // console.log("mount nav bar");
     onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -86,6 +86,8 @@ export default {
               const imageRef = ref(storage, `images/${user.uid}/profile.jpg`);
               this.source = await getDownloadURL(imageRef);
               console.log('updata profile picture')
+            } else {
+              this.source = require("../assets/nusxchangee.png")
             }
           } catch (error) {
             this.logIn = false;
@@ -105,7 +107,7 @@ export default {
       userName: "",
       userData: null,
       photo: false,
-      source: require("../assets/nusxchangee.png"),
+      source: '',
       showSignOutModal: false,
     };
   },
