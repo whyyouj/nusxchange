@@ -221,6 +221,7 @@ export default {
       this.filterModal = false;
     },
     addInput() {
+      this.inputText = this.inputText.toUpperCase()
       this.autoFilterModules();
       if (this.autoFilteredModules.length === 1) {
         this.setState(this.autoFilteredModules[0]);
