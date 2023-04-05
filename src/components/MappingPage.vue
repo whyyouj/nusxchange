@@ -221,7 +221,7 @@ export default {
       this.filterModal = false;
     },
     addInput() {
-      this.inputText = this.inputText.toUpperCase()
+      this.inputText = this.inputText.toUpperCase().replace(/[^a-zA-Z0-9]/g, '')
       this.autoFilterModules();
       if (this.autoFilteredModules.length === 1) {
         this.setState(this.autoFilteredModules[0]);
