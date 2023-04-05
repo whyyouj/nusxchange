@@ -124,7 +124,7 @@ export default {
     return {
       inputText: "",
       isLoading: false,
-      inputs: [],
+      // inputs: [],
       errorMessage: "You have already added this module!",
       continents: [
         {
@@ -198,6 +198,9 @@ export default {
         (a, b) => b.localModules.length - a.localModules.length
       );
     },
+    inputs() {
+      return this.$store.state.moduleInputs;
+    }
   },
   methods: {
     autoFilterModules() {
@@ -226,13 +229,14 @@ export default {
       if (this.autoFilteredModules.length === 1) {
         this.setState(this.autoFilteredModules[0]);
       }
+
       if (this.inputText !== "") {
         // Preventing modules that is not in the database from being added to this.inputs
         if (!this.nusModuleCode.includes(this.inputText)) {
           window.alert("The module code is not in the database. Please try another code")
         } else {
           if (this.inputs.indexOf(this.inputText.toUpperCase()) === -1) {
-            this.inputs.push(this.inputText.toUpperCase());
+            this.$store.state.moduleInputs.push(this.inputText.toUpperCase());
             this.inputText = "";
           } else {
             window.alert("This module has already been added.");
@@ -255,7 +259,7 @@ export default {
       return this.continents.find((continent) => continent.active).name;
     },
     clearInputs() {
-      this.inputs = [];
+      this.$store.state.moduleInputs = [];
     },
     async submitInputs() {
       this.universityData = [];
