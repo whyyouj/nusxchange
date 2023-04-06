@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import firebaseApp from "../firebase.js";
+import {firebaseApp} from "../firebase.js";
 import {
   collection,
   getDocs,

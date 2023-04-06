@@ -265,7 +265,7 @@ export default {
 .home .image {
   width: 70%;
   height: 90vh;
-  border-radius: 10px;
+  border-radius: 0% 0% 2% 0%;
 }
 .home .login {
   width: 100%;

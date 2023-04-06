@@ -63,14 +63,17 @@
 
   <div class="photo">
     <!---<div id="photoname">{{ personname }}</div>--->
-    <img id="photo" :src="source" alt="" /> <br />
+    <!--v-avatar style="height:100vh; width:50vw; margin-top:-30%; z-index:-1"-->
+    <v-avatar size="30rem" style="z-index:-1">
+    <img id="photo" :src="source" alt="" />
+    </v-avatar>
+    <div style="margin-top:-10%">
     <input
       type="file"
       @change="handleFileInputChange"
       accept="image/*"
       id="fileinput"
     />
-
     <label id="filelabel" for="fileinput">Edit Image</label>
     <button
       @click="showPhotoModal = true"
@@ -84,6 +87,7 @@
     >
       <font-awesome-icon :icon="['fas', 'trash-alt']" />
     </button>
+    </div>
     <div style="text-align: center">
       <v-dialog v-model="showPhotoModal" max-width="500" :persistent="true">
         <v-card>
@@ -129,11 +133,12 @@
         <span v-if="showusername" style="font-weight: 100">{{ username }}</span>
         <span v-else>
           <v-text-field
-            v-model="username"
+            v-model="tempusername"
             label="Change Username"
             type="text"
             required
             style="width: 150%"
+            :maxlength="20"
         /></span>
       </div>
       <div id="email">
@@ -416,7 +421,8 @@
     </div>
     <hr />
     <div id="teleothers" :key="refreshComp1">
-      <h3>Telegram Handles</h3>
+      <h3 v-if="(tele === '' || exchangeuni == 'None' || this.teleList.length === 0)">Telegram Handles</h3>
+      <h3 v-else>Fellow Exchangers:</h3>
       <div v-if="tele === '' || exchangeuni == 'None'" id="teleHandles">
         Please include your telegram handle and exchange university to access
         this information!
@@ -424,12 +430,21 @@
       <div v-else-if="this.teleList.length === 0" id="teleHandles">
         There is currently no user that is going on the same exchange as you.
       </div>
-      <div v-else v-for="(ele, idx) in teleList" :key="idx" id="teleHandles">
-        <div id="teleHandlesName">{{ ele.username }}</div>
-        <div id="teleHandlesMajor">{{ ele.major }}</div>
-        <div id="teleHandlesTele">{{ ele.telegram }}</div>
+      <div v-else>
+        <div id="teleHandlesContainer">
+          <div id="teleHandlesHeadings">
+          <div id="teleHandlesName" style="font-weight: bold">Username</div>
+          <div id="teleHandlesTele" style="font-weight: bold">Telegram Handle</div>
+          <div id="teleHandlesMajor" style="font-weight: bold">Faculty</div>
+        </div>
+      <div v-for="(ele, idx) in teleList" :key="idx" id="teleHandlesRow">
+        <div id="teleHandlesName" style="font-weight: normal">{{ ele.username }}</div>
+        <div id="teleHandlesTele" style="font-weight: normal">{{ ele.telegram }}</div>
+        <div id="teleHandlesMajor" style="font-weight: normal">{{ ele.major }}</div>
+      </div>
       </div>
     </div>
+  </div>
     <hr />
     <button id="deleteaccount" @click="showDeleteModal = true">
       Delete Account
@@ -508,6 +523,7 @@ export default {
         this.exchangeuni = this.userData.exchangeUniversity;
         this.favList = this.userData.favouriteUniversity;
         this.photo = this.userData.photo;
+        this.tempusername = this.username;
       } else {
         this.$router.push("/signin");
       }
@@ -525,11 +541,19 @@ export default {
       this.semList.push("Semester 1" + ", " + year2 + "/" + year3);
       this.semList.push("Semester 2" + ", " + year2 + "/" + year3);
       const teleHandles = await getDocs(collection(db, "Account"));
-      this.teleListAll = teleHandles.docs.map((doc) => doc.data());
+      //this.teleListAll = teleHandles.docs.map((doc) => doc.data());
+      this.teleListAll = teleHandles.docs.map((doc) => {
+        const data = doc.data();
+        data.uid = doc.id
+        return data
+      });
       this.updateTeleList();
       if (this.photo) {
         const imageRef = ref(storage, `images/${this.uId}/profile.jpg`);
         this.source = await getDownloadURL(imageRef);
+      }
+      else {
+        this.source = require("../assets/nusxchangee.png")
       }
     });
   },
@@ -570,12 +594,13 @@ export default {
     },
     async changeUsername() {
       this.showusername = !this.showusername;
-      if (this.username.length < 1) {
+      if (this.tempusername.length < 1) {
+        this.tempusername = this.username;
         this.showErrorModal = true;
-        this.showusername = false;
         return;
       }
-      if (this.showusername) {
+      else {
+        this.username  = this.tempusername
         await this.updateUserData(this.uId, { username: this.username });
       }
     },
@@ -587,6 +612,9 @@ export default {
           this.refreshComp1 += 1;
           this.tele = "";
         } else {
+          if (this.tele.charAt(0) !== "@") {
+            this.tele = "@" + this.tele
+          }
           await this.updateUserData(this.uId, { telegram: this.tele });
           this.refreshComp1 += 1;
         }
@@ -672,9 +700,10 @@ export default {
           return (
             item.exchangeUniversity === this.exchangeuni &&
             item.semester === this.semester &&
-            this.email !== item.email
+            this.uId !== item.uid
           );
         });
+        console.log(this.teleList)
       } else {
         this.teleList = [];
       }
@@ -731,7 +760,7 @@ export default {
   },
   data() {
     return {
-      source: require("../assets/nusxchangee.png"),
+      source: '',
       photo: false,
       showPhotoModal: false,
       refreshComp: 0,
@@ -740,6 +769,7 @@ export default {
       userData: null,
       uId: null,
       username: "",
+      tempusername:"",
       email: "",
       major: "",
       tele: "",
@@ -761,7 +791,7 @@ export default {
         "Medicine",
         "Nursing",
         "Pharmacy",
-        "Nus College",
+        "NUS College",
         "Music",
       ],
       password: "password",
@@ -785,19 +815,13 @@ export default {
 </script>
 
 <style scoped>
-.photo {
+/*.photo {
   float: left;
   margin-right: 50%;
   width: 50%;
   text-align: center;
   margin: 0 auto;
 }
-
-.info {
-  margin-left: 50%;
-  width: 50%;
-}
-
 #photo {
   border-radius: 50%;
   border: 2px solid black;
@@ -808,6 +832,39 @@ export default {
   margin-top: 20%;
   z-index: 0;
   position: relative;
+}*/
+[v-cloak]{
+  display: none;
+}
+.photo {
+  float: left;
+  margin-right: 50%;
+  width: 50%;
+  text-align: center;
+  margin: 0 auto;
+}
+.photo1 {
+  height: 50%;
+  width: 50%;
+  position: relative;
+  text-align: center;
+  
+}
+#photo {
+  border-radius: 50%;
+  border: 2px solid black;
+  box-shadow: 2px 2px 2px gray;
+  width: 50%;
+  height: 50%;
+  margin: 0 auto;
+  margin-top: 20%;
+  z-index: 0;
+  position: relative;
+  object-fit: cover;
+}
+.info {
+  margin-left: 50%;
+  width: 50%;
 }
 /*#photoname {
   position: relative;
@@ -930,6 +987,20 @@ export default {
   justify-content: space-between;
   flex: 1 1 25%;
   width: 80%;
+}
+
+
+#teleHandlesHeadings, #teleHandlesRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+
+#teleHandlesName, #teleHandlesMajor, #teleHandlesTele {
+  width: 33%;
 }
 
 hr {
