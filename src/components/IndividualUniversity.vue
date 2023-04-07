@@ -46,7 +46,7 @@
       <img
         class="image"
         :src="this.universityData.imageURL"
-        style="max-width: 100%; height: 500px"
+        style="max-width: 100%; height: 600px; object-fit: cover;"
       />
       <div class="subtitle">
         <span

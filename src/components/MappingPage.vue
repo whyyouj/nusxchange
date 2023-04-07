@@ -5,10 +5,10 @@
   />
   <div class="main">
     <h2>Module Mapping Page</h2>
-    <img
+    <img class = "oxford-img"
       src="https://wallpapercave.com/wp/wp1954746.jpg"
       alt=""
-      style="width: 100%; border-radius: 15px"
+      style="max-width: 100%; height: 600px; object-fit: cover; object-position: top;"
     />
     <div class="search-container">
       <input
@@ -507,6 +507,12 @@ input[type="text"] {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.oxford-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
 }
 
 .loader {
