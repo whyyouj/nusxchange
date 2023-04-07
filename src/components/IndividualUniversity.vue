@@ -67,10 +67,10 @@
       <v-divider></v-divider>
       <div class="details">
         <div style="display: flex">
-          <div class="description">
+          <div class="description" style="text-align: justify;">
             {{ this.universityData.uniDescription }}
           </div>
-          <div style="width: 40%; margin-left: 10%">
+          <div style="width: 40%; margin-left: 5%">
             <div class="academic-window">
               <h3>Academic Window:</h3>
               <p>Semester 1: {{ this.universityData.semOneWindow }}</p>

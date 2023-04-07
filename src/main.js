@@ -18,7 +18,8 @@ import { createStore } from "vuex"
 const store = createStore({
   state() {
     return {
-      moduleInputs: []
+      moduleInputs: [],
+      universityData: []
     }
   }
 })
