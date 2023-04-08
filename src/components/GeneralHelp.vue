@@ -1,4 +1,8 @@
 <template>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
   <div class="container">
     <div class="component">
       <h1>General Help</h1>
@@ -10,9 +14,9 @@
       <table id="table" class="auto-index">
         <thead>
           <tr class="trEnd">
-            <th>Faculty</th>
-            <th>Round</th>
-            <th>Application Period</th>
+            <th style="font-family: Outfit; font-weight: 600;">Faculty</th>
+            <th style="font-family: Outfit; font-weight: 600;">Round</th>
+            <th style="font-family: Outfit; font-weight: 600;">Application Period</th>
           </tr>
         </thead>
         <tbody>
@@ -126,7 +130,7 @@
         <v-table>
           <tbody>
             <tr v-for="link in links" :key="link.url">
-              <td>{{ link.name }}</td>
+              <td style="font-family: Outfit; color: #90afc4;">{{ link.name }}</td>
               <td>
                 <a :href="link.url" target="_blank" style="text-align: left">{{
                   link.url
@@ -189,6 +193,8 @@ img {
 h1 {
   padding-top: 10px;
   padding-bottom: 10px;
+  font-family: "Outfit";
+  font-weight: 700;
 }
 h5 {
   font-weight: bold;
