@@ -54,12 +54,12 @@ export default {
       socialLinks: [
         {
           name: "LinkedIn",
-          url: "https://www.linkedin.com/in/jingenwong",
+          url: "https://www.linkedin.com",
           iconName: "linkedin",
         },
         {
           name: "GitHub",
-          url: "https://github.com/wjingen/nusxchange",
+          url: "https://github.com/BT3103AppDev1/l2-final-project-group-2-1",
           iconName: "github",
         },
         {
