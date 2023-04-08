@@ -1,4 +1,7 @@
 <template>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
   <!--v-dialog
     v-model="showErrorModal"
     max-width="700"
@@ -35,10 +38,11 @@
       flex-direction: column;
       justify-content: center;
       height: 100%;
+      font-family: 'Outfit';
     "
     :persistent="true"
   >
-    <v-card>
+    <v-card id="v_card">
       <v-card-title>Delete Confirmation</v-card-title>
       <v-card-text> Are you sure you want to Delete your Account </v-card-text>
       <v-card-actions>
@@ -89,7 +93,7 @@
     </button>
     </div>
     <div style="text-align: center">
-      <v-dialog v-model="showPhotoModal" max-width="500" :persistent="true">
+      <v-dialog v-model="showPhotoModal" max-width="500" :persistent="true" style="font-family: 'Outfit'">
         <v-card>
           <v-card-title>Delete Confirmation</v-card-title>
           <v-card-text>
@@ -323,7 +327,7 @@
             <h4
               v-if="exchangeError"
               id="errorMsg"
-              style="color: red; font-size: 12px; font-family: verdana, arial"
+              style="color: red; font-size: 12px; font-family: 'Outfit'"
             >
               INVALID UNIVERSITY / SEMESTER
             </h4>
@@ -900,7 +904,7 @@ export default {
 #username,
 #tele,
 #exchangeuni {
-  font-weight: 100;
+  font-weight: 500;
 }
 
 #changemajor {
@@ -966,7 +970,7 @@ export default {
 }
 
 #favouriteList {
-  font-weight: 100;
+  font-weight: 500;
 }
 
 #tele-major {
@@ -983,7 +987,7 @@ export default {
 #teleHandles {
   display: flex;
   flex-direction: row;
-  font-weight: 100;
+  font-weight: 500;
   justify-content: space-between;
   flex: 1 1 25%;
   width: 80%;
@@ -1034,7 +1038,7 @@ hr {
 .uni-link {
   text-decoration: none;
   color: var(--primary);
-  font-weight: 100;
+  font-weight: 500;
 }
 .uni-link:hover {
   font-weight: bold;

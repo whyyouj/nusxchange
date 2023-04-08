@@ -1,4 +1,9 @@
 <template>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
+
   <div class="home">
     <img
       src="https://content.presspage.com/uploads/2580/1920_utown.jpg?10000"
@@ -19,8 +24,8 @@
           style="
             color: red;
             text-align: center;
-            font-size: 12px;
-            font-family: verdana, arial;
+            font-size: 100%;
+            
           "
         >
           Invalid Email/Password
@@ -31,8 +36,7 @@
             color: red;
             text-align: center;
             color: red;
-            font-size: 12px;
-            font-family: verdana, arial;
+            font-size: 100%;
           "
         >
           Please verify your email

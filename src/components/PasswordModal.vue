@@ -1,4 +1,7 @@
 <template>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
   <button id="changePassword" @click="showModal = true" v-if="!showModal">
     Change
   </button>
@@ -140,7 +143,7 @@ export default {
 #errorMsg {
   color: red;
   font-size: 12px; 
-  font-family: verdana, arial
+  font-family: "Outfit"
 }
 .modal-header h3 {
   margin: 0;
