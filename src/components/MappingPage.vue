@@ -35,9 +35,10 @@
       style="margin-top: 20px"
     >
       <div class="input-list">
-        <p v-for="(input, index) in inputs" :key="index">
-          {{ input.toUpperCase() }}
-        </p>
+        <div v-for="(input, index) in inputs" :key="index" class="input-item">
+          <p class="input-text">{{ input.toUpperCase() }}</p>
+          <button class="delete-btn" @click="inputs.splice(index, 1)">×</button>
+        </div>
       </div>
       <div class="clear-submit-btn-container">
         <button
@@ -532,4 +533,26 @@ input[type="text"] {
   }
 }
 
+.input-item {
+  display: flex;
+  align-items: center;
+}
+
+.input-text {
+  flex-grow: 1;
+  margin: 0;
+}
+
+.delete-btn {
+  display: none;
+  margin-left: 10px;
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.input-item:hover .delete-btn {
+  display: block;
+}
 </style>
