@@ -65,7 +65,7 @@ export default {
 
 <style scoped>
 .module-tile {
-  border: 3px solid #ccc;
+  border: 3px solid #194569;
   border-radius: 10px;
   padding: 20px;
 }

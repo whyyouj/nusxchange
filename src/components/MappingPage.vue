@@ -25,8 +25,8 @@
       <button class="add-module-btn" @click="addInput">Add Module</button>
     </div>
     <div v-if="autoFilteredModules && filterModal" class = "z-10">
-      <ul style = "list-style: none; cursor: pointer;">
-        <li v-for="autoFilteredModule in autoFilteredModules" :key="autoFilteredModule" style = "py-2 border-b" @click="setState(autoFilteredModule)">{{ autoFilteredModule }}</li>
+      <ul style = "list-style: none; cursor: pointer; padding-left: 10px;">
+        <li v-for="autoFilteredModule in autoFilteredModules" :key="autoFilteredModule" class="autocomplete-list" @click="setState(autoFilteredModule)">{{ autoFilteredModule }}</li>
       </ul>
     </div>
     <div
@@ -77,6 +77,7 @@
       <div
         v-for="moduleTile in filteredandSortedModuleTiles"
         :key="moduleTile.university"
+        style="padding-top: 10px; padding-bottom: 10px;"
       >
         <ModuleTile
           :university="moduleTile.university"
@@ -92,7 +93,7 @@
     </div>
     <div v-else class="text-center">
       <div v-if="isLoading" class="loading-container">
-      <p>Loading Universities...</p>
+      <p>Loading...</p>
       <div class="loader"></div>
     </div>
       <div v-if = "!isLoading" class="no-mappable-universities">
@@ -508,6 +509,7 @@ input[type="text"] {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-top: 30px;
 }
 
 .oxford-img {
@@ -517,7 +519,7 @@ input[type="text"] {
 }
 
 .loader {
-  border: 5px solid #f3f3f3;
+  border: 5px solid #dbecf4;
   border-top: 5px solid #3498db;
   border-radius: 50%;
   width: 50px;
@@ -555,5 +557,15 @@ input[type="text"] {
 
 .input-item:hover .delete-btn {
   display: block;
+}
+
+.autocomplete-list {
+  border-bottom: solid #90afc4; 
+  padding-top: 10px; 
+  padding-bottom: 10px;
+}
+
+.autocomplete-list:hover {
+  background: #dbecf4;
 }
 </style>
