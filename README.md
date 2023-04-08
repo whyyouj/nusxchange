@@ -12,6 +12,7 @@ NUSXchange is a web-based platform that provides students with easy access to in
 3. Module Mapping Tool for partner universities
 4. A forum for students to communicate with each other
 5. Exchange of Telegram Handles of fellow exchangers
+
 With these features, we aim to provide a comprehensive platform that helps students plan their exchange program effectively.
 
 ### Technologies 🏗  
