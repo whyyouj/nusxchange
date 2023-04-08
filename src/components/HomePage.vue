@@ -75,4 +75,9 @@ button {
   font-size: 16px;
   font-weight: normal;
 }
+
+button:hover {
+  transform: scale(1.08);
+  transition: all 0.3s ease;
+}
 </style>

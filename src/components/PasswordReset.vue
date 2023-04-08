@@ -30,7 +30,7 @@
         
 
         <div class="back">
-        <router-link class="links" to="/signin">Sign-In Page</router-link>
+        <router-link class="links" to="/signin">Sign-In</router-link>
         </div>
       </div>
 
@@ -120,6 +120,11 @@ justify-content: center;
   font-family: 'Outfit';
 
 }
+
+.links:hover {
+  text-decoration: underline;
+}
+
 
 
 </style>

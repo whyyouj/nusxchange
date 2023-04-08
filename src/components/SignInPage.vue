@@ -296,4 +296,7 @@ export default {
   align-self: center;
   font-weight: bold;
 }
+.links:hover {
+  text-decoration: underline;
+}
 </style>

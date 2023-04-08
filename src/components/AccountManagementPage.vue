@@ -887,6 +887,10 @@ export default {
   margin-top: 20px;
   background-color: rgb(204, 204, 204, 0.5);
 }
+#filelabel:hover {
+  transform: scale(1.08);
+  transition: all 0.3s ease;
+}
 #fileinput {
   position: relative;
   bottom: 0;
@@ -1041,7 +1045,7 @@ hr {
   font-weight: 500;
 }
 .uni-link:hover {
-  font-weight: bold;
+  text-decoration: underline;
 }
 .v-auto {
   width: 80%;
@@ -1054,4 +1058,10 @@ hr {
 .delete-icon:hover {
   color: red;
 }
+
+button:hover {
+  transform: scale(1.08);
+  transition: all 0.3s ease;
+}
+
 </style>
