@@ -13,6 +13,16 @@ import PasswordReset from "./components/PasswordReset.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 import VueDisqus from "vue-disqus"
 
+// Vuex
+import { createStore } from "vuex"
+const store = createStore({
+  state() {
+    return {
+      moduleInputs: [],
+      universityData: []
+    }
+  }
+})
 
 // Vuetify
 import 'vuetify/styles'
@@ -54,6 +64,7 @@ createApp(App).
   use(VueDisqus,{shortname:"nusxchange"}).
   use(router).
   use(vuetify).
+  use(store).
   component("font-awesome-icon", FontAwesomeIcon).
   mount('#app')
 
