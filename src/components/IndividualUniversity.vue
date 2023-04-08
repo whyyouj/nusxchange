@@ -1,4 +1,8 @@
 <template>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
   <div class="main">
     <div v-if="this.firebaseError" style="text-align: center; padding-top: 20%">
       <h1>
@@ -18,7 +22,7 @@
     <div v-else>
       <div style="display: flex; justify-content: space-between">
         <div class="uni-name">
-          <h1>{{ this.universityName }}</h1>
+          <h1 style="padding-top: 10px; padding-bottom: 10px; font-weight: 700;">{{ this.universityName }}</h1>
         </div>
         <div
           v-if="isLoggedIn"
@@ -50,17 +54,17 @@
       />
       <div class="subtitle">
         <span
-          >Location:
+          ><u>Location</u>:
           <strong
             >{{ this.universityData.country }},
             {{ this.universityData.continent }}</strong
           ></span
         >
         <span
-          >Minimum GPA: <strong>{{ this.universityData.minGPA }}</strong></span
+          ><u>Minimum GPA</u>:  <strong>{{ this.universityData.minGPA }}</strong></span
         >
         <span
-          >Language Proficiency Requirements:
+          ><u>Language Proficiency Requirements</u>: 
           <strong>{{ this.universityData.languageProficiency }}</strong></span
         >
       </div>
@@ -181,11 +185,11 @@
         <div class="country-information">
           <h1>Country Information</h1>
           <v-table>
-            <tbody>
+            <tbody style="color: #194569; font-weight: 700;">
               <tr v-for="row in countryLinks" :key="row.name">
                 <td>{{ row.name }}</td>
-                <td v-if="row.link" style="padding-left: 110px">
-                  <a :href="row.link">{{ row.link }}</a>
+                <td v-if="row.link" style="padding-left: 110px;">
+                  <a :href="row.link" style="color: #90afc4;">{{ row.link }}</a>
                 </td>
                 <td v-else>No link available.</td>
               </tr>
@@ -197,9 +201,10 @@
           <v-table>
             <tbody>
               <tr v-for="row in otherLinks" :key="row.name">
-                <td>{{ row.name }}</td>
+                <td style="font-family: Outfit; color: #194569; font-weight: 700;">{{ row.name }}</td>
                 <td v-if="row.link">
                   <a
+                    style="color: #90afc4;"
                     :href="row.link"
                     onclick="window.open(this.href,'_blank');return false;"
                     >{{ row.link }}</a
@@ -502,9 +507,7 @@ export default {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
-}
-.main > * {
-  margin: 2% 0%;
+  font-family: "Outfit";
 }
 strong {
   font-weight: bold;

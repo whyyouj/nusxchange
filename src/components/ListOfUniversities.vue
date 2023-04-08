@@ -178,7 +178,8 @@ async created() {
 <style scoped>
 .header {
   width: 88%;
-  margin-top: 1%;
+  padding-top: 10px;
+  padding-bottom: 10px;
   margin-left: auto;
   margin-right: auto;
   font-family: "Outfit";

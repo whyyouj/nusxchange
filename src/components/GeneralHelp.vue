@@ -19,7 +19,7 @@
             <th style="font-family: Outfit; font-weight: 600;">Application Period</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style="font-family: Outfit; font-weight: 500;">
           <!-- Biz -->
           <tr>
             <td rowspan="2">BIZ</td>
@@ -130,9 +130,9 @@
         <v-table>
           <tbody>
             <tr v-for="link in links" :key="link.url">
-              <td style="font-family: Outfit; color: #90afc4;">{{ link.name }}</td>
+              <td style="color: #194569; font-weight: 700;">{{ link.name }}</td>
               <td>
-                <a :href="link.url" target="_blank" style="text-align: left">{{
+                <a :href="link.url" target="_blank" style="text-align: left; font-weight: 700; color: #90afc4;">{{
                   link.url
                 }}</a>
               </td>
@@ -184,6 +184,7 @@ export default {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
+  font-family: "Outfit";
 }
 img {
   height: 100%;
@@ -193,11 +194,10 @@ img {
 h1 {
   padding-top: 10px;
   padding-bottom: 10px;
-  font-family: "Outfit";
   font-weight: 700;
 }
 h5 {
-  font-weight: bold;
+  font-weight: 700;
   color: #90afc4;
   border-top: solid;
   border-color: #90afc4;

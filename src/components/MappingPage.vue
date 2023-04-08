@@ -1,10 +1,10 @@
 <template>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
 
   <div class="main">
-    <h1 style="padding-top: 10px; padding-bottom: 10px;">Module Mapping Page</h1>
+    <h1 style="padding-top: 10px; padding-bottom: 10px; font-weight: 700;">Module Mapping Page</h1>
     <img class = "oxford-img"
       src="https://wallpapercave.com/wp/wp1954746.jpg"
       alt=""
@@ -353,6 +353,7 @@ export default {
 .main {
   margin: auto;
   max-width: 80%;
+  font-family: "Outfit";
 }
 
 .search-container {
