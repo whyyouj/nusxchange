@@ -1,4 +1,8 @@
 <template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
 <v-dialog v-model="showSuccessModal" max-width="700" style= "  margin: auto; display: flex; flex-direction: column;justify-content: center;height: 100%;" :persistent="true">
   <v-card>
     <v-card-title style="color: green">Success</v-card-title>
@@ -17,16 +21,16 @@
     />
     <div class="reset-password">
       <!--img style="width: 80px; height: 80px" src="../assets/nusxchange.png" /-->
-      <img style="width: 100px; height: 100px" src="../assets/nusxchange.png" />
+      <img style="width: 100px; height: 100px" src="../assets/clear_nusxchange.png" />
       <h2>Reset Password</h2>
       <div style="width: 70%">
         <v-text-field v-model="email" label="Enter your registered email" type="email" />
         <v-btn class="button" block @click="emailVeri">Get reset link</v-btn>
-        <p v-if="invalidEmail" style="color: red; text-align:center">Invalid Email</p>
+        <p v-if="invalidEmail" style="color: red; text-align:center;">Invalid Email</p>
         
 
         <div class="back">
-        <h3>Back:</h3>   <router-link class="links" to="/signin">Sign-In Page</router-link>
+        <router-link class="links" to="/signin">Sign-In Page</router-link>
         </div>
       </div>
 
@@ -113,6 +117,7 @@ justify-content: center;
   color: var(--secondary);
   align-self: center;
   font-weight: bold;
+  font-family: 'Outfit';
 
 }
 
