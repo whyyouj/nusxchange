@@ -55,8 +55,12 @@
     >
       <div class="input-list">
         <div v-for="(input, index) in inputs" :key="index" class="input-item">
-          <p class="input-text">{{ input.toUpperCase() }}</p>
-          <button class="delete-btn" @click="inputs.splice(index, 1)">×</button>
+          <p class="input-text">
+            {{ input.toUpperCase() }}
+            <button class="delete-btn" @click="inputs.splice(index, 1)">
+              ×
+            </button>
+          </p>
         </div>
       </div>
       <div class="clear-submit-btn-container">
@@ -600,7 +604,6 @@ input[type="text"] {
   flex-wrap: wrap;
   margin-bottom: 10px;
 }
-
 .input-list p {
   margin: 5px;
   font-size: 14px;
@@ -609,6 +612,20 @@ input[type="text"] {
   color: black;
   border-radius: 20px;
   padding: 5px 10px;
+  display: flex;
+  align-items: center;
+}
+.delete-btn {
+  margin-left: 10px;
+  margin-bottom: 1px;
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.input-item:hover .delete-btn {
+  color: var(--secondary);
 }
 
 .clear-submit-btn-container {
@@ -730,30 +747,6 @@ input[type="text"] {
     transform: rotate(360deg);
   }
 }
-
-.input-item {
-  display: flex;
-  align-items: center;
-}
-
-.input-text {
-  flex-grow: 1;
-  margin: 0;
-}
-
-.delete-btn {
-  display: none;
-  margin-left: 10px;
-  border: none;
-  background-color: transparent;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.input-item:hover .delete-btn {
-  display: block;
-}
-
 .autocomplete-list {
   border-bottom: solid #90afc4;
   padding-top: 10px;
