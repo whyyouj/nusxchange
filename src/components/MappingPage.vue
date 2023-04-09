@@ -1,18 +1,29 @@
 <template>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
 
   <div class="main">
-    <h1 style="padding-top: 10px; padding-bottom: 10px; font-weight: 700;">Module Mapping Page</h1>
-    <img class = "oxford-img"
+    <h1 style="padding-top: 10px; padding-bottom: 10px; font-weight: 700">
+      Module Mapping Page
+    </h1>
+    <img
+      class="oxford-img"
       src="https://wallpapercave.com/wp/wp1954746.jpg"
       alt=""
-      style="max-width: 100%; height: 600px; object-fit: cover; object-position: top;"
+      style="
+        max-width: 100%;
+        height: 600px;
+        object-fit: cover;
+        object-position: top;
+      "
     />
     <div class="search-container">
       <input
-        class = "z-10"
+        class="z-10"
         type="text"
         :placeholder="
           inputText ? '' : 'Which NUS Module would you like to map?'
@@ -24,9 +35,17 @@
       />
       <button class="add-module-btn" @click="addInput">Add Module</button>
     </div>
-    <div v-if="autoFilteredModules && filterModal" class = "z-10">
-      <ul style = "list-style: none; cursor: pointer; padding-left: 10px;">
-        <li v-for="autoFilteredModule in autoFilteredModules" :key="autoFilteredModule" class="autocomplete-list" @click="setState(autoFilteredModule)">{{ autoFilteredModule }}</li>
+    <div v-if="autoFilteredModules && filterModal" class="z-10">
+      <ul style="list-style: none; cursor: pointer; padding-left: 10px">
+        <li
+          v-for="autoFilteredModule in autoFilteredModules"
+          :key="autoFilteredModule"
+          class="autocomplete-list"
+          @click="setState(autoFilteredModule)"
+        >
+          {{ autoFilteredModule }}
+          {{ nusModuleTitle[autoFilteredModule] }}
+        </li>
       </ul>
     </div>
     <div
@@ -77,7 +96,7 @@
       <div
         v-for="moduleTile in filteredandSortedModuleTiles"
         :key="moduleTile.university"
-        style="padding-top: 10px; padding-bottom: 10px;"
+        style="padding-top: 10px; padding-bottom: 10px"
       >
         <ModuleTile
           :university="moduleTile.university"
@@ -93,20 +112,20 @@
     </div>
     <div v-else class="text-center">
       <div v-if="isLoading" class="loading-container">
-      <p>Loading...</p>
-      <div class="loader"></div>
-    </div>
-      <div v-if = "!isLoading" class="no-mappable-universities">
-      <br />
-      <p>No mappable universities. Try keying in more / different modules.</p>
-      <br />
+        <p>Loading...</p>
+        <div class="loader"></div>
+      </div>
+      <div v-if="!isLoading" class="no-mappable-universities">
+        <br />
+        <p>No mappable universities. Try keying in more / different modules.</p>
+        <br />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {firebaseApp} from "../firebase.js";
+import { firebaseApp } from "../firebase.js";
 import {
   collection,
   getDocs,
@@ -167,9 +186,174 @@ export default {
       universityInformation: {},
       uniAvail: [],
       // universityData: [],
-      nusModuleCode: ['CS2108', 'CS4226', 'CS4215', 'CS5224', 'CS2102', 'CS3235', 'CS5332', 'IS3240', 'IS4234', 'CS3245', 'CS5228', 'IS4262', 'IS4242', 'BT4301', 'IS4302', 'BT4221', 'CS1231', 'CS3230', 'BT4013', 'BT4222', 'IS4228', 'CS3244', 'CS4243', 'BT4016', 'CS3223', 'CS3211', 'BT4240', 'IS3107', 'IS1108', 'CS2105', 'IS4100', 'IS4241', 'CS4880', 'CS2103', 'IS4246', 'CS2107', 'CS3219', 'CS3210', 'CS4234', 'IT3011', 'CS4225', 'IT2002', 'IS3261', 'CS3240', 'CS2106', 'IS4240', 'IS3221', 'CS2100', 'BT4211', 'IS4243', 'BT4212', 'BT3102', 'CS1010E', 'CS3243', 'CS3241', 'CS1010S', 'CS2040', 'CS2030', 'CS4261', 'CS4231', 'IS3150', 'IS3223', 'IS4233', 'CS4236', 'BT3103', 'BT1101', 'IS3106', 'IS4261', 'IS3101', 'CS3226', 'IS4151', 'IS3103', 'IS4303', 'CS2104', 'CS5242', 'IS4226', 'CS1010J', 'IS4231', 'IS4236', 'IS4301', 'CS4212', 'IS4204', 'CS4248', 'CS3234', 'CS3103', 'IS3251', 'CS4247', 'CS1010', 'IS2102', 'CS4240', 'CS4269', 'CS5330', 'CS4268', 'CS2220', 'CS4218', 'CS4235', 'CS2309', 'CS5340', 'IS4152', 'CS3237', 'CS4232', 'CS5343', 'CS5339', 'CS3236', 'BT4012', 'CS3213', 'CS4211', 'BT4015', 'IS4250', 'CS3231', 'CS3218', 'BT2102', 'CS3242', 'CS5231', 'BT2101', 'IT3010', 'CS4239', 'IFS4101', 'IS1103', 'CS4242', 'CS5229', 'CS4222', 'CS4278', 'CS2040C', 'IT1001', 'CS4249', 'CS2109S', 'CS3220', 'BT4014', 'CS3249', 'CS3247', 'CS4345', 'CG2271', 'CS5234', 'CS4277', 'CS5346', 'CS5321', 'IFS4103', 'CS4246', 'BT2103', 'CS3221', 'CS4244', 'CS5223', 'CS5239', 'IS4232', 'CS3217', 'CS4223', 'CS3233', 'CS5232', 'CS3238', 'IFS4102', 'CS5241', 'CS2113', 'CS5272', 'CS2010', 'CS5331', 'CS5250', 'CS3216', 'CS4220', 'CS4238'],
+      // nusModuleCode: [
+      //   "CS2108",
+      //   "CS4226",
+      //   "CS4215",
+      //   "CS5224",
+      //   "CS2102",
+      //   "CS3235",
+      //   "CS5332",
+      //   "IS3240",
+      //   "IS4234",
+      //   "CS3245",
+      //   "CS5228",
+      //   "IS4262",
+      //   "IS4242",
+      //   "BT4301",
+      //   "IS4302",
+      //   "BT4221",
+      //   "CS1231",
+      //   "CS3230",
+      //   "BT4013",
+      //   "BT4222",
+      //   "IS4228",
+      //   "CS3244",
+      //   "CS4243",
+      //   "BT4016",
+      //   "CS3223",
+      //   "CS3211",
+      //   "BT4240",
+      //   "IS3107",
+      //   "IS1108",
+      //   "CS2105",
+      //   "IS4100",
+      //   "IS4241",
+      //   "CS4880",
+      //   "CS2103",
+      //   "IS4246",
+      //   "CS2107",
+      //   "CS3219",
+      //   "CS3210",
+      //   "CS4234",
+      //   "IT3011",
+      //   "CS4225",
+      //   "IT2002",
+      //   "IS3261",
+      //   "CS3240",
+      //   "CS2106",
+      //   "IS4240",
+      //   "IS3221",
+      //   "CS2100",
+      //   "BT4211",
+      //   "IS4243",
+      //   "BT4212",
+      //   "BT3102",
+      //   "CS1010E",
+      //   "CS3243",
+      //   "CS3241",
+      //   "CS1010S",
+      //   "CS2040",
+      //   "CS2030",
+      //   "CS4261",
+      //   "CS4231",
+      //   "IS3150",
+      //   "IS3223",
+      //   "IS4233",
+      //   "CS4236",
+      //   "BT3103",
+      //   "BT1101",
+      //   "IS3106",
+      //   "IS4261",
+      //   "IS3101",
+      //   "CS3226",
+      //   "IS4151",
+      //   "IS3103",
+      //   "IS4303",
+      //   "CS2104",
+      //   "CS5242",
+      //   "IS4226",
+      //   "CS1010J",
+      //   "IS4231",
+      //   "IS4236",
+      //   "IS4301",
+      //   "CS4212",
+      //   "IS4204",
+      //   "CS4248",
+      //   "CS3234",
+      //   "CS3103",
+      //   "IS3251",
+      //   "CS4247",
+      //   "CS1010",
+      //   "IS2102",
+      //   "CS4240",
+      //   "CS4269",
+      //   "CS5330",
+      //   "CS4268",
+      //   "CS2220",
+      //   "CS4218",
+      //   "CS4235",
+      //   "CS2309",
+      //   "CS5340",
+      //   "IS4152",
+      //   "CS3237",
+      //   "CS4232",
+      //   "CS5343",
+      //   "CS5339",
+      //   "CS3236",
+      //   "BT4012",
+      //   "CS3213",
+      //   "CS4211",
+      //   "BT4015",
+      //   "IS4250",
+      //   "CS3231",
+      //   "CS3218",
+      //   "BT2102",
+      //   "CS3242",
+      //   "CS5231",
+      //   "BT2101",
+      //   "IT3010",
+      //   "CS4239",
+      //   "IFS4101",
+      //   "IS1103",
+      //   "CS4242",
+      //   "CS5229",
+      //   "CS4222",
+      //   "CS4278",
+      //   "CS2040C",
+      //   "IT1001",
+      //   "CS4249",
+      //   "CS2109S",
+      //   "CS3220",
+      //   "BT4014",
+      //   "CS3249",
+      //   "CS3247",
+      //   "CS4345",
+      //   "CG2271",
+      //   "CS5234",
+      //   "CS4277",
+      //   "CS5346",
+      //   "CS5321",
+      //   "IFS4103",
+      //   "CS4246",
+      //   "BT2103",
+      //   "CS3221",
+      //   "CS4244",
+      //   "CS5223",
+      //   "CS5239",
+      //   "IS4232",
+      //   "CS3217",
+      //   "CS4223",
+      //   "CS3233",
+      //   "CS5232",
+      //   "CS3238",
+      //   "IFS4102",
+      //   "CS5241",
+      //   "CS2113",
+      //   "CS5272",
+      //   "CS2010",
+      //   "CS5331",
+      //   "CS5250",
+      //   "CS3216",
+      //   "CS4220",
+      //   "CS4238",
+      // ],
+      // List of NUS Module Codes
+      nusModuleCode: [],
+      // Dictionary where key is NUS Module Code, Value is NUS Module Title
+      nusModuleTitle: {},
       autoFilteredModules: [],
-      filterModal: false
+      filterModal: false,
     };
   },
   async created() {
@@ -183,6 +367,15 @@ export default {
       this.universityInformation[doc.id]["GPA"] = doc.data().MinGPA;
       this.universityInformation[doc.id]["LangReq"] =
         doc.data().LanguageProficiency;
+    });
+
+    // Populating this.nusModuleCode and this.nusModuleTitle
+    const storedNusModules = await getDocs(
+      collection(db, "NUS Module Mapping")
+    );
+    storedNusModules.forEach((doc) => {
+      this.nusModuleCode.push(doc.id);
+      this.nusModuleTitle[doc.id] = doc.data()["ModuleTitle"];
     });
   },
   computed: {
@@ -204,31 +397,31 @@ export default {
     },
     universityData() {
       return this.$store.state.universityData;
-    }
+    },
   },
   methods: {
     autoFilterModules() {
-      console.log(this.autoFilteredModules)
       if (this.inputText.length < 2) {
-        return this.autoFilteredModules = [];
+        return (this.autoFilteredModules = []);
       }
-      this.autoFilteredModules = this.nusModuleCode.filter(text => {
+      this.autoFilteredModules = this.nusModuleCode.filter((text) => {
         return text.toUpperCase().startsWith(this.inputText.toUpperCase());
       });
-
       if (this.autoFilteredModules.length > 0) {
-      this.filterModal = true;
-    } else {
-      this.filterModal = false;
-    }
-  },
+        this.filterModal = true;
+      } else {
+        this.filterModal = false;
+      }
+    },
     setState(autoFilteredModule) {
       this.inputText = autoFilteredModule;
       this.autoFilteredModules = [];
       this.filterModal = false;
     },
     addInput() {
-      this.inputText = this.inputText.toUpperCase().replace(/[^a-zA-Z0-9]/g, '')
+      this.inputText = this.inputText
+        .toUpperCase()
+        .replace(/[^a-zA-Z0-9]/g, "");
       this.autoFilterModules();
       if (this.autoFilteredModules.length === 1) {
         this.setState(this.autoFilteredModules[0]);
@@ -237,7 +430,9 @@ export default {
       if (this.inputText !== "") {
         // Preventing modules that is not in the database from being added to this.inputs
         if (!this.nusModuleCode.includes(this.inputText)) {
-          window.alert("The module code is not in the database. Please try another code")
+          window.alert(
+            "The module code is not in the database. Please try another code"
+          );
         } else {
           if (this.inputs.indexOf(this.inputText.toUpperCase()) === -1) {
             this.$store.state.moduleInputs.push(this.inputText.toUpperCase());
@@ -280,9 +475,9 @@ export default {
 
           for (const uni of this.uniAvail) {
             // Getting the universities that offer that NUS Module
-              const nusModInfo = await getDocs(
-                collection(nusModRef, uni.toLowerCase())
-              );
+            const nusModInfo = await getDocs(
+              collection(nusModRef, uni.toLowerCase())
+            );
             nusModInfo.forEach((info) => {
               if (!(uni in universityModHash)) {
                 universityModHash[uni] = {};
@@ -560,8 +755,8 @@ input[type="text"] {
 }
 
 .autocomplete-list {
-  border-bottom: solid #90afc4; 
-  padding-top: 10px; 
+  border-bottom: solid #90afc4;
+  padding-top: 10px;
   padding-bottom: 10px;
 }
 
