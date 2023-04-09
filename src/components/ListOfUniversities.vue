@@ -1,11 +1,10 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Outfit:b"
-  />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
 
   <div>
-    <h2 class="header">List of Exchange Universities</h2>
+    <h1 class="header">List of Exchange Universities</h1>
     <div class="filter-bar">
       <ul>
         <li
@@ -179,11 +178,13 @@ async created() {
 <style scoped>
 .header {
   width: 88%;
-  margin-top: 1%;
+  padding-top: 10px;
+  padding-bottom: 10px;
   margin-left: auto;
   margin-right: auto;
   font-family: "Outfit";
-  font-size: x-large;
+  font-weight: 700;
+  font-size: 32px;
 }
 .tile-list {
   display: flex;
@@ -207,6 +208,7 @@ async created() {
   justify-content: center;
   margin-bottom: 20px;
   font-family: "Outfit";
+  font-weight: 700;
 }
 
 .filter-bar ul {

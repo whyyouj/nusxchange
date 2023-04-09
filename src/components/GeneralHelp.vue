@@ -1,4 +1,8 @@
 <template>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
   <div class="container">
     <div class="component">
       <h1>General Help</h1>
@@ -10,12 +14,12 @@
       <table id="table" class="auto-index">
         <thead>
           <tr class="trEnd">
-            <th>Faculty</th>
-            <th>Round</th>
-            <th>Application Period</th>
+            <th style="font-family: Outfit; font-weight: 600;">Faculty</th>
+            <th style="font-family: Outfit; font-weight: 600;">Round</th>
+            <th style="font-family: Outfit; font-weight: 600;">Application Period</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style="font-family: Outfit; font-weight: 500;">
           <!-- Biz -->
           <tr>
             <td rowspan="2">BIZ</td>
@@ -126,9 +130,9 @@
         <v-table>
           <tbody>
             <tr v-for="link in links" :key="link.url">
-              <td>{{ link.name }}</td>
+              <td style="color: #194569; font-weight: 700;">{{ link.name }}</td>
               <td>
-                <a :href="link.url" target="_blank" style="text-align: left">{{
+                <a :href="link.url" target="_blank" style="text-align: left; font-weight: 700; color: #90afc4;">{{
                   link.url
                 }}</a>
               </td>
@@ -180,6 +184,7 @@ export default {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
+  font-family: "Outfit";
 }
 img {
   height: 100%;
@@ -189,9 +194,10 @@ img {
 h1 {
   padding-top: 10px;
   padding-bottom: 10px;
+  font-weight: 700;
 }
 h5 {
-  font-weight: bold;
+  font-weight: 700;
   color: #90afc4;
   border-top: solid;
   border-color: #90afc4;
